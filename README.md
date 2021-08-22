@@ -1,8 +1,8 @@
 # Using
 
-1. React Redux\
-2. React Toolkit\
-3. ...\
+1. React Redux.\
+2. React Toolkit.\
+3. ....\
 
 # Getting Started with Create React App
 
