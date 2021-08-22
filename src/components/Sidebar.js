@@ -1,5 +1,5 @@
 import React from 'react';
-import { links } from './data'
+import { links } from '../data'
 
 const Sidebar = () => {
     return (
