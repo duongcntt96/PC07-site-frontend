@@ -32,17 +32,17 @@ export const links = [
     children: [
       {
         id: 1,
-        url: "/home/sub1",
+        url: "/coso/diaban",
         text: "Danh sách cơ sở theo địa bàn",
       },
       {
         id: 2,
-        url: "/home/sub3",
+        url: "/coso/loaihinhcoso",
         text: "Danh sách cơ sở theo loại hình cơ sở",
       },
       {
         id: 3,
-        url: "/home/sub3",
+        url: "/coso/phuluc",
         text: "Danh sách cơ sở theo phụ lục",
       },
     ],
