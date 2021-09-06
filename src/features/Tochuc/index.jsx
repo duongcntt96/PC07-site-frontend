@@ -17,7 +17,6 @@ const Tochuc = () => {
         setListPT(response.data);
         setLoading(false);
       } catch (error) {
-        alert("Canot connect to Server");
         console.log("Không lấy được dữ liệu", error);
       }
     };

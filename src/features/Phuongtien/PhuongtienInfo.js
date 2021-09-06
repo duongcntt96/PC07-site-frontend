@@ -1,35 +1,84 @@
 import phuongtienApi from "api/phuongtienApi";
-import React, { useEffect, useState } from "react";
+import { showModal } from "components/Modal/modalSlice";
+import { closeSubMenu } from "components/SubMenu/subMenuSlice";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { RiPlayListAddFill } from "react-icons/ri";
 
 const PhuongtienInfo = (props) => {
+  const dispatch = useDispatch();
+  const refList = useRef(null);
   const id = props.match.params.id;
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState({});
+  const [loadMore, setLoadMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [children, setChildren] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    size: 20,
+    count: 21,
+  });
+
+  const scrollListener = () => {
+    if (refList.current !== null) {
+      console.log("Listener");
+      const isLoadMore =
+        refList.current.clientHeight + refList.current.offsetTop <
+        window.scrollY + window.innerHeight;
+      if (isLoadMore && !loadMore) {
+        setLoadMore(true);
+      }
+    }
+  };
+
+  const getChildren = async () => {
+    if (!loadMore || loadingMore) {
+      return;
+    }
+    setLoadingMore(true);
+    console.log("Loadmore:" + loadMore);
+    console.log(pagination);
+    const { page, count } = pagination;
+    if (children.length >= count) {
+      window.removeEventListener("scroll", scrollListener, true);
+      return;
+    }
+    const respone = await phuongtienApi.getAll({
+      ...pagination,
+      noi_bo_tri: id,
+    });
+    setChildren([...children, ...respone.data]);
+    setPagination({ ...respone.pagination, page: page + 1 });
+    console.log(respone);
+    setLoadingMore(false);
+  };
 
   useEffect(() => {
-    const getPTInfo = async () => {
-      const respone = await phuongtienApi.get(id);
-      setInfo(respone);
-      setLoading(false);
-      console.log(respone);
-    };
-    getPTInfo();
-  }, []);
-
-  useEffect(() => {
-    const getChildren = async () => {
-      const respone = await phuongtienApi.getChildren(id);
-      setChildren(respone);
-      console.log(respone);
-    };
     getChildren();
+    setLoadMore(false);
+  }, [loadMore]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollListener, true);
+    getPTInfo();
+    getChildren();
+    return () => {
+      window.removeEventListener("scroll", scrollListener, true);
+    };
   }, []);
+
+  const getPTInfo = async () => {
+    const respone = await phuongtienApi.get(id);
+    setInfo(respone);
+    setLoading(false);
+    console.log(respone);
+  };
 
   if (!loading) {
     const { ten, nhan_hieu, hinh_anh, chung_loai, bien_so } = info;
     return (
-      <main>
+      <main onMouseOver={(e) => dispatch(closeSubMenu())}>
         <div className="container">
           <div className="row pt-content">
             <div className="col ">
@@ -119,9 +168,6 @@ const PhuongtienInfo = (props) => {
                       <td>Thời gian đưa vào hoạt động:</td>
                       <td>{info.thoi_gian_dua_vao_hoat_dong}</td>
                     </tr>
-                    <tr>
-                      <td>Phương tiện đi kèm:</td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -129,8 +175,18 @@ const PhuongtienInfo = (props) => {
           </div>
 
           <div className="row">
-            <h3>Phương tiện theo xe:</h3>
-            <table className="table">
+            <div className="list-title">
+              <h3>Phương tiện theo xe:</h3>
+
+              <RiPlayListAddFill
+                className="btn-add"
+                onClick={(e) => {
+                  dispatch(showModal({ id }));
+                }}
+              />
+            </div>
+
+            <table className="table" ref={refList}>
               <thead>
                 <tr>
                   <th scope="col">Stt</th>
@@ -161,4 +217,5 @@ const PhuongtienInfo = (props) => {
   return <h1>Loading...</h1>;
 };
 
+export { PhuongtienInfo };
 export default PhuongtienInfo;

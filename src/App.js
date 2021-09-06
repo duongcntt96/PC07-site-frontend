@@ -1,15 +1,14 @@
-import React from "react";
-
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Home from "./features/Home";
-import Phuongtien from "./features/Phuongtien";
-import Tochuc from "./features/Tochuc";
-
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Modal from "components/Modal/Form";
+import Scroller from "components/Scroller";
 import SubMenu from "components/SubMenu";
-import PhuongtienList from "features/Phuongtien/components/PhuongtienList";
-import PhuongtienInfo from "features/Phuongtien/components/PhuongtienInfo";
+import { PhuongtienInfo, PhuongtienList } from "features/Phuongtien";
+import { Login, Register } from "features/User";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import Home from "./features/Home";
+import Tochuc from "./features/Tochuc";
 
 function App() {
   return (
@@ -21,10 +20,14 @@ function App() {
           <Home />
         </Route>
 
-        <Route exact path="/phuongtien">
-          <Phuongtien />
+        <Route path="/user/login">
+          <Login />
         </Route>
-        <Route exact path="/phuongtien/list">
+        <Route path="/user/register">
+          <Register />
+        </Route>
+
+        <Route exact path="/phuongtien">
           <PhuongtienList />
         </Route>
         <Route path="/phuongtien/:id" component={PhuongtienInfo}>
@@ -35,6 +38,8 @@ function App() {
           <Tochuc />
         </Route>
       </Switch>
+      <Modal />
+      <Scroller />
       <Footer />
     </Router>
   );

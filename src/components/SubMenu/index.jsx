@@ -13,7 +13,7 @@ const SubMenu = () => {
   });
 
   return (
-    <div className={isShowing ? "sub-links show" : "sub-links"} ref={container}>
+    <div className={isShowing ? "submenu show" : "submenu"} ref={container}>
       <ul>
         {data.map((link) => {
           return (

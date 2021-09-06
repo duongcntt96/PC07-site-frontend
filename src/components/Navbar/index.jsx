@@ -1,11 +1,11 @@
-import { decode } from "base-64";
 import { closeSubMenu, openSubMenu } from "components/SubMenu/subMenuSlice";
+import User from "components/User";
 import React, { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.jpg";
-import { links, social } from "../../data";
+import { links } from "../../data";
 
 const Navbar = () => {
   const linksContainerRef = useRef(null);
@@ -13,26 +13,12 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const [showLinks, setShowLinks] = useState(false);
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const linksHeight = linksRef.current.getBoundingClientRect().height;
     if (showLinks) linksContainerRef.current.style.height = `${linksHeight}px`;
     else linksContainerRef.current.style.height = "0px";
   }, [showLinks]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("secret");
-    if (token) {
-      console.log(token);
-      const { access } = JSON.parse(token);
-      if (access) {
-        const accessInfo = JSON.parse(decode(access.split(".")[1]));
-        console.log("get username success", accessInfo.name);
-        setUsername(accessInfo.name);
-      }
-    }
-  }, []);
 
   const displaySubmenu = (e) => {
     const sublink = links.find((link) => link.text === e.target.textContent);
@@ -47,7 +33,7 @@ const Navbar = () => {
   };
 
   const handleMouseOver = (e) => {
-    if (!e.target.classList.contains("link-item")) {
+    if (!e.target.classList.contains("link")) {
       const action = closeSubMenu();
       dispatch(action);
     }
@@ -56,26 +42,26 @@ const Navbar = () => {
   return (
     <nav onMouseOver={(e) => handleMouseOver(e)}>
       <div className="nav-center">
-        <div className="nav-header">
+        <div className="nav__header">
           <Link to="/home">
             <img className="logo" src={logo} alt="logo" />
           </Link>
           <button
-            className="nav-toggle"
+            className="nav__toggle"
             onClick={() => setShowLinks(!showLinks)}
           >
             <FaBars />
           </button>
         </div>
 
-        <div className="links-container" ref={linksContainerRef}>
+        <div className="nav__links" ref={linksContainerRef}>
           <ul className="links" ref={linksRef}>
             {links.map((link) => {
               const { id, url, text } = link;
               return (
                 <li key={id}>
                   <Link
-                    className="link-item"
+                    className="link"
                     to={url}
                     onMouseOver={(e) => displaySubmenu(e)}
                   >
@@ -87,8 +73,10 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <ul className="social-icons">
-          <span>{username}</span>
+        <div>
+          <User />
+        </div>
+        {/* <ul className="social-icons">
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
@@ -99,7 +87,7 @@ const Navbar = () => {
               </li>
             );
           })}
-        </ul>
+        </ul> */}
       </div>
     </nav>
   );

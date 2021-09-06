@@ -8,9 +8,9 @@ const phuongtienApi = {
     const url = `/phuongtien/${id}`;
     return axiosClient.get(url);
   },
-  getChildren: (id) => {
-    const url = `/phuongtien/children?parentID=${id}`;
-    return axiosClient.get(url);
+  addChild: (params) => {
+    const url = `/phuongtien/`;
+    return axiosClient.post(url, params);
   },
   search: (text) => {
     const url = `/phuongtien/?search=${text}`;

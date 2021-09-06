@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <>
       <div className="footer">
-        <div className="discription">
+        <div className="footer__discription">
           <div className="left-footer">
             <h4>Trang thông tin điện tử</h4>
             <p>

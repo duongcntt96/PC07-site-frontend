@@ -2,6 +2,7 @@ import React from "react";
 import { FaBehance, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export const rootAPI = "http://localhost:8000/api/";
+
 export const links = [
   {
     id: 2,
