@@ -9,13 +9,18 @@ const Modal = () => {
   const dispatch = useDispatch();
   const { isShowing, data } = useSelector((state) => state.modal);
 
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({
+    ten: "",
+    so_luong: 1,
+    don_vi_tinh: "Chiếc",
+  });
 
   const [chungloaiList, setChungloaiList] = useState([]);
 
   useEffect(() => {
     const getChungloaiList = async () => {
-      const rp = await chungloaiApi.getAll();
+      const params = { size: 100 };
+      const rp = await chungloaiApi.getAll(params);
       console.log(rp.data);
       if (rp.status) return;
       setChungloaiList(rp.data);
@@ -35,6 +40,9 @@ const Modal = () => {
     if (respone.status) {
       alert("Lỗi " + respone.statusText);
       return;
+    } else {
+      alert("Thành công !");
+      setValues({ ...values, ten: "" });
     }
     dispatch(closeModal());
   };
@@ -56,13 +64,15 @@ const Modal = () => {
             className="form-control"
             name="ten"
             placeholder="Tên phương tiện"
+            value={values.ten}
             onChange={(e) => handleChange(e)}
+            required
           />
 
           <label>Chủng loại</label>
           <select
-            onFocus={(e) => (e.target.size = 5)}
-            onBlur={(e) => (e.target.size = 1)}
+            // onFocus={(e) => (e.target.size = 5)}
+            // onBlur={(e) => (e.target.size = 1)}
             className="form-control"
             name="chung_loai"
             onChange={(e) => {
@@ -81,9 +91,29 @@ const Modal = () => {
             })}
           </select>
 
-          <label>Discription</label>
-          <textarea className="form-control"></textarea>
+          <label>Đơn vị tính</label>
+          <input
+            type="text"
+            className="form-control"
+            name="don_vi_tinh"
+            placeholder="Chiếc"
+            value={values.don_vi_tinh}
+            onChange={(e) => handleChange(e)}
+          />
 
+          <label>Số lượng</label>
+          <input
+            type="number"
+            className="form-control"
+            name="so_luong"
+            placeholder="01"
+            value={values.so_luong}
+            onChange={(e) => handleChange(e)}
+          />
+
+          <label>Ghi chú</label>
+          <textarea className="form-control"></textarea>
+          <br />
           <button className="btn" type="submit">
             Lưu
           </button>

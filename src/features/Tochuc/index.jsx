@@ -1,40 +1,48 @@
-import personApi from "api/personApi";
+import userApi from "api/userApi";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
+import User from "./components/User";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Tochuc = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [listPT, setListPT] = useState([]);
+  const [team, setTeam] = useState([]);
 
   useEffect(() => {
-    const fetchListPT = async () => {
+    const fetchData = async () => {
       try {
         const params = { page: 1, size: 12 };
-        const response = await personApi.getAll(params);
+        const response = await userApi.getAllTeams(params);
         console.log("Respone: ", response);
-        setListPT(response.data);
+        setTeam(response.data);
         setLoading(false);
       } catch (error) {
         console.log("Không lấy được dữ liệu", error);
       }
     };
-    fetchListPT();
+    fetchData();
   }, []);
 
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <h3>Tổ chức</h3>
-      <ul className="pt-container">
+      <h3>Bộ máy tổ chức</h3>
+      <br />
+      <ul className="team-list">
         {loading && <li>Loading...</li>}
-        {listPT.map((pt) => {
-          const { id, ten, chung_loai, nhan_hieu } = pt;
+        {team.map((pt) => {
+          const { id, name, slogan, member } = pt;
           return (
-            <li className="pt-items" key={id}>
-              <p>{ten}</p>
-              <p>{chung_loai}</p>
-              <p>{nhan_hieu}</p>
+            <li className="team-items" key={id}>
+              <h4>{name}</h4>
+              <p>{slogan}</p>
+              <div>
+                <ul className="user-container">
+                  {member?.map((id) => (
+                    <User id={id} />
+                  ))}
+                </ul>
+              </div>
             </li>
           );
         })}

@@ -2,11 +2,11 @@ import axiosClient from "./axiosClient";
 
 const chungloaiApi = {
   getAll: (params) => {
-    const url = "/chungloai";
+    const url = "/phuongtien/chungloai";
     return axiosClient.get(url, { params });
   },
   get: (id) => {
-    const url = `/chungloai/${id}`;
+    const url = `/phuongtien/chungloai/${id}`;
     return axiosClient.get(url);
   },
 };

@@ -1,48 +1,40 @@
-import chungloaiApi from "api/chungloaiApi";
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
+import phuongtienApi from "api/phuongtienApi";
 import React, { useEffect, useState } from "react";
 import LazyLoad from "react-lazyload";
-import { useDispatch } from "react-redux";
 import PhuongtienItem from "./components/PhuongtienItem";
 
-const PhuongtienList = () => {
-  const dispatch = useDispatch();
-  const [chungLoai, setChungLoai] = useState([]);
+const PhuongtienList = ({ data, filter }) => {
+  const { id, ten } = data;
+
+  const [phuongtien, setPhuongtien] = useState([]);
 
   useEffect(() => {
-    const params = { size: 100 };
-    const getChungLoai = async () => {
-      const rp = await chungloaiApi.getAll(params);
-      setChungLoai(rp.data);
+    setPhuongtien([]);
+    const params = { ...filter, chung_loai: id, size: 100 };
+    const getPhuongtien = async () => {
+      const rp = await phuongtienApi.getAll(params);
+      setPhuongtien(rp.data);
     };
-    getChungLoai();
-  }, []);
+    getPhuongtien();
+  }, [filter]);
 
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      {chungLoai.map((item) => {
-        const { ten, phuongtien_list } = item;
-
-        return (
-          phuongtien_list.length > 0 && (
-            <div className="pt-list">
-              <h3>
-                {ten}: {phuongtien_list.length}
-              </h3>
-              <div className="pt-container">
-                {phuongtien_list.map((id) => {
-                  return (
-                    <LazyLoad key={id} placeholder={<h1>Loading...</h1>}>
-                      <PhuongtienItem id={id} />
-                    </LazyLoad>
-                  );
-                })}
-              </div>
-            </div>
-          )
-        );
-      })}
-    </main>
+    <>
+      {phuongtien.length > 0 && (
+        <div key={id} className="pt-list">
+          <h3>{phuongtien[0].chung_loai__ten}</h3>
+          <div className="pt-container">
+            {phuongtien.map((item) => {
+              return (
+                <LazyLoad key={item.id} placeholder={<h5>Loading...</h5>}>
+                  <PhuongtienItem {...item} />
+                </LazyLoad>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -16,10 +16,10 @@ const Footer = () => {
             <p>
               {" "}
               Hưởng ứng sự phát triển mạnh mẽ của cuộc Cách mạng công nghiệp
-              4.0, trang thông tin điện tử Đội Công tác CC và CNCH được xây dựng
-              nhằm đáp ứng quá trình chuyển đổi số, tạo điều kiện thuận lợi cho
-              việc thu thập, tìm kiếm, lưu trữ và chia sẻ thông tin. Từ đó, góp
-              phần nâng cao hiệu quả hoạt động của đơn vị.
+              4.0, trang thông tin điện tử Phòng Cảnh sát PCCC và CNCH được xây
+              dựng nhằm đáp ứng quá trình chuyển đổi số, tạo điều kiện thuận lợi
+              cho việc thu thập, tìm kiếm, lưu trữ và chia sẻ thông tin. Từ đó,
+              góp phần nâng cao hiệu quả hoạt động của đơn vị.
             </p>
           </div>
 
@@ -85,7 +85,9 @@ const Footer = () => {
           <img src={banner} alt="" width="100%" />
         </div>
 
-        <span className="license">Design by Bad, 6/2021</span>
+        <span className="license">
+          Design by Duong, 6/2021 - 8/2022 (Updating...)
+        </span>
       </div>
     </>
   );

@@ -15,10 +15,10 @@ export const profiles = [
     text: "Quản lý công việc",
     icon: <RiTodoLine />,
   },
-  {
-    id: 2,
-    url: "/user/login",
-    text: "Đăng xuất",
-    icon: <GoSignIn />,
-  },
+  // {
+  //   id: 3,
+  //   url: "/user/login",
+  //   text: "Đăng xuất",
+  //   icon: <GoSignIn />,
+  // },
 ];

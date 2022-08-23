@@ -3,7 +3,8 @@ import queryString from "query-string";
 import { decode as base64_decode } from "base-64";
 
 const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  // // baseURL: process.env.REACT_APP_API_URL,
+  baseURL: "http://" + window.location.host.replace("3000", "8000") + "/api",
   headers: {
     "content-type": "application/json",
   },
@@ -33,7 +34,7 @@ axiosClient.interceptors.request.use(async (config) => {
         } else {
           // get new access token
           const rp = await axios.post(
-            process.env.REACT_APP_API_URL + "/user/refresh_token",
+            process.env.REACT_APP_API_URL + "/user/refresh_token  ",
             { refresh }
           );
           // set header with new access token
@@ -61,8 +62,8 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
+      // console.log(error.response.data);
+      // console.log(error.response.status);
       // console.log(error.response.headers);
       if (error.response.status === 401)
         window.location.replace("/user/login?url=" + window.location.pathname);

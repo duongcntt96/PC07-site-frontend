@@ -1,14 +1,13 @@
+import avatar from "assets/images/avatar-default.jpg";
+import "assets/styles/style.scss";
 import { decode } from "base-64";
 import React, { useEffect, useState } from "react";
-import { IoPerson, IoCaretDown, IoNotifications } from "react-icons/io5";
-
-import "assets/styles/style.scss";
-
-import avatar from "assets/images/avatar.jpg";
+import { IoCaretDown, IoNotifications, IoPerson } from "react-icons/io5";
+import { Link } from "react-router-dom";
 import Account from "./components/Account";
 
 const User = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(null);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -29,18 +28,29 @@ const User = () => {
   };
 
   return (
-    <div className="nav-profile-container">
-      <img className="avatar" src={avatar} alt="avatar" />
-      <span>{username}</span>
-      <div>
-        <div className="toolbar">
-          <IoPerson />
-          <IoNotifications />
-          <IoCaretDown onClick={() => toggleProfile()} />
+    <>
+      {username ? (
+        <div className="nav-profile-container">
+          <img className="avatar" src={avatar} alt="avatar" />
+          <span>{username}</span>
+          <div>
+            <div className="toolbar">
+              <IoPerson />
+              <IoNotifications />
+              <IoCaretDown onClick={() => toggleProfile()} />
+            </div>
+            <Account show={isProfileMenuOpen} username={username} />
+          </div>
         </div>
-        <Account show={isProfileMenuOpen} />
-      </div>
-    </div>
+      ) : (
+        <div>
+          <img className="avatar" src={avatar} alt="avatar" />
+          <Link className="btn-login" to="/user/login">
+            Đăng nhập
+          </Link>
+        </div>
+      )}
+    </>
   );
 };
 
