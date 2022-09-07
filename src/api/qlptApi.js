@@ -16,6 +16,10 @@ const qlptApi = {
     const url = "/qlpt/phuongtien";
     return axiosClient.get(url, { params });
   },
+  getPhuongtien: (id) => {
+    const url = `/qlpt/phuongtien/${id}`;
+    return axiosClient.get(url);
+  },
   getListPhieunhap: (params) => {
     const url = "/qlpt/phieunhap";
     return axiosClient.get(url, { params });
@@ -23,6 +27,10 @@ const qlptApi = {
   getPhieunhap: (id) => {
     const url = `/qlpt/phieunhap/${id}`;
     return axiosClient.get(url);
+  },
+  getChitietPhieunhap: (params) => {
+    const url = `/qlpt/chitietphieunhap/`;
+    return axiosClient.get(url, { params });
   },
   addPhieunhap: (params) => {
     const url = "/qlpt/phieunhap/";
@@ -36,6 +44,12 @@ const qlptApi = {
     const url = `/qlpt/phieunhap/${params.id}/`;
     return axiosClient.put(url, params);
   },
+
+  updatePhuongtien: (params) => {
+    const url = `/qlpt/phuongtien/${params.id}/`;
+    return axiosClient.put(url, params);
+  },
+
   delPhieunhap: (id) => {
     const url = `/qlpt/phieunhap/${id}`;
     return axiosClient.delete(url);

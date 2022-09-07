@@ -3,30 +3,21 @@ import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Filter from "features/Coso/components/Filter";
-import { pushURL, VNDFormat } from "./Utils/DWUtils";
 import { useParams } from "react-router-dom";
-import { RiDeleteBin5Line, RiSave2Fill } from "react-icons/ri";
 
 const FormAddPhuongTien = () => {
   const dispatch = useDispatch();
-  const [id, setID] = useState(useParams().id);
-
+  const paramsURL = new URLSearchParams(window.location.search);
+  const [id, setID] = useState(useParams().id || paramsURL.get("id"));
+  const [chungloai, setChungloai] = useState([]);
   const [formValues, setFormValues] = useState({
     phuong_tiens: [],
     success: false,
   });
 
-  const [listPhuongtien, setListPhuongtien] = useState([]);
-  const [kho, setKho] = useState([]);
-  const [nguoncap, setNguoncap] = useState([]);
-  const [chungloai, setChungloai] = useState([]);
-
   // get const data list
   useEffect(() => {
     const fetchData = async () => {
-      setListPhuongtien(await qlptApi.getListPhuongtien());
-      setKho(await (await qlptApi.getListKho()).data);
-      setNguoncap(await (await qlptApi.getListNguoncap()).data);
       setChungloai(await (await qlptApi.getListChungloai()).data);
     };
     fetchData();
@@ -36,7 +27,7 @@ const FormAddPhuongTien = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        setFormValues(await qlptApi.getPhieunhap(id));
+        setFormValues(await qlptApi.getPhuongtien(id));
       }
     };
     fetchData();
@@ -77,7 +68,7 @@ const FormAddPhuongTien = () => {
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
       <div>
-        <h5>{id ? "Chỉnh sửa phiếu nhập" : "Nhập phương tiện"}</h5>
+        <h5>{id ? "Chỉnh sửa phương tiện" : "Thêm phương tiện"}</h5>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Tên phương tiện: </label>
@@ -86,6 +77,7 @@ const FormAddPhuongTien = () => {
               type="text"
               name="ten"
               placeholder="Mặt nạ phòng độc cách ly Drager/..."
+              value={formValues.ten}
               onChange={handleFormValuesChange}
             />
           </div>

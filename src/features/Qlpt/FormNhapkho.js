@@ -246,6 +246,17 @@ const FormNhapkho = () => {
                     target={phuongTienValues}
                     filters={listPhuongtien}
                     handleChange={handlePhuongTienValuesChange}
+                    handleClick={(e) => {
+                      // Cần code lại
+                      const fetchData = async () => {
+                        setListPhuongtien(
+                          await (
+                            await qlptApi.getListPhuongtien({ to_import: true })
+                          ).data
+                        );
+                      };
+                      fetchData();
+                    }}
                   />
                   <BiAddToQueue
                     onClick={(e) => {

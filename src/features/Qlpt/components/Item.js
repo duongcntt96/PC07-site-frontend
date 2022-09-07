@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Item = ({ e }) => {
   const [isTreeShowing, setIsTreeShowing] = useState(true);
-
+  const paramsURL = new URLSearchParams(window.location.search);
   const { ten, parent } = e;
 
   if (e.totals() || 1)
@@ -29,7 +29,11 @@ const Item = ({ e }) => {
                 <>
                   {pt.totals ? (
                     <li key={pt.id}>
-                      <a href={`qlpt/phuongtien/${pt.id}`}>
+                      <a
+                        href={`qlpt/nhapkho/?kho_nhap=${
+                          paramsURL.get("kho_nhap") || ""
+                        }&chi_tiet_phieu_nhap__phuong_tien=${pt.id}`}
+                      >
                         <span style={{ color: "green" }}>
                           - {pt.ten || pt.phuong_tien__ten}: {pt.totals} chiếc
                         </span>

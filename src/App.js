@@ -21,6 +21,7 @@ import { Helmet } from "react-helmet";
 import Profile from "features/User/Profile";
 import { Diaban } from "features/Coso";
 import Coso from "features/Coso/Coso";
+import { Phuongtien } from "features/Qlpt/Phuongtien";
 
 function App() {
   return (
@@ -72,6 +73,13 @@ function App() {
             <title>Nhập kho</title>
           </Helmet>
           <Nhapkho />
+        </Route>
+
+        <Route exact path="/qlpt/phuongtien/:id">
+          <Helmet>
+            <title>Chi tiết phương tiện</title>
+          </Helmet>
+          <Phuongtien />
         </Route>
 
         <Route exact path="/qlpt/nhapkho/add">

@@ -5,10 +5,13 @@ import { useDispatch } from "react-redux";
 import Filter from "features/Coso/components/Filter";
 import Item from "./components/Item";
 import { pushURL } from "./Utils/DWUtils";
+import Loading from "components/Loading";
 
 const ListKho = () => {
   const paramsURL = new URLSearchParams(window.location.search);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
   const [filters, setValues] = useState({
     chung_loai: paramsURL.get("chung_loai"),
     kho_nhap: paramsURL.get("kho_nhap"),
@@ -30,9 +33,10 @@ const ListKho = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const list_PT = await qlptApi.getListPhuongtien({ ...filters });
       setListPT(list_PT.data);
-      console.log(chungloai);
+      setLoading(false);
     };
     fetchData();
     pushURL(filters);
@@ -94,9 +98,15 @@ const ListKho = () => {
               style={{ cursor: "pointer" }}
               className="unselectable"
             >
-              {listPT.length
-                ? `Tìm thấy ${listPT.length} loại phương tiện.`
-                : `Không có dữ liệu...`}
+              {loading ? (
+                <Loading />
+              ) : (
+                `Tìm thấy ${listPT.length} loại phương tiện ${
+                  filters.kho_nhap
+                    ? "tại " + kho.find((e) => e.id == filters.kho_nhap).ten
+                    : ""
+                }`
+              )}
             </span>
           </h5>
           <br />
