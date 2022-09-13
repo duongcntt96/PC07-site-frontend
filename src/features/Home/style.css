@@ -1,0 +1,33 @@
+.box {
+    /* background-image: url("../../assets/images/2.jpg"); */
+    width: 500px;
+    height: 350px;
+    position: relative;
+}
+.box .avatar {
+    background-color: red;
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    opacity: 50%;
+}
+.circle {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    bottom: 40px;
+    right: 60px;
+    border-radius: 50%;
+    opacity: 100%;
+    overflow: hidden;
+}
+.circle-box {
+background-image: url("../../assets/images/2.jpg");
+position: absolute;
+    width: 500px;
+    height: 350px;
+    bottom: 15px;
+    left: -140px;
+}

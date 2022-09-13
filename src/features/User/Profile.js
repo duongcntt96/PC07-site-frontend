@@ -1,9 +1,7 @@
 import userApi from "api/userApi";
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { groups } from "../Tochuc/data";
 import avatar from "assets/images/avatar-default.jpg";
-import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import { decode } from "base-64";

@@ -1,5 +1,9 @@
 import axiosClient from "./axiosClient";
 const qlptApi = {
+  textToMp3: (params) => {
+    const url = "/qlpt/texttospeak";
+    return axiosClient.get(url, { params });
+  },
   getListChungloai: (params) => {
     const url = "/qlpt/chungloai";
     return axiosClient.get(url, { params });
