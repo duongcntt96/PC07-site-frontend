@@ -1,6 +1,6 @@
 import { closeSubMenu, openSubMenu } from "components/SubMenu/subMenuSlice";
 import User from "components/User";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
