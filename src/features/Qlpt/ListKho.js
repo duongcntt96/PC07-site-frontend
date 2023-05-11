@@ -6,9 +6,15 @@ import Filter from "features/Coso/components/Filter";
 import Item from "./components/Item";
 import { pushURL } from "./Utils/DWUtils";
 import Loading from "components/Loading";
+import { useLocation } from "react-router-dom";
 
 const ListKho = () => {
   const paramsURL = new URLSearchParams(window.location.search);
+
+  console.log("====================================");
+  console.log(useLocation());
+  console.log("====================================");
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 

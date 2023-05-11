@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import Filter from "features/Coso/components/Filter";
 import { pushURL, VNDFormat } from "./Utils/DWUtils";
 import { BiAddToQueue } from "react-icons/bi";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 const Phuongtien = () => {
   const paramsURL = new URLSearchParams(window.location.search);

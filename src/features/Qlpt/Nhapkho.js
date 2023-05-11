@@ -19,6 +19,7 @@ const Nhapkho = () => {
     kho_nhap: paramsURL.get("kho_nhap"),
     kho_xuat: paramsURL.get("kho_xuat"),
     nguon_cap: paramsURL.get("nguon_cap"),
+    quyetdinh: paramsURL.get("quyetdinh"),
     success: paramsURL.get("success") || true,
     thoi_gian__start: paramsURL.get("thoi_gian__start"),
     thoi_gian__end: paramsURL.get("thoi_gian__end"),
@@ -178,7 +179,11 @@ const Nhapkho = () => {
                   style={{ transform: "translateY(2px)", opacity: "70%" }}
                 />
                 <span> {kho.find((f) => f.id === e.kho_nhap).ten} </span>
-                <span>{e.note && ` (${e.note})`}</span>
+                <br />
+                <span>{e.note && `${e.note}`}</span>
+                <span>
+                  {e.quyetdinh && ` (theo Quyết định số ${e.quyetdinh})`}
+                </span>
               </h6>
               {!filters.success && (
                 <RiDeleteBin5Line color="red" onClick={() => delItem(e.id)} />

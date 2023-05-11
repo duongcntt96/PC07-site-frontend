@@ -3,8 +3,8 @@ import queryString from "query-string";
 import { decode as base64_decode } from "base-64";
 
 const axiosClient = axios.create({
-  // // baseURL: process.env.REACT_APP_API_URL,
-  baseURL: "http://" + window.location.host.replace("3000", "8000") + "/api",
+  baseURL: process.env.REACT_APP_API_URL,
+  // baseURL: "http://api." + window.location.host + "/api",
   headers: {
     "content-type": "application/json",
   },

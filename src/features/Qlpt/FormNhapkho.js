@@ -156,6 +156,18 @@ const FormNhapkho = () => {
           </div>
 
           <div>
+            <label>Quyết định số: </label>
+            <input
+              className="form-control"
+              type="text"
+              name="quyetdinh"
+              placeholder="123/QĐ-CAT, ngày 1/1/2022"
+              value={formValues.quyetdinh}
+              onChange={handleFormValuesChange}
+            />
+          </div>
+
+          <div>
             <label>Ngày tháng nhập/xuất: </label>
             <input
               className="form-control"
