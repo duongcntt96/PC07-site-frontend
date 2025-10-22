@@ -46,8 +46,7 @@ function Home() {
 
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <h1>Home</h1>
-
+      {/* <h1>Home</h1>
       <div className="box">
         <div className="wall">
           <img src={wall} alt="" />
@@ -59,29 +58,30 @@ function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-
+      <h2>Xe chữa cháy công nghệ bọt khí nén (CAFS)</h2>
+        <iframe width="315" height="576" src="https://www.youtube.com/embed/_xB3XFkki1I" title="Why Fire Hose Water Pressure is More Dangerous Than You Think #firefightingequipment #shorts#youtube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       <div>
+        
        <iframe width="560" height="315" src="https://www.youtube.com/embed/QocEbM-IhN4?si=_jE7_TMiaORTkWTu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               
       </div>
 
-      <h3>Text to speak</h3>
+      {/* <h3>Text to speak</h3>
       {mp3 && (
         <audio controls autoPlay={false}>
           <source src={`http://localhost:8000/${mp3}`} type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       )}
-
       <button
         onClick={() => {
           playAudio(mp3);
         }}
       >
         Play
-      </button>
+      </button> */}
 
       <form action="" onSubmit={handleSubmit}>
         <div>
