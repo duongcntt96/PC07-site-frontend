@@ -61,26 +61,26 @@ function Home() {
       </div> */}
 
         <h4>Robot chữa cháy và cứu nạn, cứu hộ</h4>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/QocEbM-IhN4?si=_jE7_TMiaORTkWTu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube.com/embed/QocEbM-IhN4?si=_jE7_TMiaORTkWTu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
 
       <div>
         <h4>UAV chữa cháy và cứu nạn, cứu hộ</h4>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/SelIpemhIow?si=DkT0Nt40CohZIqku" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube.com/embed/SelIpemhIow?si=DkT0Nt40CohZIqku" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
 
       <div>
         <h4>Thiết bị cảm biến tìm kiếm người bị nạn</h4>
         <h5>- Cảm biến địa chấn: Savox Delsar Life Detector LD3</h5>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/_h4dhKWj4j4?si=TH1I7TCGy7n4WTtk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube.com/embed/_h4dhKWj4j4?si=TH1I7TCGy7n4WTtk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         
         <h5>- Cảm biến âm thanh, hình ảnh: Savox SearchCam SC3000</h5>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/32dxkPw7bDI?si=iQxnxK2OnunEnzLm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube.com/embed/32dxkPw7bDI?si=iQxnxK2OnunEnzLm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
 
       <div>
         <h4>Hệ thống quản lý, giám sát thông minh trên nền tảng bản đồ số</h4>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/snO9q1tt68Q?si=-ypFOaqVhNnbaPlh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe width="1120" height="630" src="https://www.youtube.com/embed/snO9q1tt68Q?si=-ypFOaqVhNnbaPlh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
 
       {/* <h3>Text to speak</h3>
