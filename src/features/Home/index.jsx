@@ -60,12 +60,16 @@ function Home() {
         </div>
       </div> */}
 
-      <h2>Xe chữa cháy công nghệ bọt khí nén (CAFS)</h2>
+      <h4>Xe chữa cháy công nghệ bọt khí nén (CAFS)</h4>
         <iframe width="315" height="576" src="https://www.youtube.com/embed/_xB3XFkki1I" title="Why Fire Hose Water Pressure is More Dangerous Than You Think #firefightingequipment #shorts#youtube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       <div>
-        
-       <iframe width="560" height="315" src="https://www.youtube.com/embed/QocEbM-IhN4?si=_jE7_TMiaORTkWTu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              
+        <h4>Robot chữa cháy và cứu nạn, cứu hộ</h4>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/QocEbM-IhN4?si=_jE7_TMiaORTkWTu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+
+      <div>
+        <h4>UAV chữa cháy và cứu nạn, cứu hộ</h4>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SelIpemhIow?si=DkT0Nt40CohZIqku" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
 
       {/* <h3>Text to speak</h3>
