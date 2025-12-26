@@ -1,101 +1,110 @@
 import phuongtienApi from "api/phuongtienApi";
 
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ImageSlide from "components/ImageSlide";
 import InfoItem from "./components/InfoItem";
 import { RiPlayListAddFill } from "react-icons/ri";
 import { showModal } from "components/Modal/modalSlice";
+import Loading from "components/Loading";
 
 const PhuongtienInfo = () => {
   const dispatch = useDispatch();
-  const refList = useRef(null);
+  const loadMoreRef = useRef(null);
 
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState({});
-  const [loadMore, setLoadMore] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [image, setImage] = useState([]);
   const [children, setChildren] = useState([]);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    size: 20,
-    count: 21,
-  });
+  const [pagination, setPagination] = useState({ page: 1, size: 20, count: 0 });
 
-  const scrollListener = () => {
-    if (refList.current !== null) {
-      console.log("Listener");
-      const isLoadMore =
-        refList.current.clientHeight + refList.current.offsetTop <
-        window.scrollY + window.innerHeight;
-      if (isLoadMore && !loadMore) {
-        setLoadMore(true);
-      }
-    }
-  };
+  // fetch children (next page)
+  const fetchChildren = useCallback(async () => {
+    if (loadingMore) return;
+    const { page, size, count } = pagination;
+    if (children.length >= count && count !== 0) return;
 
-  const getChildren = async () => {
-    if (!loadMore || loadingMore) {
-      return;
+    try {
+      setLoadingMore(true);
+      const resp = await phuongtienApi.getAll({ page, size, noi_bo_tri: id });
+      const nextData = Array.isArray(resp.data) ? resp.data : [];
+      setChildren((prev) => [...prev, ...nextData]);
+      setPagination((prev) => ({
+        ...prev,
+        page: (prev.page || 1) + 1,
+        count: resp.pagination?.count || resp.pagination?.total || prev.count,
+      }));
+    } catch (err) {
+      console.error("Failed to fetch children", err);
+    } finally {
+      setLoadingMore(false);
     }
-    setLoadingMore(true);
-    console.log("Loadmore:" + loadMore);
-    console.log(pagination);
-    const { page, count } = pagination;
-    if (children.length >= count) {
-      window.removeEventListener("scroll", scrollListener, true);
-      return;
-    }
-    const respone = await phuongtienApi.getAll({
-      ...pagination,
-      noi_bo_tri: id,
-    });
-    setChildren([...children, ...respone.data]);
-    setPagination({ ...respone.pagination, page: page + 1 });
-    console.log(respone);
-    setLoadingMore(false);
-  };
+  }, [id, loadingMore, pagination, children.length]);
+
+  // IntersectionObserver for infinite scroll; more efficient than scroll listener
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            fetchChildren();
+          }
+        });
+      },
+      { root: null, rootMargin: "200px", threshold: 0.1 }
+    );
+
+    observer.observe(loadMoreRef.current);
+    return () => observer.disconnect();
+  }, [fetchChildren]);
 
   useEffect(() => {
-    getChildren();
-    setLoadMore(false);
-  }, [loadMore]);
+    // reset data when id changes and load initial info & children in parallel
+    let mounted = true;
 
-  useEffect(() => {
-    // reset data
     setInfo({});
     setChildren([]);
-    setPagination({
-      page: 1,
-      size: 20,
-      count: 21,
-    });
+    setPagination({ page: 1, size: 20, count: 0 });
     setLoading(true);
-    setLoadMore(false);
-    setLoadingMore(false);
 
-    window.addEventListener("scroll", scrollListener, true);
-    getPTInfo();
-    getChildren();
+    const load = async () => {
+      try {
+        const [respInfo, respImages, respChildren] = await Promise.all([
+          phuongtienApi.get(id),
+          phuongtienApi.getListImage({ phuong_tien: id }),
+          phuongtienApi.getAll({ page: 1, size: 20, noi_bo_tri: id }),
+        ]);
+
+        if (!mounted) return;
+
+        setInfo(respInfo);
+        setImage(respImages.data || []);
+        setChildren(Array.isArray(respChildren.data) ? respChildren.data : []);
+        setPagination((prev) => ({
+          ...prev,
+          page: 2,
+          count: respChildren.pagination?.count || respChildren.pagination?.total || prev.count,
+        }));
+      } catch (err) {
+        console.error("Failed to load phuongtien info", err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    load();
 
     return () => {
-      window.removeEventListener("scroll", scrollListener, true);
+      mounted = false;
     };
   }, [id]);
-
-  const getPTInfo = async () => {
-    const respone = await phuongtienApi.get(id);
-    setInfo(respone);
-
-    const { data: images } = await phuongtienApi.getListImage({ phuong_tien: id });
-    setImage(images);
-    setLoading(false);
-    // console.log(respone);
-  };
 
   if (!loading) {
     return (
@@ -118,14 +127,18 @@ const PhuongtienInfo = () => {
                 accept="image/*"
                 id="id_hinh_anh"
                 onChange={async (e) => {
-                  const data = new FormData();
-                  data.append("hinh_anh", e.target.files[0]);
-                  data.append("phuong_tien", id);
-                  await phuongtienApi.addImage(data);
+                  try {
+                    const data = new FormData();
+                    data.append("hinh_anh", e.target.files[0]);
+                    data.append("phuong_tien", id);
+                    await phuongtienApi.addImage(data);
+                  } catch (err) {
+                    console.error("Upload image failed", err);
+                  }
                 }}
               />
             </div>
-            <InfoItem {...info} />
+            {info && info.id ? <InfoItem {...info} /> : null}
           </div>
 
           <div className="row">
@@ -140,7 +153,7 @@ const PhuongtienInfo = () => {
             </div>
           </div>
 
-          <table className="table" ref={refList}>
+          <table className="table" ref={loadMoreRef}>
             <thead>
               <tr>
                 <th scope="col">Stt</th>
@@ -151,12 +164,12 @@ const PhuongtienInfo = () => {
             </thead>
             <tbody>
               {children.map((pt, index) => {
-                const { ten, so_luong, don_vi_tinh } = pt;
+                const { ten, so_luong, don_vi_tinh, id: ptId } = pt;
                 return (
-                  <tr key={index}>
+                  <tr key={ptId || index}>
                     <th scope="row">{index + 1}</th>
                     <td>
-                      <Link to={`/phuongtien/${pt.id}`}>{ten}</Link>
+                      <Link to={`/phuongtien/${ptId}`}>{ten}</Link>
                     </td>
                     <td>{so_luong}</td>
                     <td>{don_vi_tinh}</td>
@@ -169,7 +182,7 @@ const PhuongtienInfo = () => {
       </main>
     );
   }
-  return <h1>Loading...</h1>;
+  return <Loading />;
 };
 
 export { PhuongtienInfo };

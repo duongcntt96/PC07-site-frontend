@@ -1,9 +1,66 @@
 import axiosClient from "./axiosClient";
 import { normalizeList } from "./responseHelper";
 const qlptApi = {
-  textToMp3: (params) => {
-    const url = "/qlpt/texttospeak";
-    return axiosClient.get(url, { params });
+  textToMp3: async (arg) => {
+    // Accept either a string or an options object { text, lang }
+    let text = null;
+    let lang = "vi";
+    if (typeof arg === "string") text = arg;
+    else if (arg && typeof arg === "object") {
+      text = arg.text || arg.q || arg.query || arg.payload || null;
+      if (arg.lang) lang = arg.lang;
+    }
+
+    // Use Google Translate TTS endpoint directly.
+    // Note: Google does not provide an official public TTS endpoint for browsers; this method
+    // constructs translate.google.com/translate_tts URLs which work for short texts.
+    if (!text) return null;
+    const MAX_CHUNK = 200; // safe chunk size for translate_tts
+
+    // Split text into chunks not exceeding MAX_CHUNK, preferring sentence boundaries.
+    const splitText = (input, size) => {
+      const parts = [];
+      let remaining = input.trim();
+      while (remaining.length) {
+        if (remaining.length <= size) {
+          parts.push(remaining.trim());
+          break;
+        }
+        // try to split at sentence boundary
+        let idx = -1;
+        const punct = [". ", "? ", "! ", "; ", "\n"];
+        for (const p of punct) {
+          const i = remaining.lastIndexOf(p, size);
+          if (i > -1) {
+            idx = i + 1; // keep punctuation
+            break;
+          }
+        }
+        if (idx === -1) {
+          // fallback: split at last space
+          idx = remaining.lastIndexOf(" ", size);
+          if (idx === -1) idx = size; // hard split
+        }
+        parts.push(remaining.slice(0, idx).trim());
+        remaining = remaining.slice(idx).trim();
+      }
+      return parts;
+    };
+
+    const chunks = splitText(text, MAX_CHUNK);
+
+    const buildUrl = (chunk) => {
+      const params = new URLSearchParams({
+        ie: "UTF-8",
+        q: chunk,
+        tl: lang,
+        client: "tw-ob",
+      });
+      return `https://translate.google.com/translate_tts?${params.toString()}`;
+    };
+
+    if (chunks.length === 1) return buildUrl(chunks[0]);
+    return chunks.map(buildUrl);
   },
   getListChungloai: async (params) => {
     const url = "/qlpt/chungloai";

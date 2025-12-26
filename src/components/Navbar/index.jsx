@@ -1,6 +1,6 @@
 import { closeSubMenu, openSubMenu } from "components/SubMenu/subMenuSlice";
 import User from "components/User";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import logo from "../../assets/images/logo.jpg";
 import banner from "../../assets/images/banner.jpg";
 
 import { links } from "../../data";
+import menuApi from "api/menuApi";
 
 const Navbar = () => {
   const linksContainerRef = useRef(null);
@@ -15,6 +16,20 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const [showLinks, setShowLinks] = useState(false);
+  // Menu links: start with local fallback and override from API when available
+  const [menuLinks, setMenuLinks] = useState(links);
+
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const { data } = await menuApi.getHeader();
+        if (Array.isArray(data) && data.length) setMenuLinks(data);
+      } catch (err) {
+        console.error("Failed to fetch header menu", err);
+      }
+    };
+    fetchMenu();
+  }, []);
 
   // useEffect(() => {
   //   const linksHeight = linksRef.current.getBoundingClientRect().height;
@@ -23,7 +38,8 @@ const Navbar = () => {
   // }, [showLinks]);
 
   const displaySubmenu = (e) => {
-    const sublink = links.find((link) => link.text === e.target.textContent);
+    const sublink = menuLinks.find((link) => link.text === e.target.textContent);
+    if (!sublink || !sublink.children) return;
     const tmpPositon = e.target.getBoundingClientRect();
     const center = (tmpPositon.left + tmpPositon.right) / 2;
     const bottom = tmpPositon.bottom;
@@ -62,7 +78,7 @@ const Navbar = () => {
 
           <div className="nav__links" ref={linksContainerRef}>
             <ul className="links" ref={linksRef}>
-              {links.map((link) => {
+              {menuLinks.map((link) => {
                 const { id, url, text } = link;
                 return (
                   <li key={id}>
