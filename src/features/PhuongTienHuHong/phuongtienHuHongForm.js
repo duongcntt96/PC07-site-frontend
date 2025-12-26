@@ -203,7 +203,7 @@ const PhuongtienHuHongForm = () => {
 
             <div className="mb-3">
               <label className="form-label">Kết quả</label>
-              <input className="form-control" name="ket_qua" value={formValues.ket_qua} onChange={handleChange} placeholder="Đã hoàn thành sửa chữa/Đang sửa chữa/Đang chờ phê duyệt chủ trương/Đang chờ báo giá/"/>
+              <input className="form-control" name="ket_qua" value={formValues.ket_qua} onChange={handleChange} placeholder="Đã hoàn thành sửa chữa/Đang sửa chữa/Đang chờ phê duyệt chủ trương/Đang chờ báo giá/Đang đề xuất"/>
             </div>
 
             <div className="d-flex gap-2">
