@@ -2,6 +2,8 @@ import Modal from "components/Modal/Form";
 import Scroller from "components/Scroller";
 import SubMenu from "components/SubMenu";
 import { ChungloaiList, PhuongtienInfo } from "features/Phuongtien";
+import PhuongTienHuHong from "features/PhuongTienHuHong";
+import PhuongtienHuHongForm from "features/PhuongTienHuHong/phuongtienHuHongForm";
 import {
   FormAddPhuongTien,
   FormNhapkho,
@@ -101,6 +103,20 @@ function App() {
             <title>Chỉnh sửa phiếu nhập kho</title>
           </Helmet>
           <FormNhapkho />
+        </Route>
+
+        <Route exact path="/phuongtien/huhong">
+          <Helmet>
+            <title>Phương tiện hư hỏng</title>
+          </Helmet>
+          <PhuongTienHuHong />
+        </Route>
+
+        <Route exact path="/phuongtien/huhong/add">
+          <Helmet>
+            <title>Thêm phương tiện hư hỏng</title>
+          </Helmet>
+          <PhuongtienHuHongForm />
         </Route>
 
         <Route path="/phuongtien/:id">

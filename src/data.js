@@ -42,6 +42,12 @@ export const links = [
         text: "Văn bản, tài liệu",
         icon: <SiReadthedocs />,
       },
+      {
+        id: 5,
+        url: "/phuongtien/huhong",
+        text: "Phương tiện hư hỏng",
+        icon: <GiSmallFire />,
+      },
     ],
   },
   {
