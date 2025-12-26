@@ -1,95 +1,77 @@
 import React from "react";
-
-import { FaUserCheck, FaPhoneSquare } from "react-icons/fa";
+import {
+  FaUserCheck,
+  FaPhoneSquare,
+  FaFacebook,
+  FaTwitter,
+  FaYoutube,
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
 import { FiMail } from "react-icons/fi";
 import { AiOutlineHome } from "react-icons/ai";
 
-import banner from "../assets/images/banner.jpg";
-
 const Footer = () => {
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   return (
-    <>
-      <div className="footer">
+    <footer className="footer footer--modern">
+      <div className="container">
         <div className="footer__discription">
-          <div className="left-footer">
-            <h4>Trang thông tin điện tử</h4>
+          <div className="footer__col footer__about">
+            <h4>Quản lý phương tiện PCCC và CNCH</h4>
             <p>
-              {" "}
-              Hưởng ứng sự phát triển mạnh mẽ của cuộc Cách mạng công nghiệp
-              4.0, trang thông tin điện tử Phòng Cảnh sát PCCC và CNCH được xây
-              dựng nhằm đáp ứng quá trình chuyển đổi số, tạo điều kiện thuận lợi
-              cho việc thu thập, tìm kiếm, lưu trữ và chia sẻ thông tin. Từ đó,
-              góp phần nâng cao hiệu quả hoạt động của đơn vị.
+              Bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc, Website được xây dựng với sứ mệnh chuyển đổi số, đổi mới để bứt phá nâng cao hiệu quả công tác 
+              quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ của lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh
             </p>
           </div>
 
-          <div className="middle-footer">
-            <h4>Phát triển bởi</h4>
+
+
+          <div className="footer__col footer__contact">
+            <h4>Liên hệ, góp ý</h4>
             <ul>
               <li>
-                <a href="/person/">
-                  <FaUserCheck /> Trung úy Đặng Bá Dương
-                </a>
+                <FaUserCheck /> <span>Trung úy Đặng Bá Dương</span>
               </li>
               <li>
-                <a href="callto:0965881681">
-                  <FaPhoneSquare /> 0965.881.681
-                </a>
+                <FaPhoneSquare /> <a href="tel:0965881681">0965.881.681</a>
               </li>
               <li>
-                <a href="mailto:duong.ht96@gmail.com">
-                  <FiMail /> duong.ht96@gmail.com
-                </a>
+                <FiMail /> <a href="mailto:duong.ht96@gmail.com">duong.ht96@gmail.com</a>
               </li>
               <li>
-                <span>
-                  <AiOutlineHome /> Hà Tĩnh, Việt Nam
-                </span>
+                <AiOutlineHome /> <span>Hà Tĩnh, Việt Nam</span>
               </li>
+
+
             </ul>
-          </div>
 
-          <div className="right-footer">
-            <h4>Góp ý nội dung</h4>
-
-            <p>
-              Quá trình phát triển trang thông tin dựa trên ý tưởng cá nhân khó
-              tránh khỏi những bất cập, thiếu sót. Hi vọng nhận được sự phản
-              hồi, góp ý của các đồng chí để từng bước hoàn thiện và đáp ứng tốt
-              hơn.
-            </p>
-            <p className="follow-me-icons">
-              <a href="#1">
-                <i className="fa fa-twitter fa-2"></i>
+            <div className="footer__social" aria-label="social media">
+              <a href="#" aria-label="facebook">
+                <FaFacebook />
               </a>
-              <a href="#2">
-                <i className="fa fa-dribbble fa-2"></i>
+              <a href="#" aria-label="twitter">
+                <FaTwitter />
               </a>
-              <a href="#3">
-                <i className="fa fa-github fa-2"></i>
+              <a href="#" aria-label="youtube">
+                <FaYoutube />
               </a>
-              <a href="#4">
-                <i className="fa fa-facebook fa-2"></i>
+              <a href="#" aria-label="github">
+                <FaGithub />
               </a>
-              <a href="#5">
-                <i className="fa fa-youtube fa-2"></i>
+              <a href="#" aria-label="linkedin">
+                <FaLinkedin />
               </a>
-              <a href="#6">
-                <i className="fa fa-pinterest fa-2"></i>
-              </a>
-            </p>
+            </div>
           </div>
         </div>
 
-        <div className="banner">
-          <img src={banner} alt="" width="100%" />
+        <div className="footer__bottom">
+          <span className="license">Copyright © Duongcntt96, 6/2021 - (Updating...)</span>
         </div>
-
-        <span className="license">
-          Design by Duong, 6/2021 - 8/2022 (Updating...)
-        </span>
       </div>
-    </>
+    </footer>
   );
 };
 

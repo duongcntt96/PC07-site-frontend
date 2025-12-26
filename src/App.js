@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Modal from "components/Modal/Form";
 import Scroller from "components/Scroller";
 import SubMenu from "components/SubMenu";
@@ -14,12 +15,12 @@ import {
 import Person from "features/Tochuc/Person";
 import { Login, Register } from "features/User";
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Home from "./features/Home";
 import Tochuc from "./features/Tochuc";
-import { Helmet } from "react-helmet";
+import PageTitle from "components/PageTitle";
 import Profile from "features/User/Profile";
 import { Diaban } from "features/Coso";
 import Coso from "features/Coso/Coso";
@@ -27,28 +28,22 @@ import { Phuongtien } from "features/Qlpt/Phuongtien";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Navbar />
       <SubMenu />
       <Switch>
         <Route path="/home">
-          <Helmet>
-            <title>Home</title>
-          </Helmet>
+          <PageTitle title="Home" />
           <Home />
         </Route>
 
         <Route path="/user/login">
-          <Helmet>
-            <title>Đăng nhập</title>
-          </Helmet>
+          <PageTitle title="Đăng nhập" />
           <Login />
         </Route>
 
         <Route path="/user/register">
-          <Helmet>
-            <title>Đăng ký</title>
-          </Helmet>
+          <PageTitle title="Đăng ký" />
           <Register />
         </Route>
 
@@ -57,65 +52,47 @@ function App() {
         </Route>
 
         <Route exact path="/phuongtien">
-          <Helmet>
-            <title>Phương tiện</title>
-          </Helmet>
+          <PageTitle title="Phương tiện" />
           <ChungloaiList />
         </Route>
 
         <Route exact path="/qlpt">
-          <Helmet>
-            <title>Quản lý phương tiện</title>
-          </Helmet>
+          <PageTitle title="Quản lý phương tiện" />
           <ListKho />
         </Route>
 
         <Route exact path="/qlpt/nhapkho">
-          <Helmet>
-            <title>Nhập kho</title>
-          </Helmet>
+          <PageTitle title="Nhập kho" />
           <Nhapkho />
         </Route>
 
         <Route exact path="/qlpt/phuongtien/:id">
-          <Helmet>
-            <title>Chi tiết phương tiện</title>
-          </Helmet>
+          <PageTitle title="Chi tiết phương tiện" />
           <Phuongtien />
         </Route>
 
         <Route exact path="/qlpt/nhapkho/add">
-          <Helmet>
-            <title>Tạo phiếu nhập kho mới</title>
-          </Helmet>
+          <PageTitle title="Tạo phiếu nhập kho mới" />
           <FormNhapkho />
         </Route>
 
         <Route exact path="/qlpt/nhapkho/addPT">
-          <Helmet>
-            <title>Thêm phương tiện mới</title>
-          </Helmet>
+          <PageTitle title="Thêm phương tiện mới" />
           <FormAddPhuongTien />
         </Route>
 
         <Route path="/qlpt/nhapkho/:id">
-          <Helmet>
-            <title>Chỉnh sửa phiếu nhập kho</title>
-          </Helmet>
+          <PageTitle title="Chỉnh sửa phiếu nhập kho" />
           <FormNhapkho />
         </Route>
 
         <Route exact path="/phuongtien/huhong">
-          <Helmet>
-            <title>Phương tiện hư hỏng</title>
-          </Helmet>
+          <PageTitle title="Phương tiện hư hỏng" />
           <PhuongTienHuHong />
         </Route>
 
         <Route exact path="/phuongtien/huhong/add">
-          <Helmet>
-            <title>Thêm phương tiện hư hỏng</title>
-          </Helmet>
+          <PageTitle title="Thêm phương tiện hư hỏng" />
           <PhuongtienHuHongForm />
         </Route>
 
@@ -124,23 +101,17 @@ function App() {
         </Route>
 
         <Route exact path="/coso">
-          <Helmet>
-            <title>Quản lý cơ sở</title>
-          </Helmet>
+          <PageTitle title="Quản lý cơ sở" />
           <Diaban />
         </Route>
 
         <Route path="/coso/:id">
-          <Helmet>
-            <title>Thông tin cơ sở</title>
-          </Helmet>
+          <PageTitle title="Thông tin cơ sở" />
           <Coso />
         </Route>
 
         <Route path="/tochuc" exact>
-          <Helmet>
-            <title>Bộ máy tổ chức</title>
-          </Helmet>
+          <PageTitle title="Bộ máy tổ chức" />
           <Tochuc />
         </Route>
 
@@ -151,7 +122,7 @@ function App() {
       <Modal />
       <Scroller />
       <Footer />
-    </Router>
+    </BrowserRouter>
   );
 }
 

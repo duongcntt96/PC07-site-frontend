@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import PageTitle from "components/PageTitle";
 import { useDispatch } from "react-redux";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import qlptApi from "api/qlptApi";
@@ -33,9 +33,7 @@ const PhuongTienHuHong = () => {
 
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <Helmet>
-        <title>Phương tiện hư hỏng</title>
-      </Helmet>
+      <PageTitle title="Phương tiện hư hỏng" />
 
       <div className="container">
         <div className="list-title">

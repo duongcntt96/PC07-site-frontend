@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ImageSlide from "components/ImageSlide";
-import { Helmet } from "react-helmet";
+import PageTitle from "components/PageTitle";
 
 const Coso = () => {
   const dispatch = useDispatch();
@@ -109,9 +109,7 @@ const Coso = () => {
           dispatch(closeSubMenu());
         }}
       >
-        <Helmet>
-          <title>Thông tin chi tiết!</title>
-        </Helmet>
+        <PageTitle title="Thông tin chi tiết!" />
 
         <div className="container">
           <div className="row pt-content">

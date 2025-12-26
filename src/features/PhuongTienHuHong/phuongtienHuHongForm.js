@@ -97,6 +97,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="don_vi_quan_ly"
+              placeholder="Ví dụ: Đội chữa cháy và CNCH KV Trảng Bàng"
               value={formValues.don_vi_quan_ly}
               onChange={handleChange}
               required
@@ -113,6 +114,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="loai_phuong_tien"
+              placeholder="Ví dụ: Xe chữa cháy, Xe thang 32m"
               value={formValues.loai_phuong_tien}
               onChange={handleChange}
               required
@@ -129,6 +131,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="nhan_hieu"
+              placeholder="Ví dụ: Hino DOL"
               value={formValues.nhan_hieu}
               onChange={handleChange}
             />
@@ -144,6 +147,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="nhan_hieu_sat_xi"
+              placeholder="Ví dụ: Hino FG1JJUB"
               value={formValues.nhan_hieu_sat_xi}
               onChange={handleChange}
             />
@@ -159,6 +163,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="bien_kiem_soat"
+              placeholder="Ví dụ: 70B-0625"
               value={formValues.bien_kiem_soat}
               onChange={handleChange}
             />
@@ -174,6 +179,7 @@ const PhuongtienHuHongForm = () => {
             <textarea
               className="form-control"
               name="nguyen_nhan_hu_hong"
+              placeholder="Mô tả chi tiết nguyên nhân hư hỏng"
               value={formValues.nguyen_nhan_hu_hong}
               onChange={handleChange}
             />
@@ -189,6 +195,7 @@ const PhuongtienHuHongForm = () => {
             <textarea
               className="form-control"
               name="bien_phap_thuc_hien"
+              placeholder="Mô tả biện pháp đã thực hiện / đề xuất"
               value={formValues.bien_phap_thuc_hien}
               onChange={handleChange}
             />
@@ -204,6 +211,7 @@ const PhuongtienHuHongForm = () => {
             <input
               className="form-control"
               name="ket_qua"
+              placeholder="Ví dụ: Đã hoàn thành sửa chữa ngày 10/9/2025"
               value={formValues.ket_qua}
               onChange={handleChange}
             />

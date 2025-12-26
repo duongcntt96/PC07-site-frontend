@@ -149,48 +149,110 @@ Sub Mennu
 
 /*
 =============== 
-Footer
+Footer (modern)
 ===============
 */
 .footer {
-  position: absolute;
-  bottom: 0;
-  max-width: 1170px;
-  margin: 0 auto;
-  background: var(--clr-white);
-  box-shadow: var(--light-shadow);
-  @media screen and (min-width: 800px) {
-    &__discription {
-      display: grid;
-      grid-template-columns: 5fr 2fr 3.5fr;
-      grid-gap: 1rem;
-      padding: 1rem 0;
-      text-align: justify;
-      flex: 1 1 1;
-      font-size: 0.8rem;
-    }
-  }
+  position: static;
+  width: 100%;
+  background: var(--clr-primary-6);
+  color: #fff;
+  padding: 2rem 0;
+  box-shadow: none;
+
   &__discription {
-    padding: 0.5rem 0.5rem;
-    text-align: justify;
-    flex: 1 1 1;
-    font-size: 0.8rem;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    grid-gap: 1.5rem;
+    padding: 0 0.5rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  &__col {
     h4 {
-      letter-spacing: 0;
-      color: gray;
-      margin: 0;
-      padding: 0.25rem;
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
     }
     p {
+      margin: 0 0 0.5rem 0;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    ul {
+      list-style: none;
+      padding: 0;
       margin: 0;
-      padding: 0.25rem;
+      li {
+        margin: 0.35rem 0;
+        a {
+          color: #fff;
+        }
+      }
     }
-    a,
+  }
+
+  &__contact {
+    /* place the whole column to the right, but keep content left-aligned */
+    justify-self: end;
+    text-align: left;
+    ul {
+      li {
+        text-align: left;
+      }
+    }
+    .footer__social {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: flex-start;
+      a { margin-left: 0.6rem; }
+    }
+  }
+
+  &__social {
+    margin-top: 0.75rem;
+    a {
+      margin-right: 0.6rem;
+      color: #fff;
+      font-size: 1.25rem;
+      transition: color 0.2s ease;
+    }
     a:hover {
-      color: var(--clr-primary-6);
+      color: var(--clr-primary-3);
     }
-    span {
-      color: var(--clr-primary-5);
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: 1rem;
+    font-size: 0.85rem;
+
+    .btn--link {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0;
+    }
+  }
+
+  @media screen and (max-width: 799px) {
+    &__discription {
+      grid-template-columns: 1fr;
+    }
+    &__contact {
+      justify-self: stretch;
+      text-align: left;
+      .footer__social { justify-content: flex-start; }
+    }
+    &__bottom {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
     }
   }
 }

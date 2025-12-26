@@ -1,6 +1,6 @@
 import userApi from "api/userApi";
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import PageTitle from "components/PageTitle";
 import { groups } from "./data";
 import avatar from "assets/images/avatar-default.jpg";
 import { useParams } from "react-router";
@@ -34,9 +34,7 @@ const Person = () => {
   } = user;
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <Helmet>
-        <title>{`${ten} - Thông tin cá nhân !`}</title>
-      </Helmet>
+      <PageTitle title={`${ten} - Thông tin cá nhân !`} />
       <div className="row">
         <div className="col-md-3 border-right">
           <div className="d-flex flex-column align-items-center text-center p-3 py-5">
