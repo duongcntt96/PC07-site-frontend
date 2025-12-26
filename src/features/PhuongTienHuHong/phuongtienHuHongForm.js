@@ -11,19 +11,29 @@ const PhuongtienHuHongForm = () => {
     nhan_hieu: "",
     nhan_hieu_sat_xi: "",
     bien_kiem_soat: "",
+    nguoi_quan_ly: "", // Thêm mới
     nguyen_nhan_hu_hong: "",
     bien_phap_thuc_hien: "",
+    de_xuat: "", // Thêm mới
+    du_tru_kinh_phi: "", // Thêm mới
     ket_qua: "",
   });
+  
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState(/** @type {any} */ ({}));
+  const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState(null);
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
-    // Clear field error when user edits the input
-    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: null });
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    if (errors[name]) setErrors({ ...errors, [name]: null });
     if (generalError) setGeneralError(null);
+  };
+
+  // Hàm xử lý riêng cho số tiền để đảm bảo chỉ nhập số
+  const handleNumberChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ""); // Chỉ giữ lại số
+    setFormValues({ ...formValues, [e.target.name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -31,206 +41,184 @@ const PhuongtienHuHongForm = () => {
     setSubmitting(true);
     setErrors({});
     setGeneralError(null);
+
     try {
-      const resp = await phuongtienhuhongApi.addPhuongtienHuHong(formValues);
-      console.log("phuongtienHuHong POST response:", resp);
+      // Chuyển đổi du_tru_kinh_phi sang kiểu số trước khi gửi API
+      const payload = {
+        ...formValues,
+        du_tru_kinh_phi: parseFloat(formValues.du_tru_kinh_phi) || 0
+      };
 
-      // Normalize response: axiosClient interceptor may return response.data for success,
-      // or an axios-like response with status/data on error.
-      const data = resp && resp.data ? resp.data : resp;
-
-      // If server responded with HTTP error payload (axios-like object)
-      if (resp && resp.status && resp.status >= 400) {
-        const payload = resp.data || {};
-        if (payload && typeof payload === "object" && Object.keys(payload).length > 0) {
-          setErrors(payload);
-          if (payload.non_field_errors) setGeneralError(Array.isArray(payload.non_field_errors) ? payload.non_field_errors.join(", ") : payload.non_field_errors);
-        } else {
-          setGeneralError(payload.detail || payload.message || "Lỗi khi lưu");
-        }
-        setSubmitting(false);
-        return;
-      }
-
-      // Some APIs return validation object in body but with 200 status (check for array values)
-      const hasFieldErrors = data && typeof data === "object" && Object.keys(data).some((k) => Array.isArray(data[k]));
-      if (hasFieldErrors) {
-        setErrors(data);
-        if (data.non_field_errors) setGeneralError(Array.isArray(data.non_field_errors) ? data.non_field_errors.join(", ") : data.non_field_errors);
-        setSubmitting(false);
-        return;
-      }
-
-      // Success detection
-      const success = !!((data && (data.id || data.pk)) || (resp && (resp.status === 201 || resp.status === 200)));
-      if (success) {
+      const resp = await phuongtienhuhongApi.addPhuongtienHuHong(payload);
+      
+      // Xử lý logic chuyển hướng hoặc thông báo thành công
+      if (resp.status === 201 || resp.status === 200 || resp.id) {
         window.location.replace("/phuongtien/huhong");
-        return;
       }
-
-      // Fallback error
-      setGeneralError("Lưu thất bại");
     } catch (err) {
       console.error(err);
-      // err may be axios response returned by interceptor, or a thrown error
-      const resp = err && err.data ? err : err;
-      if (resp && resp.status && resp.status >= 400) {
-        const payload = resp.data || resp;
-        if (payload && typeof payload === "object") setErrors(payload);
-        else setGeneralError(payload.detail || payload.message || "Lỗi khi lưu");
-      } else {
-        setGeneralError("Lỗi khi lưu");
-      }
+      setGeneralError("Có lỗi xảy ra khi lưu dữ liệu.");
+    } finally {
+      setSubmitting(false);
     }
-
-    setSubmitting(false);
   };
+
+  const docSoThanhChu = (function () {
+  const ChuSo = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+  const Tien = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
+
+  function docSoBaChuSo(baso) {
+    let trăm = Math.floor(baso / 100);
+    let chục = Math.floor((baso % 100) / 10);
+    let đơnvị = baso % 10;
+    let kếtquả = "";
+    if (trăm === 0 && chục === 0 && đơnvị === 0) return "";
+    if (trăm !== 0) {
+      kếtquả += ChuSo[trăm] + " trăm ";
+      if (chục === 0 && đơnvị !== 0) kếtquả += "lẻ ";
+    }
+    if (chục !== 0 && chục !== 1) {
+      kếtquả += ChuSo[chục] + " mươi ";
+      if (chục === 0 && đơnvị !== 0) kếtquả = kếtquả + "lẻ ";
+    }
+    if (chục === 1) kếtquả += "mười ";
+    switch (đơnvị) {
+      case 1:
+        kếtquả += (chục !== 0 && chục !== 1) ? "mốt " : "một ";
+        break;
+      case 5:
+        kếtquả += (chục === 0) ? "năm " : "lăm ";
+        break;
+      default:
+        if (đơnvị !== 0) kếtquả += ChuSo[đơnvị] + " ";
+        break;
+    }
+    return kếtquả;
+  }
+
+  return function (sốtiền) {
+    if (sốtiền === 0) return "Không đồng";
+    if (sốtiền < 0) return "Số tiền âm";
+    let s = sốtiền.toString();
+    let i = 0;
+    let kếtquả = "";
+    let vịtrí = [];
+    if (isNaN(sốtiền)) return "";
+    
+    let n = s.length;
+    while (n > 0) {
+      vịtrí.push(s.substring(Math.max(0, n - 3), n));
+      n -= 3;
+    }
+    for (i = vịtrí.length - 1; i >= 0; i--) {
+      let tmp = docSoBaChuSo(parseInt(vịtrí[i]));
+      if (tmp !== "") kếtquả += tmp + Tien[i] + " ";
+    }
+    return kếtquả.trim().charAt(0).toUpperCase() + kếtquả.trim().slice(1) + " đồng";
+  };
+})();
 
   return (
     <main onMouseOver={() => dispatch(closeSubMenu())}>
-      <div>
-        <h5>Thêm báo cáo phương tiện hư hỏng</h5>
-        {generalError && <div className="alert alert-danger">{generalError}</div>}
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Đơn vị quản lý</label>
-            <input
-              className="form-control"
-              name="don_vi_quan_ly"
-              placeholder="Ví dụ: Đội chữa cháy và CNCH KV Trảng Bàng"
-              value={formValues.don_vi_quan_ly}
-              onChange={handleChange}
-              required
-            />
-            {errors.don_vi_quan_ly && (
-              <small className="text-danger">
-                {Array.isArray(errors.don_vi_quan_ly) ? errors.don_vi_quan_ly.join(", ") : errors.don_vi_quan_ly}
-              </small>
-            )}
-          </div>
+      <div className="container mt-4">
+        <div className="card p-4 shadow-sm">
+          <h5 className="mb-4">Thêm báo cáo phương tiện hư hỏng</h5>
+          
+          {generalError && <div className="alert alert-danger">{generalError}</div>}
+          
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              {/* Cột 1 */}
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label className="form-label">Đội quản lý, sử dụng</label>
+                  <input className="form-control" name="don_vi_quan_ly" value={formValues.don_vi_quan_ly} onChange={handleChange} placeholder="Ví dụ: Đội chữa cháy và CNCH KV Trảng Bàng"required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Loại phương tiện</label>
+                  <input className="form-control" name="loai_phuong_tien" value={formValues.loai_phuong_tien} onChange={handleChange} placeholder="Ví dụ: Xe chữa cháy, Xe thang 32m" required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Biển kiểm soát</label>
+                  <input className="form-control" name="bien_kiem_soat" value={formValues.bien_kiem_soat} onChange={handleChange} />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Người trực tiếp quản lý</label>
+                  <input className="form-control" name="nguoi_quan_ly" value={formValues.nguoi_quan_ly} onChange={handleChange} placeholder="Ví dụ: Báo Minh Quân"/>
+                </div>
+              </div>
 
-          <div>
-            <label>Loại phương tiện</label>
-            <input
-              className="form-control"
-              name="loai_phuong_tien"
-              placeholder="Ví dụ: Xe chữa cháy, Xe thang 32m"
-              value={formValues.loai_phuong_tien}
-              onChange={handleChange}
-              required
-            />
-            {errors.loai_phuong_tien && (
-              <small className="text-danger">
-                {Array.isArray(errors.loai_phuong_tien) ? errors.loai_phuong_tien.join(", ") : errors.loai_phuong_tien}
-              </small>
-            )}
-          </div>
+              {/* Cột 2 */}
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label className="form-label">Nhãn hiệu</label>
+                  <input className="form-control" name="nhan_hieu" value={formValues.nhan_hieu} onChange={handleChange} placeholder="Ví dụ: Hino DOL/Isuzu Morita/Man Rosenbauer/Renault Saurus/..."/>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Nhãn hiệu xe nền</label>
+                  <input className="form-control" name="nhan_hieu_sat_xi" value={formValues.nhan_hieu_sat_xi} onChange={handleChange} placeholder="Ví dụ: Hino FG1JJUB/Isuzu FVR/MAN TGM 18.240/..."/>
+                </div>
 
-          <div>
-            <label>Nhãn hiệu</label>
-            <input
-              className="form-control"
-              name="nhan_hieu"
-              placeholder="Ví dụ: Hino DOL"
-              value={formValues.nhan_hieu}
-              onChange={handleChange}
-            />
-            {errors.nhan_hieu && (
-              <small className="text-danger">
-                {Array.isArray(errors.nhan_hieu) ? errors.nhan_hieu.join(", ") : errors.nhan_hieu}
-              </small>
-            )}
-          </div>
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Dự trù kinh phí (VNĐ)</label>
+                  <input 
+                    className="form-control text-danger fw-bold" 
+                    name="du_tru_kinh_phi" 
+                    type="text"
+                    placeholder="Nhập số tiền..."
+                    value={formValues.du_tru_kinh_phi} 
+                    onChange={handleNumberChange} 
+                  />
+                  
+                  {formValues.du_tru_kinh_phi && (
+                    <div className="mt-2 p-2 bg-light border rounded">
+                      <div className="text-muted small">
+                        <strong>Số tiền:</strong> {Number(formValues.du_tru_kinh_phi).toLocaleString('vi-VN')} VNĐ
+                      </div>
+                      <div className="text-primary small italic">
+                        <strong>Bằng chữ:</strong> <em>{docSoThanhChu(formValues.du_tru_kinh_phi)}</em>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
-          <div>
-            <label>Nhãn hiệu (sát xi)</label>
-            <input
-              className="form-control"
-              name="nhan_hieu_sat_xi"
-              placeholder="Ví dụ: Hino FG1JJUB"
-              value={formValues.nhan_hieu_sat_xi}
-              onChange={handleChange}
-            />
-            {errors.nhan_hieu_sat_xi && (
-              <small className="text-danger">
-                {Array.isArray(errors.nhan_hieu_sat_xi) ? errors.nhan_hieu_sat_xi.join(", ") : errors.nhan_hieu_sat_xi}
-              </small>
-            )}
-          </div>
+            <hr />
 
-          <div>
-            <label>Biển kiểm soát</label>
-            <input
-              className="form-control"
-              name="bien_kiem_soat"
-              placeholder="Ví dụ: 70B-0625"
-              value={formValues.bien_kiem_soat}
-              onChange={handleChange}
-            />
-            {errors.bien_kiem_soat && (
-              <small className="text-danger">
-                {Array.isArray(errors.bien_kiem_soat) ? errors.bien_kiem_soat.join(", ") : errors.bien_kiem_soat}
-              </small>
-            )}
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Nguyên nhân hư hỏng</label>
+              <textarea className="form-control" name="nguyen_nhan_hu_hong" rows="3" value={formValues.nguyen_nhan_hu_hong} onChange={handleChange}></textarea>
+            </div>
 
-          <div>
-            <label>Nguyên nhân hư hỏng</label>
-            <textarea
-              className="form-control"
-              name="nguyen_nhan_hu_hong"
-              placeholder="Mô tả chi tiết nguyên nhân hư hỏng"
-              value={formValues.nguyen_nhan_hu_hong}
-              onChange={handleChange}
-            />
-            {errors.nguyen_nhan_hu_hong && (
-              <small className="text-danger">
-                {Array.isArray(errors.nguyen_nhan_hu_hong) ? errors.nguyen_nhan_hu_hong.join(", ") : errors.nguyen_nhan_hu_hong}
-              </small>
-            )}
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Biện pháp thực hiện</label>
+              <textarea className="form-control" name="bien_phap_thuc_hien" rows="2" value={formValues.bien_phap_thuc_hien} onChange={handleChange}></textarea>
+            </div>
 
-          <div>
-            <label>Biện pháp thực hiện</label>
-            <textarea
-              className="form-control"
-              name="bien_phap_thuc_hien"
-              placeholder="Mô tả biện pháp đã thực hiện / đề xuất"
-              value={formValues.bien_phap_thuc_hien}
-              onChange={handleChange}
-            />
-            {errors.bien_phap_thuc_hien && (
-              <small className="text-danger">
-                {Array.isArray(errors.bien_phap_thuc_hien) ? errors.bien_phap_thuc_hien.join(", ") : errors.bien_phap_thuc_hien}
-              </small>
-            )}
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Đề xuất</label>
+              <textarea className="form-control" name="de_xuat" rows="2" value={formValues.de_xuat} onChange={handleChange}></textarea>
+            </div>
 
-          <div>
-            <label>Kết quả</label>
-            <input
-              className="form-control"
-              name="ket_qua"
-              placeholder="Ví dụ: Đã hoàn thành sửa chữa ngày 10/9/2025"
-              value={formValues.ket_qua}
-              onChange={handleChange}
-            />
-            {errors.ket_qua && (
-              <small className="text-danger">
-                {Array.isArray(errors.ket_qua) ? errors.ket_qua.join(", ") : errors.ket_qua}
-              </small>
-            )}
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Kết quả</label>
+              <input className="form-control" name="ket_qua" value={formValues.ket_qua} onChange={handleChange} placeholder="Đã hoàn thành sửa chữa/Đang sửa chữa/Đang chờ phê duyệt chủ trương/Đang chờ báo giá/"/>
+            </div>
 
-          <br />
-          <button className="form-control" type="submit" disabled={submitting}>
-            {submitting ? "Đang gửi..." : "Lưu"}
-          </button>
-        </form>
+            <div className="d-flex gap-2">
+              <button className="btn btn-primary px-5" type="submit" disabled={submitting}>
+                {submitting ? "Đang gửi..." : "Lưu"}
+              </button>
+              <button className="btn btn-secondary" type="button" onClick={() => window.history.back()}>
+                Hủy bỏ
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </main>
   );
 };
 
-export { PhuongtienHuHongForm };
 export default PhuongtienHuHongForm;

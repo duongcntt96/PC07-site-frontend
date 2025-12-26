@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="footer__col footer__about">
             <h4>Quản lý phương tiện PCCC và CNCH</h4>
             <p>
-              Bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc, Website được xây dựng với sứ mệnh chuyển đổi số, đổi mới để bứt phá nâng cao hiệu quả công tác 
+              Bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc, Website được xây dựng với mục tiêu chuyển đổi số nhằm nâng cao hiệu quả công tác 
               quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ của lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh.
             </p>
           </div>
