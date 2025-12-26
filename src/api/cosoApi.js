@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 
 const cosoApi = {
   getAll: (params) => {
@@ -9,17 +10,20 @@ const cosoApi = {
     const url = `/coso/coso/${id}`;
     return axiosClient.get(url);
   },
-  getListDiaban: (id) => {
+  getListDiaban: async (id) => {
     const url = `/coso/diaban`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
-  getListLoaihinh: (id) => {
+  getListLoaihinh: async (id) => {
     const url = `/coso/loaihinh`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
-  getListHuanluyen: (id) => {
+  getListHuanluyen: async (id) => {
     const url = `/coso/huanluyen`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
 };
 

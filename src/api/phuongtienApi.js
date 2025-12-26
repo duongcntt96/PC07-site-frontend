@@ -1,8 +1,10 @@
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 const phuongtienApi = {
-  getAll: (params) => {
+  getAll: async (params) => {
     const url = "/phuongtien/phuongtien";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   get: (id) => {
     const url = `/phuongtien/phuongtien/${id}`;
@@ -17,24 +19,28 @@ const phuongtienApi = {
     return axiosClient.get(url);
   },
 
-  getListTrangThai: () => {
+  getListTrangThai: async () => {
     const url = `/phuongtien/trangthai/`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
 
-  getListChatLuong: () => {
+  getListChatLuong: async () => {
     const url = `/phuongtien/chatluong/`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
 
-  getListTo: () => {
+  getListTo: async () => {
     const url = `/phuongtien/to/`;
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
 
-  getListImage: (params) => {
+  getListImage: async (params) => {
     const url = `/phuongtien/image/`;
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
 
   addImage: (params) => {

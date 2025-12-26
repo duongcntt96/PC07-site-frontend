@@ -24,15 +24,14 @@ const Diaban = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      if (!loaihinhcoso.length)
-        setLoaihinhcoso(await (await cosoApi.getListLoaihinh()).data);
+      if (!loaihinhcoso.length) {
+        const { data: lh } = await cosoApi.getListLoaihinh();
+        setLoaihinhcoso(lh);
+      }
 
-      let dia_ban = diaban.length
-        ? [...diaban]
-        : await (
-            await cosoApi.getListDiaban()
-          ).data;
-      const cs = await (await cosoApi.getAll({ ...filters, size: 100 })).data;
+      const { data: diaBanData } = await cosoApi.getListDiaban();
+      let dia_ban = diaban.length ? [...diaban] : diaBanData; 
+      const { data: cs } = await cosoApi.getAll({ ...filters, size: 100 });
 
       dia_ban.forEach((e) => (e.data = cs.filter((i) => i.dia_ban === e.id)));
       console.log(dia_ban);

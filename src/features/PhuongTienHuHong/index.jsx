@@ -18,8 +18,8 @@ const PhuongTienHuHong = () => {
       setLoading(true);
       try {
         // request list of phương tiện hư hỏng via dedicated api
-        const resp = await phuongtienhuhongApi.getList({ size: 500, hu_hong: true });
-        setItems(resp.data || resp || []);
+        const { data } = await phuongtienhuhongApi.getList({ size: 500, hu_hong: true });
+        setItems(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error(err);
         setItems([]);

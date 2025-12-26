@@ -1,40 +1,47 @@
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 const qlptApi = {
   textToMp3: (params) => {
     const url = "/qlpt/texttospeak";
     return axiosClient.get(url, { params });
   },
-  getListChungloai: (params) => {
+  getListChungloai: async (params) => {
     const url = "/qlpt/chungloai";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
-  getListKho: (params) => {
+  getListKho: async (params) => {
     const url = "/qlpt/kho";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
-  getListNguoncap: (params) => {
+  getListNguoncap: async (params) => {
     const url = "/qlpt/nguoncap";
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url);
+    return normalizeList(resp);
   },
-  getListPhuongtien: (params) => {
+  getListPhuongtien: async (params) => {
     const url = "/qlpt/phuongtien";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   getPhuongtien: (id) => {
     const url = `/qlpt/phuongtien/${id}`;
     return axiosClient.get(url);
   },
-  getListPhieunhap: (params) => {
+  getListPhieunhap: async (params) => {
     const url = "/qlpt/phieunhap";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   getPhieunhap: (id) => {
     const url = `/qlpt/phieunhap/${id}`;
     return axiosClient.get(url);
   },
-  getChitietPhieunhap: (params) => {
+  getChitietPhieunhap: async (params) => {
     const url = `/qlpt/chitietphieunhap/`;
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   addPhieunhap: (params) => {
     const url = "/qlpt/phieunhap/";

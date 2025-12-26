@@ -13,9 +13,9 @@ const Tochuc = () => {
     const fetchData = async () => {
       try {
         const params = { page: 1, size: 12 };
-        const response = await userApi.getAllTeams(params);
-        console.log("Respone: ", response);
-        setTeam(response.data);
+        const { data: teamData } = await userApi.getAllTeams(params);
+        console.log("Respone: ", teamData);
+        setTeam(Array.isArray(teamData) ? teamData : []);
         setLoading(false);
       } catch (error) {
         console.log("Không lấy được dữ liệu", error);

@@ -29,9 +29,11 @@ const Phuongtien = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setKho(await (await qlptApi.getListKho()).data);
-      setNguoncap(await (await qlptApi.getListNguoncap()).data);
-    };
+      const { data: khoData } = await qlptApi.getListKho();
+      const { data: nguonData } = await qlptApi.getListNguoncap();
+      setKho(khoData);
+      setNguoncap(nguonData);
+    }; 
     fetchData();
     pushURL(filters);
   }, []);

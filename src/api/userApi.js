@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 
 const userApi = {
   login: ({ username, password }) => {
@@ -12,14 +13,16 @@ const userApi = {
     return axios.post(url, { username, first_name, password, email });
   },
 
-  getAllTeams: (params) => {
+  getAllTeams: async (params) => {
     const url = "/user/team";
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
 
-  getAllUsers: (params) => {
+  getAllUsers: async (params) => {
     const url = "/user/user";
-    return axiosClient.get(url);
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
 
   getUser: (id) => {

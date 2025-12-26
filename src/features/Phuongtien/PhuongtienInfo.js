@@ -91,7 +91,8 @@ const PhuongtienInfo = () => {
     const respone = await phuongtienApi.get(id);
     setInfo(respone);
 
-    setImage((await phuongtienApi.getListImage({ phuong_tien: id })).data);
+    const { data: images } = await phuongtienApi.getListImage({ phuong_tien: id });
+    setImage(images);
     setLoading(false);
     // console.log(respone);
   };

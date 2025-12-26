@@ -50,46 +50,46 @@ export const links = [
       },
     ],
   },
-  {
-    id: 3,
-    url: "/coso",
-    text: "Địa bàn",
-    children: [
-      {
-        id: 1,
-        url: "/coso",
-        text: "Cơ sở thuộc diện quản lý",
-        icon: <FcDepartment />,
-      },
-      {
-        id: 2,
-        url: "/coso/tuyentruyen",
-        text: "Công tác tuyên truyền",
-        icon: <GiPublicSpeaker />,
-      },
-      {
-        id: 3,
-        url: "/coso/huanluyen",
-        text: "Công tác huấn luyện",
-        icon: <GiTeacher />,
-      },
-      {
-        id: 3,
-        url: "/coso/thuctap",
-        text: "Công tác thực tập phương án",
-        icon: <GiSmallFire />,
-      },
-    ],
-  },
+  // {
+  //   id: 3,
+  //   url: "/coso",
+  //   text: "Địa bàn",
+  //   children: [
+  //     {
+  //       id: 1,
+  //       url: "/coso",
+  //       text: "Cơ sở thuộc diện quản lý",
+  //       icon: <FcDepartment />,
+  //     },
+  //     {
+  //       id: 2,
+  //       url: "/coso/tuyentruyen",
+  //       text: "Công tác tuyên truyền",
+  //       icon: <GiPublicSpeaker />,
+  //     },
+  //     {
+  //       id: 3,
+  //       url: "/coso/huanluyen",
+  //       text: "Công tác huấn luyện",
+  //       icon: <GiTeacher />,
+  //     },
+  //     {
+  //       id: 3,
+  //       url: "/coso/thuctap",
+  //       text: "Công tác thực tập phương án",
+  //       icon: <GiSmallFire />,
+  //     },
+  //   ],
+  // },
   {
     id: 4,
     url: "/tochuc",
-    text: "Tổ chức",
+    text: "Lực lượng",
     children: [
       {
         id: 1,
-        url: "/tochuc/to",
-        text: "Danh sách các tổ",
+        url: "/tochuc/doi",
+        text: "Danh sách các đội",
         icon: <MdGroup />,
       },
       {

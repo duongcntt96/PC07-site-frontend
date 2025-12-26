@@ -33,13 +33,12 @@ const FormNhapkho = () => {
   // get const data list
   useEffect(() => {
     const fetchData = async () => {
-      setListPhuongtien(
-        await (
-          await qlptApi.getListPhuongtien({ to_import: true })
-        ).data
-      );
-      setKho(await (await qlptApi.getListKho()).data);
-      setNguoncap(await (await qlptApi.getListNguoncap()).data);
+      const { data: list } = await qlptApi.getListPhuongtien({ to_import: true });
+      setListPhuongtien(list);
+      const { data: khoData } = await qlptApi.getListKho();
+      const { data: nguonData } = await qlptApi.getListNguoncap();
+      setKho(khoData);
+      setNguoncap(nguonData);
     };
     fetchData();
   }, []);
@@ -258,16 +257,10 @@ const FormNhapkho = () => {
                     target={phuongTienValues}
                     filters={listPhuongtien}
                     handleChange={handlePhuongTienValuesChange}
-                    handleClick={(e) => {
-                      // Cần code lại
-                      const fetchData = async () => {
-                        setListPhuongtien(
-                          await (
-                            await qlptApi.getListPhuongtien({ to_import: true })
-                          ).data
-                        );
-                      };
-                      fetchData();
+                    handleClick={async (e) => {
+                      // Refresh list of phương tiện for the picker
+                      const { data: list } = await qlptApi.getListPhuongtien({ to_import: true });
+                      setListPhuongtien(Array.isArray(list) ? list : []);
                     }}
                   />
                   <BiAddToQueue

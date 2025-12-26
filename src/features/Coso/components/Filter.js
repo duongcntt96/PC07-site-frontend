@@ -4,10 +4,22 @@ const Filter = ({
   title,
   name,
   target,
-  filters,
+  filters = [],
   handleChange,
   handleClick = (e) => {},
 }) => {
+  // Normalize filters to an array to avoid runtime crashes when API returns an object or null
+  const list = Array.isArray(filters)
+    ? filters
+    : filters && typeof filters === "object"
+    ? Object.values(filters)
+    : [];
+
+  if (!Array.isArray(filters)) {
+    // Helpful debug log for devs when unexpected data is passed
+    console.warn("Filter component expected array for 'filters' prop, got:", filters);
+  }
+
   return (
     <div className="filter-item">
       <select
@@ -22,13 +34,13 @@ const Filter = ({
         }}
       >
         <option value="">{target[name] ? "Tất cả" : title}</option>
-        {filters.map((item, i) => (
+        {list.map((item, i) => (
           <option value={item.id} key={i}>
             {/* {"-".repeat(item?.maso?.length | 0) + " "} */}
             {item?.maso?.length ? item.maso + " - " : ""}
-            {item.ten.length > 60
-              ? item.ten.substring(0, 82) + "..."
-              : item.ten}
+            {(item.ten || "").length > 60
+              ? (item.ten || "").substring(0, 82) + "..."
+              : item.ten || ""}
           </option>
         ))}
       </select>

@@ -1,9 +1,11 @@
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 
 const chungloaiApi = {
-  getAll: (params) => {
+  getAll: async (params) => {
     const url = "/phuongtien/chungloai";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   get: (id) => {
     const url = `/phuongtien/chungloai/${id}`;

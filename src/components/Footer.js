@@ -22,7 +22,7 @@ const Footer = () => {
             <h4>Quản lý phương tiện PCCC và CNCH</h4>
             <p>
               Bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc, Website được xây dựng với sứ mệnh chuyển đổi số, đổi mới để bứt phá nâng cao hiệu quả công tác 
-              quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ của lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh
+              quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ của lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh.
             </p>
           </div>
 
@@ -32,7 +32,7 @@ const Footer = () => {
             <h4>Liên hệ, góp ý</h4>
             <ul>
               <li>
-                <FaUserCheck /> <span>Trung úy Đặng Bá Dương</span>
+                <FaUserCheck /> <span>Đặng Bá Dương</span>
               </li>
               <li>
                 <FaPhoneSquare /> <a href="tel:0965881681">0965.881.681</a>

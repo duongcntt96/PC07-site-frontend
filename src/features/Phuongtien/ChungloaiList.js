@@ -32,9 +32,12 @@ const ChungloaiList = () => {
         const rp = await chungloaiApi.getAll(params);
         setChungLoai(rp.data);
       }
-      setChatluong(await (await phuongtienApi.getListChatLuong()).data);
-      setTrangthai(await (await phuongtienApi.getListTrangThai()).data);
-      setTo(await (await phuongtienApi.getListTo()).data);
+      const { data: chatluong } = await phuongtienApi.getListChatLuong();
+      const { data: trangthai } = await phuongtienApi.getListTrangThai();
+      const { data: to } = await phuongtienApi.getListTo();
+      setChatluong(chatluong);
+      setTrangthai(trangthai);
+      setTo(to);
     };
     fetchData();
   }, []);

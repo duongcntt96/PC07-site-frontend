@@ -1,16 +1,19 @@
 import axiosClient from "./axiosClient";
+import { normalizeList } from "./responseHelper";
 
 const phuongtienhuhongApi = {
   // list damaged vehicles (reuse qlpt/phuongtien endpoint)
-  getList: (params) => {
+  getList: async (params) => {
     const url = "/qlpt/phuongtien";
-    return axiosClient.get(url, { params });
+    const resp = await axiosClient.get(url, { params });
+    return normalizeList(resp);
   },
   // helper to request only hu_hong items
-  getListHuHong: (params) => {
+  getListHuHong: async (params) => {
     const url = "/qlpt/phuongtien";
     const newParams = { ...params, hu_hong: true };
-    return axiosClient.get(url, { params: newParams });
+    const resp = await axiosClient.get(url, { params: newParams });
+    return normalizeList(resp);
   },
   get: (id) => {
     const url = `/qlpt/phuongtien/${id}`;

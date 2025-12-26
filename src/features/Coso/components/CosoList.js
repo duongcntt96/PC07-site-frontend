@@ -10,8 +10,10 @@ const CosoList = ({ filter }) => {
     setCoso([]);
     const getPhuongtien = async () => {
       const params = { ...filter, size: 100 };
-      setCoso(await (await cosoApi.getAll(params)).data);
-      setDiaban(await (await cosoApi.getListDiaban()).data);
+      const { data: cs } = await cosoApi.getAll(params);
+      setCoso(cs);
+      const { data: diabanList } = await cosoApi.getListDiaban();
+      setDiaban(diabanList);
       // coso.sort((a, b) => b.id - a.id);
     };
     getPhuongtien();

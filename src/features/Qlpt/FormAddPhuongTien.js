@@ -18,7 +18,8 @@ const FormAddPhuongTien = () => {
   // get const data list
   useEffect(() => {
     const fetchData = async () => {
-      setChungloai(await (await qlptApi.getListChungloai()).data);
+      const { data: chungloaiData } = await qlptApi.getListChungloai();
+      setChungloai(chungloaiData);
     };
     fetchData();
   }, []);

@@ -31,17 +31,19 @@ const ListKho = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setKho(await (await qlptApi.getListKho()).data);
-      setChungloai(await (await qlptApi.getListChungloai()).data);
-    };
+      const { data: khoData } = await qlptApi.getListKho();
+      const { data: chungloaiData } = await qlptApi.getListChungloai();
+      setKho(khoData);
+      setChungloai(chungloaiData);
+    }; 
     fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const list_PT = await qlptApi.getListPhuongtien({ ...filters });
-      setListPT(list_PT.data);
+      const { data: list_PT } = await qlptApi.getListPhuongtien({ ...filters });
+      setListPT(Array.isArray(list_PT) ? list_PT : []);
       setLoading(false);
     };
     fetchData();
@@ -49,28 +51,38 @@ const ListKho = () => {
   }, [filters]);
 
   useEffect(() => {
+    // Normalize listPT to an array in case API returns unexpected shapes
+    const listPTArray = Array.isArray(listPT) ? listPT : [];
+
     const getChild = (item) => {
-      item.chungloai = chungloai.filter((f) => f.parent == item.id);
-      item.chungloai.map((e) => getChild(e));
-      item.totals = () => {
-        let totals = 0;
-        item.phuongtien.map((e) => (totals += e.totals));
-        item.chungloai.map((e) => (totals += e.totals()));
-        return totals;
-      };
-      item.count = () => {
-        let totals = 0;
-        item.chungloai.map((e) => (totals += e.count()));
-        return totals + item.phuongtien.length;
-      };
-      item.phuongtien = listPT.filter((f) => {
+      // populate children and ensure arrays exist
+      item.chungloai = chungloai.filter((f) => f.parent == item.id) || [];
+      item.chungloai.forEach((e) => getChild(e));
+
+      item.phuongtien = listPTArray.filter((f) => {
         return f.chung_loai === item.id;
       });
+
+      item.totals = () => {
+        let totals = 0;
+        (item.phuongtien || []).forEach((e) => (totals += e.totals || e.totals));
+        (item.chungloai || []).forEach((e) => (totals += e.totals()));
+        return totals;
+      };
+
+      item.count = () => {
+        let totals = 0;
+        (item.chungloai || []).forEach((e) => (totals += e.count()));
+        return totals + (item.phuongtien ? item.phuongtien.length : 0);
+      };
+
       return;
     };
-    console.log(chungloai);
-    getChild(chungloai);
-    setTree(chungloai.chungloai);
+
+    // Build tree from root nodes (those without parent)
+    const roots = chungloai.filter((c) => !c.parent && c !== undefined) || [];
+    roots.forEach((r) => getChild(r));
+    setTree(roots);
   }, [listPT, chungloai]);
 
   const handleChange = (e) => {
