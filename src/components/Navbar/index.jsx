@@ -59,9 +59,9 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="banner">
+      {/* <div className="banner">
         <img src={banner} alt="" width="100%" />
-      </div>
+      </div> */}
       <nav onMouseOver={(e) => handleMouseOver(e)}>
         <div className="nav-center">
           <div className="nav__header">

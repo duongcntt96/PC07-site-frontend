@@ -91,7 +91,7 @@ const PhuongTienHuHong = () => {
           margin-bottom: 25px;
           border: 1px solid #e2e8f0;
           position: relative; 
-          z-index: 1050;
+          z-index: 100;
         }
 
         .filter-section .form-control, 
@@ -113,7 +113,7 @@ const PhuongTienHuHong = () => {
           background: #fff;
           border-radius: 8px;
           box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-          z-index: 9999;
+          z-index: 999;
           padding: 12px;
           border: 1px solid #e2e8f0;
           margin-top: 5px;
