@@ -32,8 +32,8 @@ function App() {
       <Navbar />
       <SubMenu />
       <Switch>
-        <Route path="/home">
-          <PageTitle title="Home" />
+        <Route path="/" exact>
+          <PageTitle title="Trang chủ" />
           <Home />
         </Route>
 

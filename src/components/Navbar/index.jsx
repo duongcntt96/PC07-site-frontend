@@ -65,7 +65,7 @@ const Navbar = () => {
       <nav onMouseOver={(e) => handleMouseOver(e)}>
         <div className="nav-center">
           <div className="nav__header">
-            <Link to="/home">
+            <Link to="/">
               <img className="logo" src={logo} alt="logo" />
             </Link>
             <button
