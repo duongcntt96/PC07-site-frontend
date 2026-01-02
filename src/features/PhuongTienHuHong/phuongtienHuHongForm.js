@@ -187,12 +187,12 @@ const PhuongtienHuHongForm = () => {
             <hr />
 
             <div className="mb-3">
-              <label className="form-label">Nguyên nhân hư hỏng</label>
+              <label className="form-label">Tình trạng, Nguyên nhân hư hỏng</label>
               <textarea className="form-control" name="nguyen_nhan_hu_hong" rows="3" value={formValues.nguyen_nhan_hu_hong} onChange={handleChange}></textarea>
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Biện pháp thực hiện</label>
+              <label className="form-label">Biện pháp đã thực hiện</label>
               <textarea className="form-control" name="bien_phap_thuc_hien" rows="2" value={formValues.bien_phap_thuc_hien} onChange={handleChange}></textarea>
             </div>
 
@@ -202,7 +202,7 @@ const PhuongtienHuHongForm = () => {
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Kết quả</label>
+              <label className="form-label">Kết quả/Hiện trạng</label>
               <input className="form-control" name="ket_qua" value={formValues.ket_qua} onChange={handleChange} placeholder="Đã hoàn thành sửa chữa/Đang sửa chữa/Đang chờ phê duyệt chủ trương/Đang chờ báo giá/Đang đề xuất"/>
             </div>
 
