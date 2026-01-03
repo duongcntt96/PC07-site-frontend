@@ -83,7 +83,7 @@ const PhuongTienHuHong = () => {
   return (
     <main onMouseOver={() => dispatch(closeSubMenu())}>
       <style>{`
-        /* SỬA LỖI ĐÈ CHỮ Ở BỘ LỌC */
+        /* FILTER */
         .filter-section {
           background: #fff;
           padding: 24px;
@@ -92,14 +92,6 @@ const PhuongTienHuHong = () => {
           border: 1px solid #e2e8f0;
           position: relative; 
           z-index: 100;
-        }
-
-        .filter-section .form-control, 
-        .filter-section .form-select {
-          width: 100% !important;
-          height: 42px !important;
-          border-radius: 8px !important;
-          box-sizing: border-box !important;
         }
 
         .dropdown-select-custom { position: relative; width: 100%; }
@@ -120,34 +112,51 @@ const PhuongTienHuHong = () => {
         }
         .dropdown-select-custom:hover .dropdown-menu-custom { display: block; }
 
-        /* GIỮ NGUYÊN STYLE TABLE GỐC */
+        .selected-tags-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          max-width: 100%;
+        }
+
+        .tag-item {
+          background: #e2e8f0;
+          color: #475569;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          white-space: nowrap;
+        }
+
+        /* TABLE FORMATTING - FIX BORDER & ROUNDED */
         .table-card {
           background: #fff;
-          border-radius: 8px;
-          border: 1px solid #e2e8f0;
-          overflow: visible;
+          border-radius: 12px;
+          border: 1px solid #cbd5e1; /* Viền bao nét liền */
+          overflow: hidden;
         }
 
         .table-responsive {
           width: 100%;
           overflow-x: auto;
-          overflow-y: visible; 
         }
 
         .table-custom {
           width: 100%;
           min-width: 1300px;
-          border-collapse: separate;
+          border-collapse: separate; /* Cần thiết để bo tròn 4 góc */
           border-spacing: 0;
           table-layout: fixed;
+          border: none;
         }
 
         .table-custom thead th {
-          background: #f1f5f9;
+          background: #e1e7ee;
           color: #334155;
           font-weight: 700;
           padding: 14px 8px;
-          border-bottom: 2px solid #cbd5e1;
+          border-bottom: 1px solid #cbd5e1; /* Nét liền ngang */
+          border-right: 1px solid #cbd5e1;  /* Nét liền dọc */
           position: sticky;
           top: 0;
           z-index: 10;
@@ -156,21 +165,23 @@ const PhuongTienHuHong = () => {
 
         .table-custom tbody td {
           padding: 12px 8px;
-          border-bottom: 1px solid #e2e8f0;
-          vertical-align: top;
+          border-bottom: 1px solid #e2e8f0; /* Nét liền */
+          border-right: 1px solid #e2e8f0;  /* Nét liền */
+          vertical-align: middle;
           word-wrap: break-word;
           font-size: 14px;
         }
 
-        .w-stt { width: 50px; }
-        .w-donvi { width: 160px; }
-        .w-loai { width: 120px; }
-        .w-nhanhieu { width: 110px; }
-        .w-bienso { width: 120px; }
-        .w-quanly { width: 130px; }
-        .w-noidung { width: 280px; }
-        .w-kinhphi { width: 130px; }
-        .w-ketqua { width: 120px; }
+        /* Loại bỏ border-right ở cột cuối */
+        .table-custom thead th:last-child,
+        .table-custom tbody td:last-child {
+          border-right: none;
+        }
+
+        /* Loại bỏ border-bottom dòng cuối */
+        .table-custom tbody tr:last-child td {
+          border-bottom: none;
+        }
 
         .text-justify { text-align: justify; line-height: 1.5; white-space: pre-wrap; }
         .text-right { text-align: right; }
@@ -178,7 +189,7 @@ const PhuongTienHuHong = () => {
         
         .badge-status {
           padding: 6px 4px;
-          border-radius: 6px;
+          border-radius: 4px;
           font-size: 11px;
           font-weight: 700;
           display: block;
@@ -196,10 +207,10 @@ const PhuongTienHuHong = () => {
           </Link>
         </div>
 
-        {/* BỘ LỌC TỐI ƯU CỘT (Sửa lỗi đè chữ) */}
+        {/* BỘ LỌC */}
         <div className="filter-section shadow-sm">
-          <div className="row g-4 flex-wrap align-items-end"> 
-            <div className="col-12 col-md-6 col-lg-4">
+          <div className="row g-4 flex-wrap align-items-center"> 
+            <div className="col-12 col-md-4">
               <label className="small fw-bold text-secondary mb-2 d-block">TÌM KIẾM</label>
               <div className="position-relative">
                 <i className="fa fa-search position-absolute" style={{left: '12px', top: '12px', color: '#94a3b8'}}></i>
@@ -211,23 +222,28 @@ const PhuongTienHuHong = () => {
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-3">
+            <div className="col-12 col-sm-6 col-md-3">
               <label className="small fw-bold text-secondary mb-2 d-block">ĐƠN VỊ QUẢN LÝ</label>
-              <select 
-                className="form-select" 
-                value={filterDonVi} onChange={(e) => setFilterDonVi(e.target.value)}
-              >
+              <select className="form-control ps-5" value={filterDonVi} onChange={(e) => setFilterDonVi(e.target.value)}>
                 <option value="">Tất cả đơn vị</option>
                 {danhSachDonVi.map(dv => <option key={dv} value={dv}>{dv}</option>)}
               </select>
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-3">
+            <div className="col-12 col-sm-6 col-md-3">
               <label className="small fw-bold text-secondary mb-2 d-block">KẾT QUẢ</label>
               <div className="dropdown-select-custom">
-                <div className="form-control d-flex justify-content-between align-items-center" style={{cursor: 'pointer'}}>
-                  <span className="text-truncate">{selectedKetQua.length === 0 ? "Tất cả trạng thái" : `Đã chọn (${selectedKetQua.length})`}</span>
-                  <i className="fa fa-chevron-down small text-muted"></i>
+                <div className="form-control d-flex justify-content-between align-items-center" style={{cursor: 'pointer', height: 'auto', minHeight: '42px'}}>
+                  <div className="selected-tags-container">
+                    {selectedKetQua.length === 0 ? (
+                      <span className="text-muted">Tất cả trạng thái</span>
+                    ) : (
+                      selectedKetQua.map(val => (
+                        <span key={val} className="tag-item">{val.length > 15 ? `${val.substring(0, 13)}...` : val}</span>
+                      ))
+                    )}
+                  </div>
+                  <i className="fa fa-chevron-down small text-muted ms-2"></i>
                 </div>
                 <div className="dropdown-menu-custom">
                   <div className="d-flex justify-content-between border-bottom pb-2 mb-2">
@@ -237,52 +253,51 @@ const PhuongTienHuHong = () => {
                     <span className="text-danger fw-bold" style={{fontSize: '12px', cursor: 'pointer'}} onClick={() => setSelectedKetQua([])}>Xóa</span>
                   </div>
                   {danhSachKetQua.map(kq => (
-                    <label key={kq} className="d-flex align-items-center mb-2" style={{cursor: 'pointer'}}>
-                      <input type="checkbox" className="me-2" checked={selectedKetQua.includes(kq)} onChange={() => handleKetQuaChange(kq)} />
+                    <label key={kq} className="d-flex align-items-center mb-2 " style={{cursor: 'pointer'}}>
+                      <input type="checkbox" className="mr-2" checked={selectedKetQua.includes(kq)} onChange={() => handleKetQuaChange(kq)} />
                       <span style={{fontSize: '13.5px'}}>{kq}</span>
                     </label>
                   ))}
                 </div>
               </div>
             </div>
-
-            <div className="col-12 col-lg-2">
+            {filteredItems.length > 0 && (
+              <div className="col-12 col-md-2 align-self-end">
                 <button className="btn btn-success w-100 fw-bold shadow-sm" style={{height: '42px', borderRadius: '8px'}} onClick={exportToExcel}>
-                  <i className="fa fa-file-excel-o me-2"></i>XUẤT EXCEL
+                  <i className="fa fa-file-excel-o me-2"></i>XUẤT EXCEL {`(${filteredItems.length})`}
                 </button>
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* BẢNG DỮ LIỆU - NGUYÊN BẢN CỦA BẠN */}
+        {/* BẢNG DỮ LIỆU */}
         <div className="table-card shadow-sm">
           <div className="table-responsive">
             <table className="table-custom">
               <thead>
                 <tr>
-                  <th className="w-stt">Stt</th>
-                  <th className="w-donvi">Đơn vị quản lý</th>
-                  <th className="w-loai">Loại PT</th>
-                  <th className="w-nhanhieu">Nhãn hiệu</th>
-                  <th className="w-nhanhieu">Sát xi</th>
-                  <th className="w-bienso">Biển số</th>
-                  <th className="w-quanly">Người QL</th>
-                  <th className="w-noidung">Nguyên nhân hư hỏng</th>
-                  <th className="w-noidung">Biện pháp thực hiện</th>
-                  <th className="w-noidung">Đề xuất</th>
-                  <th className="w-kinhphi">Dự trù kinh phí</th>
-                  <th className="w-ketqua">Kết quả</th>
+                  <th style={{width: '50px'}}>Stt</th>
+                  <th style={{width: '160px'}}>Đơn vị quản lý</th>
+                  <th style={{width: '120px'}}>Loại PT</th>
+                  <th style={{width: '110px'}}>Nhãn hiệu</th>
+                  <th style={{width: '110px'}}>Nhãn hiệu xe nền</th>
+                  <th style={{width: '120px'}}>Biển số</th>
+                  <th style={{width: '130px'}}>Người trực tiếp quản lý, sử dụng</th>
+                  <th style={{width: '280px'}}>Tình trạng, Nguyên nhân hư hỏng</th>
+                  <th style={{width: '280px'}}>Biện pháp đã thực hiện</th>
+                  <th style={{width: '280px'}}>Đề xuất</th>
+                  <th style={{width: '130px'}}>Dự trù kinh phí</th>
+                  <th style={{width: '120px'}}>Hiện trạng/Kết quả</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredItems.map((item, index) => {
-                  // Xác định màu sắc cho cột kết quả
-                  const isFinished = item.ket_qua.includes('Đã hoàn thành') || item.ket_qua.includes('Đã sửa xong');
-                  
+                  const isFinished = (item.ket_qua || "").includes('Đã hoàn thành') || (item.ket_qua || "").includes('Đã sửa xong');
                   return (
-                    <tr key={item.id} style={{background: index % 2 === 0 ? '#fff' : '#f9fafb'}}>
+                    <tr key={item.id || index} style={{background: index % 2 === 0 ? '#fff' : '#f9fafb'}}>
                       <td className="text-center text-muted">{index + 1}</td>
-                      <td className="fw-bold" style={{color: '#334155'}}>{item.don_vi_quan_ly}</td>
+                      <td className="fw-bold">{item.don_vi_quan_ly}</td>
                       <td className="text-center">{item.loai_phuong_tien}</td>
                       <td className="text-center">{item.nhan_hieu}</td>
                       <td className="text-center">{item.nhan_hieu_sat_xi}</td>
@@ -291,7 +306,7 @@ const PhuongTienHuHong = () => {
                       <td className="text-justify">{item.nguyen_nhan_hu_hong}</td>
                       <td className="text-justify">{item.bien_phap_thuc_hien}</td>
                       <td className="text-justify">{item.de_xuat}</td>
-                      <td className="text-right fw-bold" style={{color: '#0f172a'}}>
+                      <td className="text-right fw-bold">
                         {item.du_tru_kinh_phi ? Number(item.du_tru_kinh_phi).toLocaleString("vi-VN") : "0"}
                       </td>
                       <td>
