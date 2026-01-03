@@ -80,6 +80,61 @@ const PhuongTienHuHong = () => {
 
   if (loading) return <Loading />;
 
+const docSoThanhChu = (function () {
+  const ChuSo = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+  const Tien = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
+
+  function docSoBaChuSo(baso) {
+    let trăm = Math.floor(baso / 100);
+    let chục = Math.floor((baso % 100) / 10);
+    let đơnvị = baso % 10;
+    let kếtquả = "";
+    if (trăm === 0 && chục === 0 && đơnvị === 0) return "";
+    if (trăm !== 0) {
+      kếtquả += ChuSo[trăm] + " trăm ";
+      if (chục === 0 && đơnvị !== 0) kếtquả += "lẻ ";
+    }
+    if (chục !== 0 && chục !== 1) {
+      kếtquả += ChuSo[chục] + " mươi ";
+      if (chục === 0 && đơnvị !== 0) kếtquả = kếtquả + "lẻ ";
+    }
+    if (chục === 1) kếtquả += "mười ";
+    switch (đơnvị) {
+      case 1:
+        kếtquả += (chục !== 0 && chục !== 1) ? "mốt " : "một ";
+        break;
+      case 5:
+        kếtquả += (chục === 0) ? "năm " : "lăm ";
+        break;
+      default:
+        if (đơnvị !== 0) kếtquả += ChuSo[đơnvị] + " ";
+        break;
+    }
+    return kếtquả;
+  }
+
+  return function (sốtiền) {
+    if (sốtiền === 0) return "Không đồng";
+    if (sốtiền < 0) return "Số tiền âm";
+    let s = sốtiền.toString();
+    let i = 0;
+    let kếtquả = "";
+    let vịtrí = [];
+    if (isNaN(sốtiền)) return "";
+    
+    let n = s.length;
+    while (n > 0) {
+      vịtrí.push(s.substring(Math.max(0, n - 3), n));
+      n -= 3;
+    }
+    for (i = vịtrí.length - 1; i >= 0; i--) {
+      let tmp = docSoBaChuSo(parseInt(vịtrí[i]));
+      if (tmp !== "") kếtquả += tmp + Tien[i] + " ";
+    }
+    return kếtquả.trim().charAt(0).toUpperCase() + kếtquả.trim().slice(1) + " đồng";
+  };
+})();
+
   return (
     <main onMouseOver={() => dispatch(closeSubMenu())}>
       <style>{`
@@ -277,12 +332,12 @@ const PhuongTienHuHong = () => {
             <table className="table-custom">
               <thead>
                 <tr>
-                  <th style={{width: '50px'}}>Stt</th>
+                  <th style={{width: '35px'}}>Stt</th>
                   <th style={{width: '160px'}}>Đơn vị quản lý</th>
-                  <th style={{width: '120px'}}>Loại PT</th>
-                  <th style={{width: '110px'}}>Nhãn hiệu</th>
-                  <th style={{width: '110px'}}>Nhãn hiệu xe nền</th>
-                  <th style={{width: '120px'}}>Biển số</th>
+                  <th style={{width: '100px'}}>Loại PT</th>
+                  <th style={{width: '100px'}}>Nhãn hiệu</th>
+                  <th style={{width: '100px'}}>Nhãn hiệu xe nền</th>
+                  <th style={{width: '100px'}}>Biển số</th>
                   <th style={{width: '130px'}}>Người trực tiếp quản lý, sử dụng</th>
                   <th style={{width: '280px'}}>Tình trạng, Nguyên nhân hư hỏng</th>
                   <th style={{width: '280px'}}>Biện pháp đã thực hiện</th>
@@ -321,11 +376,15 @@ const PhuongTienHuHong = () => {
             </table>
           </div>
           
-          {filteredItems.length > 0 && (
+          {filteredItems.length > 0 && (<>
             <div className="p-3 bg-white border-top d-flex justify-content-end align-items-center">
               <span className="fw-bold text-secondary me-3">TỔNG CỘNG:</span>
               <span className="fs-5 fw-bold text-danger">{totalKinhPhi.toLocaleString("vi-VN")} VNĐ</span>
             </div>
+            <div className="p-3 bg-white border-top d-flex justify-content-end align-items-center">
+              <span className="text-muted ms-2">{docSoThanhChu(totalKinhPhi)} </span>
+            </div>
+          </>
           )}
         </div>
       </div>
