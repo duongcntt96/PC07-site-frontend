@@ -1,21 +1,30 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useDispatch } from "react-redux";
+import {
+  Container, Box, Stack, Typography, Button, TextField, Paper, 
+  Chip, TableContainer, Table, TableHead, TableBody, TableRow, 
+  TableCell, Autocomplete, InputAdornment
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import XLSX from 'xlsx-js-style';
+import SearchIcon from '@mui/icons-material/Search';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 // Components
 import PageTitle from "components/PageTitle";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import phuongtienhuhongApi from "api/phuongtienhuhongApi";
 import Loading from "components/Loading";
+import { docSoThanhChu } from "features/Qlpt/Utils/DWUtils";
 
 const PhuongTienHuHong = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterDonVi, setFilterDonVi] = useState("");
   const [selectedKetQua, setSelectedKetQua] = useState([]);
+  const [selectedDonVi, setSelectedDonVi] = useState([]);
 
   // --- Fetch Data ---
   useEffect(() => {
@@ -41,25 +50,19 @@ const PhuongTienHuHong = () => {
     return items.filter(item => {
       const matchSearch = (item.bien_kiem_soat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
                           (item.nhan_hieu || "").toLowerCase().includes(searchTerm.toLowerCase());
-      const matchDonVi = filterDonVi === "" || item.don_vi_quan_ly === filterDonVi;
+      
+      const matchDonVi = selectedDonVi.length === 0 || selectedDonVi.includes(item.don_vi_quan_ly);
+      
       const itemKQ = item.ket_qua || "Chưa xác định";
       const matchKetQua = selectedKetQua.length === 0 || selectedKetQua.includes(itemKQ);
+      
       return matchSearch && matchDonVi && matchKetQua;
     });
-  }, [items, searchTerm, filterDonVi, selectedKetQua]);
+  }, [items, searchTerm, selectedDonVi, selectedKetQua]);
 
   const totalKinhPhi = useMemo(() => {
     return filteredItems.reduce((sum, item) => sum + (parseFloat(item.du_tru_kinh_phi) || 0), 0);
   }, [filteredItems]);
-
-  // --- Handlers ---
-  const handleSelectAllKetQua = () => {
-    setSelectedKetQua(prev => prev.length === danhSachKetQua.length ? [] : danhSachKetQua);
-  };
-
-  const handleKetQuaChange = (val) => {
-    setSelectedKetQua(prev => prev.includes(val) ? prev.filter(i => i !== val) : [...prev, val]);
-  };
 
   const exportToExcel = () => {
     const dataToExport = filteredItems.map((item, index) => ({
@@ -80,314 +83,159 @@ const PhuongTienHuHong = () => {
 
   if (loading) return <Loading />;
 
-const docSoThanhChu = (function () {
-  const ChuSo = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-  const Tien = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
-
-  function docSoBaChuSo(baso) {
-    let trăm = Math.floor(baso / 100);
-    let chục = Math.floor((baso % 100) / 10);
-    let đơnvị = baso % 10;
-    let kếtquả = "";
-    if (trăm === 0 && chục === 0 && đơnvị === 0) return "";
-    if (trăm !== 0) {
-      kếtquả += ChuSo[trăm] + " trăm ";
-      if (chục === 0 && đơnvị !== 0) kếtquả += "lẻ ";
-    }
-    if (chục !== 0 && chục !== 1) {
-      kếtquả += ChuSo[chục] + " mươi ";
-      if (chục === 0 && đơnvị !== 0) kếtquả = kếtquả + "lẻ ";
-    }
-    if (chục === 1) kếtquả += "mười ";
-    switch (đơnvị) {
-      case 1:
-        kếtquả += (chục !== 0 && chục !== 1) ? "mốt " : "một ";
-        break;
-      case 5:
-        kếtquả += (chục === 0) ? "năm " : "lăm ";
-        break;
-      default:
-        if (đơnvị !== 0) kếtquả += ChuSo[đơnvị] + " ";
-        break;
-    }
-    return kếtquả;
-  }
-
-  return function (sốtiền) {
-    if (sốtiền === 0) return "Không đồng";
-    if (sốtiền < 0) return "Số tiền âm";
-    let s = sốtiền.toString();
-    let i = 0;
-    let kếtquả = "";
-    let vịtrí = [];
-    if (isNaN(sốtiền)) return "";
-    
-    let n = s.length;
-    while (n > 0) {
-      vịtrí.push(s.substring(Math.max(0, n - 3), n));
-      n -= 3;
-    }
-    for (i = vịtrí.length - 1; i >= 0; i--) {
-      let tmp = docSoBaChuSo(parseInt(vịtrí[i]));
-      if (tmp !== "") kếtquả += tmp + Tien[i] + " ";
-    }
-    return kếtquả.trim().charAt(0).toUpperCase() + kếtquả.trim().slice(1) + " đồng";
-  };
-})();
-
   return (
-    <main onMouseOver={() => dispatch(closeSubMenu())}>
-      <style>{`
-        /* FILTER */
-        .filter-section {
-          background: #fff;
-          padding: 24px;
-          border-radius: 12px;
-          margin-bottom: 25px;
-          border: 1px solid #e2e8f0;
-          position: relative; 
-          z-index: 100;
-        }
+    <main onMouseOver={() => dispatch(closeSubMenu())} style={{ backgroundColor: '#f8fafc', minHeight: '100vh', paddingBottom: '40px' }}>
+      <PageTitle title="Phương tiện hư hỏng" />
 
-        .dropdown-select-custom { position: relative; width: 100%; }
-        .dropdown-menu-custom {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          min-width: 250px;
-          background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-          z-index: 999;
-          padding: 12px;
-          border: 1px solid #e2e8f0;
-          margin-top: 5px;
-        }
-        .dropdown-select-custom:hover .dropdown-menu-custom { display: block; }
+      {/* BỘ LỌC */}
+      <Stack sx={{mt:5, mb:2, py:2, borderRadius:2, backgroundColor:'rgba(234, 234, 234, 0.38)'}} spacing={3}>
+        <Stack direction="row" justifyContent="space-around" alignItems="center" sx={{ width: '100%'}}>
+          <TextField 
+            type="text" 
+            sx={{minWidth: "25%"}}
+            label="Tìm kiếm bằng biển số hoặc nhãn hiệu"
+            size="small"
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
 
-        .selected-tags-container {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 4px;
-          max-width: 100%;
-        }
-
-        .tag-item {
-          background: #e2e8f0;
-          color: #475569;
-          padding: 2px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          white-space: nowrap;
-        }
-
-        /* TABLE FORMATTING - FIX BORDER & ROUNDED */
-        .table-card {
-          background: #fff;
-          border-radius: 12px;
-          border: 1px solid #cbd5e1; /* Viền bao nét liền */
-          overflow: hidden;
-        }
-
-        .table-responsive {
-          width: 100%;
-          overflow-x: auto;
-        }
-
-        .table-custom {
-          width: 100%;
-          min-width: 1300px;
-          border-collapse: separate; /* Cần thiết để bo tròn 4 góc */
-          border-spacing: 0;
-          table-layout: fixed;
-          border: none;
-        }
-
-        .table-custom thead th {
-          background: #e1e7ee;
-          color: #334155;
-          font-weight: 700;
-          padding: 14px 8px;
-          border-bottom: 1px solid #cbd5e1; /* Nét liền ngang */
-          border-right: 1px solid #cbd5e1;  /* Nét liền dọc */
-          position: sticky;
-          top: 0;
-          z-index: 10;
-          text-align: center;
-        }
-
-        .table-custom tbody td {
-          padding: 12px 8px;
-          border-bottom: 1px solid #e2e8f0; /* Nét liền */
-          border-right: 1px solid #e2e8f0;  /* Nét liền */
-          vertical-align: middle;
-          word-wrap: break-word;
-          font-size: 14px;
-        }
-
-        /* Loại bỏ border-right ở cột cuối */
-        .table-custom thead th:last-child,
-        .table-custom tbody td:last-child {
-          border-right: none;
-        }
-
-        /* Loại bỏ border-bottom dòng cuối */
-        .table-custom tbody tr:last-child td {
-          border-bottom: none;
-        }
-
-        .text-justify { text-align: justify; line-height: 1.5; white-space: pre-wrap; }
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
-        
-        .badge-status {
-          padding: 6px 4px;
-          border-radius: 4px;
-          font-size: 11px;
-          font-weight: 700;
-          display: block;
-          text-align: center;
-        }
-      `}</style>
-
-      <div className="container-fluid px-4 py-3" style={{background: '#f8fafc', minHeight: '100vh'}}>
-        <PageTitle title="Phương tiện hư hỏng" />
-
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h3 className="fw-bold m-0" style={{color: '#0f172a'}}>Quản lý phương tiện hư hỏng</h3>
-          <Link className="btn btn-primary" style={{borderRadius: '8px', padding: '10px 20px'}} to="/phuongtien/huhong/add">
-            <i className="fa fa-plus me-2"></i>Thêm mới
-          </Link>
-        </div>
-
-        {/* BỘ LỌC */}
-        <div className="filter-section shadow-sm">
-          <div className="row g-4 flex-wrap align-items-center"> 
-            <div className="col-12 col-md-4">
-              <label className="small fw-bold text-secondary mb-2 d-block">TÌM KIẾM</label>
-              <div className="position-relative">
-                <i className="fa fa-search position-absolute" style={{left: '12px', top: '12px', color: '#94a3b8'}}></i>
-                <input 
-                  type="text" className="form-control ps-5" 
-                  placeholder="Biển số hoặc nhãn hiệu..." 
-                  value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} 
-                />
-              </div>
-            </div>
-
-            <div className="col-12 col-sm-6 col-md-3">
-              <label className="small fw-bold text-secondary mb-2 d-block">ĐƠN VỊ QUẢN LÝ</label>
-              <select className="form-control ps-5" value={filterDonVi} onChange={(e) => setFilterDonVi(e.target.value)}>
-                <option value="">Tất cả đơn vị</option>
-                {danhSachDonVi.map(dv => <option key={dv} value={dv}>{dv}</option>)}
-              </select>
-            </div>
-
-            <div className="col-12 col-sm-6 col-md-3">
-              <label className="small fw-bold text-secondary mb-2 d-block">KẾT QUẢ</label>
-              <div className="dropdown-select-custom">
-                <div className="form-control d-flex justify-content-between align-items-center" style={{cursor: 'pointer', height: 'auto', minHeight: '42px'}}>
-                  <div className="selected-tags-container">
-                    {selectedKetQua.length === 0 ? (
-                      <span className="text-muted">Tất cả trạng thái</span>
-                    ) : (
-                      selectedKetQua.map(val => (
-                        <span key={val} className="tag-item">{val.length > 15 ? `${val.substring(0, 13)}...` : val}</span>
-                      ))
-                    )}
-                  </div>
-                  <i className="fa fa-chevron-down small text-muted ms-2"></i>
-                </div>
-                <div className="dropdown-menu-custom">
-                  <div className="d-flex justify-content-between border-bottom pb-2 mb-2">
-                    <span className="text-primary fw-bold" style={{fontSize: '12px', cursor: 'pointer'}} onClick={handleSelectAllKetQua}>
-                      {selectedKetQua.length === danhSachKetQua.length ? "Bỏ chọn" : "Chọn tất cả"}
-                    </span>
-                    <span className="text-danger fw-bold" style={{fontSize: '12px', cursor: 'pointer'}} onClick={() => setSelectedKetQua([])}>Xóa</span>
-                  </div>
-                  {danhSachKetQua.map(kq => (
-                    <label key={kq} className="d-flex align-items-center mb-2 " style={{cursor: 'pointer'}}>
-                      <input type="checkbox" className="mr-2" checked={selectedKetQua.includes(kq)} onChange={() => handleKetQuaChange(kq)} />
-                      <span style={{fontSize: '13.5px'}}>{kq}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {filteredItems.length > 0 && (
-              <div className="col-12 col-md-2 align-self-end">
-                <button className="btn btn-success w-100 fw-bold shadow-sm" style={{height: '42px', borderRadius: '8px'}} onClick={exportToExcel}>
-                  <i className="fa fa-file-excel-o me-2"></i>XUẤT EXCEL {`(${filteredItems.length})`}
-                </button>
-              </div>
+          <Autocomplete 
+            multiple
+            limitTags={2}
+            filterSelectedOptions
+            sx={{minWidth: "25%", maxWidth: "30%"}}
+            options={danhSachDonVi}
+            getOptionLabel={(option) => option}
+            value={selectedDonVi}
+            onChange={(event, newValue) => setSelectedDonVi(newValue)}
+            renderInput={(params) => (
+              <TextField {...params} label="Lọc theo đơn vị quản lý" size="small" />
             )}
-          </div>
-        </div>
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => (
+                <Chip 
+                  label={option.length > 25 ? ".." + option.slice(22): option} 
+                  {...getTagProps({ index })} 
+                  color="primary" 
+                  variant="outlined" 
+                  size="small"
+                />
+              ))
+            }
+          />
 
-        {/* BẢNG DỮ LIỆU */}
-        <div className="table-card shadow-sm">
-          <div className="table-responsive">
-            <table className="table-custom">
-              <thead>
-                <tr>
-                  <th style={{width: '35px'}}>Stt</th>
-                  <th style={{width: '160px'}}>Đơn vị quản lý</th>
-                  <th style={{width: '100px'}}>Loại PT</th>
-                  <th style={{width: '100px'}}>Nhãn hiệu</th>
-                  <th style={{width: '100px'}}>Nhãn hiệu xe nền</th>
-                  <th style={{width: '100px'}}>Biển số</th>
-                  <th style={{width: '130px'}}>Người trực tiếp quản lý, sử dụng</th>
-                  <th style={{width: '280px'}}>Tình trạng, Nguyên nhân hư hỏng</th>
-                  <th style={{width: '280px'}}>Biện pháp đã thực hiện</th>
-                  <th style={{width: '280px'}}>Đề xuất</th>
-                  <th style={{width: '130px'}}>Dự trù kinh phí</th>
-                  <th style={{width: '120px'}}>Hiện trạng/Kết quả</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.map((item, index) => {
-                  const isFinished = (item.ket_qua || "").includes('Đã hoàn thành') || (item.ket_qua || "").includes('Đã sửa xong');
-                  return (
-                    <tr key={item.id || index} style={{background: index % 2 === 0 ? '#fff' : '#f9fafb'}}>
-                      <td className="text-center text-muted">{index + 1}</td>
-                      <td className="fw-bold">{item.don_vi_quan_ly}</td>
-                      <td className="text-center">{item.loai_phuong_tien}</td>
-                      <td className="text-center">{item.nhan_hieu}</td>
-                      <td className="text-center">{item.nhan_hieu_sat_xi}</td>
-                      <td className="text-center fw-bold text-primary">{item.bien_kiem_soat}</td>
-                      <td className="text-center">{item.nguoi_quan_ly}</td>
-                      <td className="text-justify">{item.nguyen_nhan_hu_hong}</td>
-                      <td className="text-justify">{item.bien_phap_thuc_hien}</td>
-                      <td className="text-justify">{item.de_xuat}</td>
-                      <td className="text-right fw-bold">
-                        {item.du_tru_kinh_phi ? Number(item.du_tru_kinh_phi).toLocaleString("vi-VN") : "0"}
-                      </td>
-                      <td>
-                        <span className={`badge-status ${isFinished ? 'bg-success text-white' : 'bg-warning text-dark'}`}>
-                          {item.ket_qua || 'Đang xử lý'}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          
-          {filteredItems.length > 0 && (<>
-            <div className="p-3 bg-white border-top d-flex justify-content-end align-items-center">
-              <span className="fw-bold text-secondary me-3">TỔNG CỘNG:</span>
-              <span className="fs-5 fw-bold text-danger">{totalKinhPhi.toLocaleString("vi-VN")} VNĐ</span>
-            </div>
-            <div className="p-3 bg-white border-top d-flex justify-content-end align-items-center">
-              <span className="text-muted ms-2">{docSoThanhChu(totalKinhPhi)} </span>
-            </div>
-          </>
-          )}
-        </div>
-      </div>
+          <Autocomplete 
+            multiple
+            limitTags={2}
+            filterSelectedOptions
+            sx={{minWidth: "25%", maxWidth: "35%"}}
+            options={danhSachKetQua}
+            getOptionLabel={(option) => option}
+            value={selectedKetQua}
+            onChange={(event, newValue) => setSelectedKetQua(newValue)}
+            renderInput={(params) => (
+              <TextField {...params} label="Lọc theo Hiện trạng/Kết quả" size="small" />
+            )}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => (
+                <Chip 
+                  label={option.length > 20 ? option.slice(0,14) + "..": option} 
+                  {...getTagProps({ index })} 
+                  color="primary" 
+                  variant="outlined" 
+                  size="small"
+                />
+              ))
+            }
+          />
+
+          <Button 
+            variant="contained" 
+            onClick={exportToExcel} 
+            disabled={!filteredItems.length}
+            startIcon={<FileDownloadIcon />}
+            sx={{ backgroundColor: '#334155' }}
+          >
+            {filteredItems.length ? `Tải về (${filteredItems.length})` : "null"}
+          </Button>
+        </Stack>
+      </Stack>
+
+      <Box sx={{ mx: 2 }}>
+        <Stack sx={{mb:2}} direction="row" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>Thống kê phương tiện hư hỏng</Typography>
+          <Link style={{borderRadius: '8px', padding: '10px 20px'}} to="/qlpt/huhong/add">
+            <Button variant="outlined" startIcon={<AddCircleOutlineIcon />}>
+              Thêm mới
+            </Button>
+          </Link>
+        </Stack>
+
+        <TableContainer component={Paper} className="table-card shadow-sm" sx={{transform: 'rotateX(180deg)', borderRadius: 3}}>
+          <Table size="small" sx={{ minWidth: 2500, transform: 'rotateX(180deg)' }} className="table-custom">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: '#f1f5f9' }}>
+                <TableCell style={{ width: '35px', textAlign: 'center', fontWeight: 700 }}>Stt</TableCell>
+                <TableCell style={{ width: '160px', textAlign: 'center', fontWeight: 700 }}>Đơn vị quản lý</TableCell>
+                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Loại PT</TableCell>
+                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu</TableCell>
+                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu xe nền</TableCell>
+                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Biển số</TableCell>
+                <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Người trực tiếp quản lý, sử dụng</TableCell>
+                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Tình trạng, Nguyên nhân hư hỏng</TableCell>
+                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Biện pháp đã thực hiện</TableCell>
+                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Đề xuất</TableCell>
+                <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Dự trù kinh phí</TableCell>
+                <TableCell style={{ width: '120px', textAlign: 'center', fontWeight: 700 }}>Hiện trạng/Kết quả</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredItems.map((item, index) => {
+                const isFinished = (item.ket_qua || "").includes('Đã hoàn thành') || (item.ket_qua || "").includes('Đã sửa xong');
+                return (
+                  <TableRow key={item.id || index} sx={{ "&:nth-of-type(even)": { backgroundColor: '#f8fafc' }, "&:hover": { backgroundColor: '#f1f5f9' } }}>
+                    <TableCell className="text-center text-muted">{index + 1}</TableCell>
+                    <TableCell className="fw-bold">{item.don_vi_quan_ly}</TableCell>
+                    <TableCell className="text-center">{item.loai_phuong_tien}</TableCell>
+                    <TableCell className="text-center">{item.nhan_hieu}</TableCell>
+                    <TableCell className="text-center">{item.nhan_hieu_sat_xi}</TableCell>
+                    <TableCell className="text-center fw-bold text-primary">{item.bien_kiem_soat}</TableCell>
+                    <TableCell className="text-center">{item.nguoi_quan_ly}</TableCell>
+                    <TableCell className="text-justify">{item.nguyen_nhan_hu_hong}</TableCell>
+                    <TableCell className="text-justify">{item.bien_phap_thuc_hien}</TableCell>
+                    <TableCell className="text-justify">{item.de_xuat}</TableCell>
+                    <TableCell className="text-right fw-bold">
+                      {item.du_tru_kinh_phi ? Number(item.du_tru_kinh_phi).toLocaleString("vi-VN") : "0"}
+                    </TableCell>
+                    <TableCell align="center">
+                      <span className={`badge-status ${isFinished ? 'bg-success text-white' : 'bg-warning text-dark'}`} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                        {item.ket_qua || 'Đang xử lý'}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {filteredItems.length > 0 && (
+          <Paper elevation={0} sx={{ mt: 2, p: 2.5, borderRadius: 3, border: '1px solid #e2e8f0', backgroundColor: '#fff', textAlign: 'right' }}>
+            <Typography sx={{ fontWeight: 600, color: '#64748b' }}>
+              TỔNG CỘNG: <span style={{ fontSize: '1.4rem', color: '#ef4444', marginLeft: '10px' }}>{totalKinhPhi.toLocaleString("vi-VN")} VNĐ</span>
+            </Typography>
+            <Typography sx={{ mt: 0.5, fontStyle: 'italic', color: '#94a3b8' }}>
+              {docSoThanhChu(totalKinhPhi)}
+            </Typography>
+          </Paper>
+        )}
+      </Box>
     </main>
   );
 };

@@ -1,223 +1,281 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  Box, Paper, TextField, Typography, Stack, Button,
+  Divider, InputAdornment, Card, CardContent
+} from "@mui/material";
+import SaveIcon from '@mui/icons-material/Save';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PaymentsIcon from '@mui/icons-material/Payments';
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { DevTool } from "@hookform/devtools"; // Assuming you have this installed
+
+// Components & Utils
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import phuongtienhuhongApi from "api/phuongtienhuhongApi";
+import { docSoThanhChu } from "features/Qlpt/Utils/DWUtils";
+import PageTitle from "components/PageTitle";
+
+const schema = yup.object().shape({
+  don_vi_quan_ly: yup.string().required("Đơn vị quản lý là bắt buộc"),
+  loai_phuong_tien: yup.string().required("Loại phương tiện là bắt buộc"),
+  nhan_hieu: yup.string().required("Nhãn hiệu là bắt buộc"),
+  nhan_hieu_sat_xi: yup.string().required("Nhãn hiệu xe nền là bắt buộc"),
+  bien_kiem_soat: yup.string().required("Biển kiểm soát là bắt buộc"),
+  nguoi_quan_ly: yup.string().optional(),
+  nguyen_nhan_hu_hong: yup.string().required("Nguyên nhân hư hỏng là bắt buộc"),
+  bien_phap_thuc_hien: yup.string().optional(),
+  de_xuat: yup.string().optional(),
+  // du_tru_kinh_phi: yup.number()
+  //   .typeError("Kinh phí phải là số")
+  //   .min(0, "Kinh phí không thể âm")
+  //   .optional(),
+  ket_qua: yup.string().optional(),
+});
 
 const PhuongtienHuHongForm = () => {
   const dispatch = useDispatch();
-  const [formValues, setFormValues] = useState({
-    don_vi_quan_ly: "",
-    loai_phuong_tien: "",
-    nhan_hieu: "",
-    nhan_hieu_sat_xi: "",
-    bien_kiem_soat: "",
-    nguoi_quan_ly: "", // Thêm mới
-    nguyen_nhan_hu_hong: "",
-    bien_phap_thuc_hien: "",
-    de_xuat: "", // Thêm mới
-    du_tru_kinh_phi: "", // Thêm mới
-    ket_qua: "",
-  });
-  
-  const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: null });
-    if (generalError) setGeneralError(null);
-  };
+  const { register, handleSubmit, formState, setValue, watch, control, setError } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      don_vi_quan_ly: "",
+      loai_phuong_tien: "",
+      nhan_hieu: "",
+      nhan_hieu_sat_xi: "",
+      bien_kiem_soat: "",
+      nguoi_quan_ly: "",
+      nguyen_nhan_hu_hong: "",
+      bien_phap_thuc_hien: "",
+      de_xuat: "",
+      du_tru_kinh_phi: "",
+      ket_qua: "",
+    }
+  });
 
-  // Hàm xử lý riêng cho số tiền để đảm bảo chỉ nhập số
-  const handleNumberChange = (e) => {
-    const value = e.target.value.replace(/\D/g, ""); // Chỉ giữ lại số
-    setFormValues({ ...formValues, [e.target.name]: value });
-  };
+  const { errors, isSubmitting } = formState;
+  const du_tru_kinh_phi_value = watch("du_tru_kinh_phi");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setErrors({});
+  const onSubmit = async (values) => {
     setGeneralError(null);
 
     try {
-      // Chuyển đổi du_tru_kinh_phi sang kiểu số trước khi gửi API
       const payload = {
-        ...formValues,
-        du_tru_kinh_phi: parseFloat(formValues.du_tru_kinh_phi) || 0
+        ...values,
+        du_tru_kinh_phi: parseFloat(values.du_tru_kinh_phi) || 0
       };
 
-      const resp = await phuongtienhuhongApi.addPhuongtienHuHong(payload);
-      
-      // Xử lý logic chuyển hướng hoặc thông báo thành công
+      const resp = await phuongtienhuhongApi.add(payload);
       if (resp.status === 201 || resp.status === 200 || resp.id) {
         window.location.replace("/phuongtien/huhong");
       }
     } catch (err) {
       console.error(err);
-      setGeneralError("Có lỗi xảy ra khi lưu dữ liệu.");
-    } finally {
-      setSubmitting(false);
+      if (err.response && err.response.data && err.response.data.errors) {
+        // Assuming API returns errors in a format like { fieldName: ["error message"] }
+        Object.entries(err.response.data.errors).forEach(([fieldName, messages]) => {
+          console.log(fieldName);
+          
+          setError(fieldName, { type: "manual", message: messages[0] });
+        });
+      } else {
+        setGeneralError("Có lỗi xảy ra khi lưu dữ liệu. Vui lòng thử lại.");
+      }
     }
   };
-
-  const docSoThanhChu = (function () {
-  const ChuSo = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-  const Tien = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
-
-  function docSoBaChuSo(baso) {
-    let trăm = Math.floor(baso / 100);
-    let chục = Math.floor((baso % 100) / 10);
-    let đơnvị = baso % 10;
-    let kếtquả = "";
-    if (trăm === 0 && chục === 0 && đơnvị === 0) return "";
-    if (trăm !== 0) {
-      kếtquả += ChuSo[trăm] + " trăm ";
-      if (chục === 0 && đơnvị !== 0) kếtquả += "lẻ ";
-    }
-    if (chục !== 0 && chục !== 1) {
-      kếtquả += ChuSo[chục] + " mươi ";
-      if (chục === 0 && đơnvị !== 0) kếtquả = kếtquả + "lẻ ";
-    }
-    if (chục === 1) kếtquả += "mười ";
-    switch (đơnvị) {
-      case 1:
-        kếtquả += (chục !== 0 && chục !== 1) ? "mốt " : "một ";
-        break;
-      case 5:
-        kếtquả += (chục === 0) ? "năm " : "lăm ";
-        break;
-      default:
-        if (đơnvị !== 0) kếtquả += ChuSo[đơnvị] + " ";
-        break;
-    }
-    return kếtquả;
-  }
-
-  return function (sốtiền) {
-    if (sốtiền === 0) return "Không đồng";
-    if (sốtiền < 0) return "Số tiền âm";
-    let s = sốtiền.toString();
-    let i = 0;
-    let kếtquả = "";
-    let vịtrí = [];
-    if (isNaN(sốtiền)) return "";
-    
-    let n = s.length;
-    while (n > 0) {
-      vịtrí.push(s.substring(Math.max(0, n - 3), n));
-      n -= 3;
-    }
-    for (i = vịtrí.length - 1; i >= 0; i--) {
-      let tmp = docSoBaChuSo(parseInt(vịtrí[i]));
-      if (tmp !== "") kếtquả += tmp + Tien[i] + " ";
-    }
-    return kếtquả.trim().charAt(0).toUpperCase() + kếtquả.trim().slice(1) + " đồng";
-  };
-})();
 
   return (
-    <main onMouseOver={() => dispatch(closeSubMenu())}>
-      <div className="container mt-4">
-        <div className="card p-4 shadow-sm">
-          <h5 className="mb-4">Thêm báo cáo phương tiện hư hỏng</h5>
-          
-          {generalError && <div className="alert alert-danger">{generalError}</div>}
-          
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              {/* Cột 1 */}
-              <div className="col-md-6">
-                <div className="mb-3">
-                  <label className="form-label">Đội quản lý, sử dụng</label>
-                  <input className="form-control" name="don_vi_quan_ly" value={formValues.don_vi_quan_ly} onChange={handleChange} placeholder="Ví dụ: Đội chữa cháy và CNCH KV Trảng Bàng"required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Loại phương tiện</label>
-                  <input className="form-control" name="loai_phuong_tien" value={formValues.loai_phuong_tien} onChange={handleChange} placeholder="Ví dụ: Xe chữa cháy, Xe thang 32m" required />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Biển kiểm soát</label>
-                  <input className="form-control" name="bien_kiem_soat" value={formValues.bien_kiem_soat} onChange={handleChange} />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Người trực tiếp quản lý</label>
-                  <input className="form-control" name="nguoi_quan_ly" value={formValues.nguoi_quan_ly} onChange={handleChange} placeholder="Ví dụ: Báo Minh Quân"/>
-                </div>
-              </div>
+    <Box
+      sx={{ backgroundColor: '#f8fafc', minHeight: '100vh', paddingBottom: '40px', p: 3 }}
+      onMouseOver={() => dispatch(closeSubMenu())}
+    >
+      <PageTitle title="Thêm phương tiện hư hỏng" />
+      
+      <Box sx={{  mx: 'auto', mt: 4, px: 2 }}>
+        <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e2e8f0' }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: '#1e293b', mb: 3 }}>
+              Thêm phương tiện hư hỏng
+            </Typography>
 
-              {/* Cột 2 */}
-              <div className="col-md-6">
-                <div className="mb-3">
-                  <label className="form-label">Nhãn hiệu</label>
-                  <input className="form-control" name="nhan_hieu" value={formValues.nhan_hieu} onChange={handleChange} placeholder="Ví dụ: Hino DOL/Isuzu Morita/Man Rosenbauer/Renault Saurus/..."/>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Nhãn hiệu xe nền</label>
-                  <input className="form-control" name="nhan_hieu_sat_xi" value={formValues.nhan_hieu_sat_xi} onChange={handleChange} placeholder="Ví dụ: Hino FG1JJUB/Isuzu FVR/MAN TGM 18.240/..."/>
-                </div>
+            {generalError && (
+              <Box sx={{ p: 2, mb: 3, backgroundColor: '#fef2f2', border: '1px solid #fee2e2', borderRadius: 2, color: '#dc2626' }}>
+                {generalError}
+              </Box>
+            )}
 
-                <div className="mb-3">
-                  <label className="form-label fw-bold">Dự trù kinh phí (VNĐ)</label>
-                  <input 
-                    className="form-control text-danger fw-bold" 
-                    name="du_tru_kinh_phi" 
-                    type="text"
-                    placeholder="Nhập số tiền..."
-                    value={formValues.du_tru_kinh_phi} 
-                    onChange={handleNumberChange} 
-                  />
-                  
-                  {formValues.du_tru_kinh_phi && (
-                    <div className="mt-2 p-2 bg-light border rounded">
-                      <div className="text-muted small">
-                        <strong>Số tiền:</strong> {Number(formValues.du_tru_kinh_phi).toLocaleString('vi-VN')} VNĐ
-                      </div>
-                      <div className="text-primary small italic">
-                        <strong>Bằng chữ:</strong> <em>{docSoThanhChu(formValues.du_tru_kinh_phi)}</em>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack direction={{ xs: "column", lg: "row" }} spacing={3} sx={{ pb: 2 }}>
+                {/* Thông tin đơn vị & phương tiện */}
+                <Stack sx={{ flex: { xs: '1 1 100%', lg: '1 1 25%' } }} spacing={2.5}>
+                    <TextField
+                      label="Đội quản lý, sử dụng"
+                      fullWidth
+                      size="small"
+                      {...register("don_vi_quan_ly")}
+                      error={!!errors.don_vi_quan_ly}
+                      helperText={errors.don_vi_quan_ly?.message}
+                      placeholder="Ví dụ: Đội chữa cháy và CNCH KV Trảng Bàng"
+                      required
+                    />
+                    <TextField
+                      label="Loại phương tiện"
+                      fullWidth
+                      size="small"
+                      {...register("loai_phuong_tien")}
+                      error={!!errors.loai_phuong_tien}
+                      helperText={errors.loai_phuong_tien?.message}
+                      placeholder="Ví dụ: Xe chữa cháy, Xe thang 32m"
+                      required
+                    />
+                    <TextField
+                      label="Biển kiểm soát"
+                      fullWidth
+                      size="small"
+                      {...register("bien_kiem_soat")}
+                      error={!!errors.bien_kiem_soat}
+                      helperText={errors.bien_kiem_soat?.message}
+                    />
+                    <TextField
+                      label="Người trực tiếp quản lý"
+                      fullWidth
+                      size="small"
+                      {...register("nguoi_quan_ly")}
+                      error={!!errors.nguoi_quan_ly}
+                      helperText={errors.nguoi_quan_ly?.message}
+                      placeholder="Ví dụ: Báo Minh Quân"
+                    />
+                  </Stack>
 
-            <hr />
+                {/* Nhãn hiệu & Kinh phí */}
+                <Stack sx={{ flex: { xs: '1 1 100%', lg: '1 1 25%' } }} spacing={2.5}>
+                    <TextField
+                      label="Nhãn hiệu"
+                      fullWidth
+                      size="small"
+                      {...register("nhan_hieu")}
+                      error={!!errors.nhan_hieu}
+                      helperText={errors.nhan_hieu?.message}
+                      placeholder="Ví dụ: Hino DOL/Isuzu Morita..."
+                    />
+                    <TextField
+                      label="Nhãn hiệu xe nền"
+                      fullWidth
+                      size="small"
+                      {...register("nhan_hieu_sat_xi")}
+                      error={!!errors.nhan_hieu_sat_xi}
+                      helperText={errors.nhan_hieu_sat_xi?.message}
+                      placeholder="Ví dụ: Hino FG1JJUB/Isuzu FVR..."
+                    />
+                    <Box>
+                      <TextField
+                        label="Dự trù kinh phí (VNĐ)"
+                        fullWidth
+                        size="small"
+                        {...register("du_tru_kinh_phi")}
+                        value={Number(du_tru_kinh_phi_value).toLocaleString('vi-VN') === "0" ? "" : Number(du_tru_kinh_phi_value).toLocaleString('vi-VN')}
+                        onChange={(e) => setValue("du_tru_kinh_phi", e.target.value.replace(/\D/g, ""))}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <PaymentsIcon sx={{ color: '#ef4444' }} />
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{ "& .MuiInputBase-input": { fontWeight: 700, color: '#ef4444' } }}
+                        error={!!errors.du_tru_kinh_phi}
+                        helperText={errors.du_tru_kinh_phi?.message}
+                      />
+                      {du_tru_kinh_phi_value && (
+                        <Box sx={{ mt: 1.5, p: 1.5, backgroundColor: '#f1f5f9', borderRadius: 2, borderLeft: '4px solid #0284c7', wordWrap: 'break-word' }}>
+                          <Typography variant="caption" sx={{ fontStyle: 'italic', color: '#0284c7', fontWeight: 500, whiteSpace: 'normal', overflowWrap: 'break-word' }}>
+                            Bằng chữ: {docSoThanhChu(du_tru_kinh_phi_value)}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  </Stack>
 
-            <div className="mb-3">
-              <label className="form-label">Tình trạng, Nguyên nhân hư hỏng</label>
-              <textarea className="form-control" name="nguyen_nhan_hu_hong" rows="3" value={formValues.nguyen_nhan_hu_hong} onChange={handleChange}></textarea>
-            </div>
+                <Stack sx={{ flex: { xs: '1 1 100%', lg: '1 1 50%' } }} spacing={2.5}> 
+                    <TextField
+                      label="Tình trạng, Nguyên nhân hư hỏng"
+                      fullWidth
+                      multiline
+                      rows={4}  
+                      {...register("nguyen_nhan_hu_hong")}
+                      error={!!errors.nguyen_nhan_hu_hong}
+                      helperText={errors.nguyen_nhan_hu_hong?.message}
+                    />
+                    <TextField
+                      label="Biện pháp đã thực hiện"
+                      fullWidth
+                      multiline
+                      rows={3} 
+                      {...register("bien_phap_thuc_hien")}
+                      error={!!errors.bien_phap_thuc_hien}
+                      helperText={errors.bien_phap_thuc_hien?.message}
+                    />
+                    <TextField
+                      label="Đề xuất"
+                      fullWidth
+                      multiline
+                      rows={3} 
+                      {...register("de_xuat")}
+                      error={!!errors.de_xuat}
+                      helperText={errors.de_xuat?.message}
+                    />
+                    <TextField
+                      label="Kết quả/Hiện trạng"
+                      fullWidth
+                      size="small"
+                      {...register("ket_qua")}
+                      error={!!errors.ket_qua}
+                      helperText={errors.ket_qua?.message}
+                      placeholder="Ví dụ: Đã hoàn thành sửa chữa, Đang chờ báo giá..."
+                    />
+                  </Stack>
+              </Stack>
 
-            <div className="mb-3">
-              <label className="form-label">Biện pháp đã thực hiện</label>
-              <textarea className="form-control" name="bien_phap_thuc_hien" rows="2" value={formValues.bien_phap_thuc_hien} onChange={handleChange}></textarea>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Đề xuất</label>
-              <textarea className="form-control" name="de_xuat" rows="2" value={formValues.de_xuat} onChange={handleChange}></textarea>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Kết quả/Hiện trạng</label>
-              <input className="form-control" name="ket_qua" value={formValues.ket_qua} onChange={handleChange} placeholder="Đã hoàn thành sửa chữa/Đang sửa chữa/Đang chờ phê duyệt chủ trương/Đang chờ báo giá/Đang đề xuất"/>
-            </div>
-
-            <div className="d-flex gap-2">
-              <button className="btn btn-primary px-5" type="submit" disabled={submitting}>
-                {submitting ? "Đang gửi..." : "Lưu"}
-              </button>
-              <button className="btn btn-secondary" type="button" onClick={() => window.history.back()}>
-                Hủy bỏ
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </main>
+            </form>
+          </CardContent>
+        </Card>
+      </Box>
+      {/* Nút bấm outside of Card */} 
+      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }} onMouseOver={() => dispatch(closeSubMenu())}>
+        <Stack direction="row" spacing={2}>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isSubmitting}
+            startIcon={<SaveIcon />}
+            sx={{
+              px: 4,
+              borderRadius: 2,
+              textTransform: 'none',
+              fontWeight: 600,
+              backgroundColor: '#0ea5e9',
+              '&:hover': { backgroundColor: '#0284c7' }
+            }}
+            onClick={handleSubmit(onSubmit)} // Attach handleSubmit here
+          >
+            {isSubmitting ? "Đang gửi..." : "Lưu báo cáo"}
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => window.history.back()}
+            sx={{ px: 3, borderRadius: 2, textTransform: 'none', fontWeight: 600, color: '#64748b', borderColor: '#e2e8f0' }}
+          >
+            Hủy bỏ
+          </Button>
+        </Stack>
+      </Box>
+      <DevTool control={control} />
+    </Box>
   );
 };
 

@@ -14,10 +14,9 @@ import { Login, Register } from "features/User";
 import Profile from "features/User/Profile";
 
 // --- Features: Phuongtien & Qlpt ---
-import { ChungloaiList, PhuongtienInfo } from "features/Phuongtien";
-import { Phuongtien } from "features/Qlpt/Phuongtien";
+
+
 import {
-  FormAddPhuongTien,
   FormNhapkho,
   ListKho,
   Nhapkho
@@ -30,6 +29,8 @@ import Person from "features/Tochuc/Person";
 import Coso from "features/Coso/Coso";
 import { Diaban } from "features/Coso";
 import { Paper } from "@mui/material";
+import PhuongTienHuHong from "features/PhuongTienHuHong";
+import PhuongtienHuHongForm from "features/PhuongTienHuHong/phuongtienHuHongForm";
 
 const App = () => {
   return (
@@ -95,17 +96,7 @@ const App = () => {
             }
           />
 
-          <Route
-            path="/qlpt/phuongtien/:id"
-            element={
-              <>
-                <Helmet>
-                  <title>Chi tiết phương tiện</title>
-                </Helmet>
-                <Phuongtien />
-              </>
-            }
-          />
+
 
           <Route
             path="/qlpt/xuatnhap"
@@ -143,54 +134,27 @@ const App = () => {
             }
           />
 
+
+
           <Route
-            path="/qlpt/xuatnhap/addPT"
+            path="/qlpt/huhong"
             element={
               <>
                 <Helmet>
-                  <title>Thêm phương tiện mới</title>
+                  <title>Phương tiện hư hỏng</title>
                 </Helmet>
-                <FormAddPhuongTien />
+                <PhuongTienHuHong />
               </>
             }
           />
-
           <Route
-            path="/qlpt/xuatnhap/:id"
+            path="/qlpt/huhong/add"
             element={
               <>
                 <Helmet>
-                  <title>Chỉnh sửa phiếu nhập kho</title>
+                  <title>Thêm phương tiện hư hỏng</title>
                 </Helmet>
-                <FormNhapkho />
-              </>
-            }
-          />
-
-          {/* --- Phuong Tien --- */}
-          <Route
-            path="/phuongtien"
-            element={
-              <>
-                <Helmet>
-                  <title>Phương tiện</title>
-                </Helmet>
-                <ChungloaiList />
-              </>
-            }
-          />
-
-          <Route path="/phuongtien/:id" element={<PhuongtienInfo />} />
-
-          {/* --- Co So --- */}
-          <Route
-            path="/coso"
-            element={
-              <>
-                <Helmet>
-                  <title>Quản lý cơ sở</title>
-                </Helmet>
-                <Diaban />
+                <PhuongtienHuHongForm />
               </>
             }
           />

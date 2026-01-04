@@ -1,5 +1,5 @@
 import chungloaiApi from "api/chungloaiApi";
-import phuongtienApi from "api/phuongtienApi";
+
 import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,10 +33,7 @@ const Modal = () => {
       alert("Lỗi");
       return;
     }
-    const respone = await phuongtienApi.addChild({
-      ...values,
-      noi_bo_tri: data.id,
-    });
+
     if (respone.status) {
       alert("Lỗi " + respone.statusText);
       return;

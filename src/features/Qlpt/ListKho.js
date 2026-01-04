@@ -1,6 +1,6 @@
 import qlptApi from "api/qlptApi";
 import React, { useEffect, useState } from "react";
-import Item from "./components/Item";
+
 import { treeOptionsConvert } from "../../utils/DWUtils";
 import usePushURL from "hooks/usePushURL";
 
