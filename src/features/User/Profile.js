@@ -1,14 +1,19 @@
 import userApi from "api/userApi";
 import React, { useState, useEffect } from "react";
-import PageTitle from "components/PageTitle";
+import { Helmet } from "react-helmet";
 import avatar from "assets/images/avatar-default.jpg";
+import avatar_default from "assets/images/avatar-default.jpg";
 import { useDispatch } from "react-redux";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import { decode } from "base-64";
+import { LocalDateFormat } from "utils/DWUtils";
+
+import {Stack,TextField,Typography, Avatar} from '@mui/material'
 
 const Profile = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
+  const [capbac, setCapbac] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,99 +23,81 @@ const Profile = () => {
         const { access } = JSON.parse(token);
         if (access) {
           const accessInfo = JSON.parse(decode(access.split(".")[1]));
-          // console.log("get username success", accessInfo.name);
+          console.log("get username success", accessInfo);
           const id = accessInfo.user_id;
           const rp = await userApi.getUserProfile(id);
           setUser(rp);
         }
       }
+      setCapbac(await (await userApi.getCapbac()).data)
     };
     fetchData();
   }, []);
 
   const {
     username,
+    avatar,
     ten,
     ngay_sinh,
     que_quan,
     ho_khau,
     sdt,
-    trinh_do_hoc_van,
+    trinh_do_chinh_tri,
     trinh_do_chuyen_mon,
     cap_bac,
     ngay_vao_nganh,
   } = user;
+
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <PageTitle title={`${ten} - Thông tin cá nhân !`} />
-      <div className="row">
-        <div className="col-md-3 border-right">
-          <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-            <img src={avatar} alt="avatar" style={{ borderRadius: "50%" }} />
-            <span className="text-black-50">{cap_bac}</span>
-            <span className="font-weight-bold">{ten}</span>
+    <>
+      <Helmet>
+        <title>{`${ten} - Thông tin cá nhân !`}</title>
+      </Helmet>
+      <Stack direction='row' spacing={3} sx={{mt:5}}>
+        <Stack>
+          <Avatar sx={{ width: 200, height: 200}}>
+            <img src={avatar||avatar_default} alt="avatar" height='100%'/>
+          </Avatar>
+          <p>{capbac.find(e=>e.id==cap_bac)?.ten}</p>
+          <p>{ten}</p>
+          <p>{ LocalDateFormat(ngay_vao_nganh)}</p>
+        </Stack>
 
-            <span>{ngay_vao_nganh}</span>
-          </div>
-        </div>
+        <Stack sx={{ flexGrow:3}}>
+            <h3>Thông tin cá nhân</h3>
+            <Stack spacing={2} sx={{mt:3}}>
+              <TextField label="Họ và tên" value={ten} disabled
+                InputLabelProps={{shrink: true}}
+              />
+              <TextField label="Ngày sinh" value={ngay_sinh} disabled 
+                InputLabelProps={{shrink: true}}
+              />
+              <TextField label="Số điện thoại" value={sdt} disabled
+                InputLabelProps={{shrink: true}}
+              />
+              <TextField label="Quê quán" value={que_quan} disabled
+                InputLabelProps={{shrink: true}}
+              />
+              <TextField label="Hộ khẩu thường trú" value={ho_khau} disabled
+                InputLabelProps={{shrink: true}}
+              />
+            </Stack>
+        </Stack>
 
-        <div className="col-md-5 border-right">
-          <div className="p-3 py-5">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="text-right">Thông tin cá nhân</h4>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-12">
-                <label className="labels">Họ và tên</label>
-                <input className="form-control" name="ten" value={ten} />
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-md-6">
-                <label className="labels">Ngày sinh</label>
-                <input className="form-control" value={ngay_sinh} />
-              </div>
-              <div className="col-md-6">
-                <label className="labels">Số điện thoại</label>
-                <input className="form-control" value={sdt} />
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-12">
-                <label className="labels">Quê quán</label>
-                <input className="form-control" value={que_quan} />
-              </div>
-            </div>
-            <div className="row mt-2">
-              <div className="col-md-12">
-                <label className="labels">Hộ khẩu thường trú</label>
-                <input className="form-control" value={ho_khau} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Stack sx={{ flexGrow:2}}>
+          <h3>Trình độ, sở trường</h3>
+          <Stack spacing={2} sx={{mt:3}}>
+            <TextField label="Trình độ chính trị" value={trinh_do_chinh_tri} disabled
+              InputLabelProps={{shrink: true}}
+            />
+            <TextField label="Trình độ chuyên môn" value={trinh_do_chuyen_mon} disabled
+              InputLabelProps={{shrink: true}}
+            />
+          </Stack>
+          </Stack>
 
-        <div className="col-md-4">
-          <div className="p-3 py-5">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="text-right">Trình độ, sở trường</h4>
-            </div>
-            <div className="col-md-12">
-              <label className="labels">Trình độ học vấn</label>
-              <input className="form-control" value={trinh_do_hoc_van} />
-            </div>
-            <div className="col-md-12">
-              <label className="labels">Trình độ chuyên môn</label>
-              <input className="form-control" value={trinh_do_chuyen_mon} />
-            </div>
-            <div className="col-md-12">
-              <label className="labels">Chuyên ngành đào tạo</label>
-              <input className="form-control" value={trinh_do_chuyen_mon} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+      </Stack>
+    </>
   );
 };
 

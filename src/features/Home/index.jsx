@@ -5,7 +5,6 @@ import PageTitle from "components/PageTitle";
 
 import TTSControls from "components/TTSControls";
 
-import "./style.css";
 
 function Home() {
   const dispatch = useDispatch();

@@ -3,11 +3,13 @@ import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Filter from "features/Coso/components/Filter";
-import { pushURL, VNDFormat } from "./Utils/DWUtils";
+import { VNDFormat } from "../../utils/DWUtils";
 import { BiAddToQueue } from "react-icons/bi";
 import { useParams, useLocation } from "react-router-dom";
+import usePushURL from "hooks/usePushURL";
 
 const Phuongtien = () => {
+  const { pushURL } = usePushURL();
   const paramsURL = new URLSearchParams(window.location.search);
   const dispatch = useDispatch();
   const [id, setID] = useState(useParams().id || paramsURL.get("id"));
@@ -29,11 +31,9 @@ const Phuongtien = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: khoData } = await qlptApi.getListKho();
-      const { data: nguonData } = await qlptApi.getListNguoncap();
-      setKho(khoData);
-      setNguoncap(nguonData);
-    }; 
+      setKho(await (await qlptApi.getListKho()).data);
+      setNguoncap(await (await qlptApi.getListNguoncap()).data);
+    };
     fetchData();
     pushURL(filters);
   }, []);
@@ -60,7 +60,7 @@ const Phuongtien = () => {
   return (
     <main onMouseOver={(e) => dispatch(closeSubMenu())}>
       <div>
-        <a href="nhapkho/add">
+        <a href="xuatnhap/add">
           <BiAddToQueue />
           <span> Tạo phiếu mới</span>
         </a>

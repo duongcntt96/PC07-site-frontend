@@ -1,30 +1,27 @@
+import React from "react";
 import userApi from "api/userApi";
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import {DevTool} from '@hookform/devtools'
+import {useForm} from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import {Stack, Button, TextField, Typography} from "@mui/material"
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const [values, setValues] = useState({});
-
-  const [error, setError] = useState(null);
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login(values);
-  };
-
-  const login = async ({ username, password }) => {
+  const {control, register, formState: {errors, isValid}, handleSubmit} = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: yupResolver(yup.object({
+      username: yup.string().required("Tên đăng nhập không được để trống"),
+      password: yup.string().required("Mật khẩu không được để trống")
+    }))
+  })
+  const onSubmit = (value) => {
     userApi
-      .login({ username, password })
+      .login({...value})
       .then(function (response) {
-        // handle success
+        // success
         response = response.data;
         localStorage.setItem("secret", JSON.stringify(response));
         if (response.status) return;
@@ -37,64 +34,26 @@ const Login = () => {
         }
       })
       .catch(function (error) {
-        const status = error.response.status;
-        if (status === 400) setError("Vui lòng nhập đầy đủ thông tin!");
-        if (status === 401) setError("Tài khoản không đúng!");
+        alert( error.response.status + ": " + error.response.data.detail);
       });
-  };
-
+  }
   return (
-    <main
-      onMouseOver={(e) => dispatch(closeSubMenu())}
-      style={{
-        backgroundImage: `url("https://akm-img-a-in.tosshub.com/indiatoday/images/story/202005/international_firefighters_day.jpeg")`,
-      }}
-    >
-      <div className="row">
-        <div className="col-sm-7"></div>
-
-        <div className="col-sm-4">
-          <form
-            style={{ marginTop: "80px", height: "360px" }}
-            className="form"
-            onSubmit={(e) => {
-              handleSubmit(e);
-            }}
-          >
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              placeholder="Username"
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <br />
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              placeholder="Password"
-              onChange={(e) => handleChange(e)}
-              required
-            />
-            <br />
-
-            {error && <p className="alert alert-danger">{error}</p>}
-            <button className="btn -green" type="submit">
-              ĐĂNG NHẬP
-            </button>
-            <p>Quên mật khẩu?</p>
-            <button
-              className="btn"
-              onClick={() => history.push("/user/register")}
-            >
-              ĐĂNG KÝ
-            </button>
-          </form>
-        </div>
-      </div>
-    </main>
+      <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack sx={{m:5}}>
+        <Stack spacing={2} sx={{width:'50%', alignSelf:'center'}}>
+          <TextField type="text" label="Tên đăng nhập" {...register('username')}
+            error={!!errors.username} helperText={errors.username?.message}/>
+          <TextField type="password" label="Mật khẩu" {...register('password')}
+            error={!!errors.password} helperText={errors.password?.message}/>
+          <Button type="submit" variant="contained" disabled={!isValid}>
+            ĐĂNG NHẬP
+          </Button>
+          <Typography sx={{alignSelf:'center'}}>Bạn chưa có tài khoản?</Typography>
+          <Button variant="outlined" href="register" disabled>Đăng ký</Button>
+        </Stack>
+      </Stack>
+      <DevTool control={control}/>
+      </form>
   );
 };
 

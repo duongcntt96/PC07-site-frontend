@@ -45,6 +45,7 @@ axiosClient.interceptors.request.use(async (config) => {
         }
       } else {
         // access token valid
+        console.log(access);
         config.headers.Authorization = `Bearer ${access}`;
       }
     }

@@ -1,4 +1,4 @@
-export * from "./ListKho";
+export { ListKho } from "./ListKho";
 export * from "./Nhapkho";
-export * from "./FormNhapkho";
-export * from "./FormAddPhuongTien";
+export { FormNhapkho } from "./FormNhapkho";
+export { FormAddPhuongTien } from "./FormAddPhuongTien";

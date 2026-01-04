@@ -1,6 +1,15 @@
 import axiosClient from "./axiosClient";
 import { normalizeList } from "./responseHelper";
 const qlptApi = {
+  // #######################################
+  getThucluc: (params) => {
+    const url = "/qlpt/thucluc";
+    return axiosClient.get(url, { params });
+  },
+  getTonkho: (params) => {
+    const url = "/qlpt/tonkho";
+    return axiosClient.get(url, { params });
+  },
   textToMp3: async (arg) => {
     // Accept either a string or an options object { text, lang }
     let text = null;

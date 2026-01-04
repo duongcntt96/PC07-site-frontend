@@ -3,12 +3,12 @@ import { normalizeList } from "./responseHelper";
 
 const chungloaiApi = {
   getAll: async (params) => {
-    const url = "/phuongtien/chungloai";
+    const url = "/qlpt/chungloai";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
   get: (id) => {
-    const url = `/phuongtien/chungloai/${id}`;
+    const url = `/qlpt/chungloai/${id}`;
     return axiosClient.get(url);
   },
 };

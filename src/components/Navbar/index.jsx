@@ -1,119 +1,43 @@
-import { closeSubMenu, openSubMenu } from "components/SubMenu/subMenuSlice";
 import User from "components/User";
-import React, { useRef, useState, useEffect } from "react";
-import { FaBars } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo.jpg";
-import banner from "../../assets/images/banner.jpg";
-
+import React, { useState } from "react";
+import logo from "../../assets/images/logo.png";
 import { links } from "../../data";
-import menuApi from "api/menuApi";
+import { Link } from "react-router-dom";
+import {AppBar, Toolbar, Stack,Paper} from '@mui/material'
+import Submenu from "./Submenu";
 
-const Navbar = () => {
-  const linksContainerRef = useRef(null);
-  const linksRef = useRef(null);
-  const dispatch = useDispatch();
+export default function Navbar() {
+  const [isHovered, setIsHovered] = useState(false);
 
-  const [showLinks, setShowLinks] = useState(false);
-  // Menu links: start with local fallback and override from API when available
-  const [menuLinks, setMenuLinks] = useState(links);
-
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        const { data } = await menuApi.getHeader();
-        if (Array.isArray(data) && data.length) setMenuLinks(data);
-      } catch (err) {
-        console.error("Failed to fetch header menu", err);
-      }
-    };
-    fetchMenu();
-  }, []);
-
-  // useEffect(() => {
-  //   const linksHeight = linksRef.current.getBoundingClientRect().height;
-  //   if (showLinks) linksContainerRef.current.style.height = `${linksHeight}px`;
-  //   else linksContainerRef.current.style.height = "0px";
-  // }, [showLinks]);
-
-  const displaySubmenu = (e) => {
-    const sublink = menuLinks.find((link) => link.text === e.target.textContent);
-    if (!sublink || !sublink.children) return;
-    const tmpPositon = e.target.getBoundingClientRect();
-    const center = (tmpPositon.left + tmpPositon.right) / 2;
-    const bottom = tmpPositon.bottom;
-    const action = openSubMenu({
-      data: sublink.children,
-      position: { center, bottom },
-    });
-    dispatch(action);
-  };
-
-  const handleMouseOver = (e) => {
-    if (!e.target.classList.contains("link")) {
-      const action = closeSubMenu();
-      dispatch(action);
-    }
+  const imageStyle = {
+    height: '80px', // Khuyên dùng px thay vì vh cho logo để ổn định layout
+    cursor: 'pointer',
+    transition: 'transform 0.3s ease-in-out', // Hiệu ứng mượt mà kiểu MUI
+    transform: isHovered ? 'scale(1.2)' : 'scale(1)', // Phóng to 20% khi hover
   };
 
   return (
     <>
-      {/* <div className="banner">
-        <img src={banner} alt="" width="100%" />
-      </div> */}
-      <nav onMouseOver={(e) => handleMouseOver(e)}>
-        <div className="nav-center">
-          <div className="nav__header">
-            <Link to="/">
-              <img className="logo" src={logo} alt="logo" />
-            </Link>
-            <button
-              className="nav__toggle"
-              onClick={() => setShowLinks(!showLinks)}
-            >
-              <FaBars />
-            </button>
-          </div>
-
-          <div className="nav__links" ref={linksContainerRef}>
-            <ul className="links" ref={linksRef}>
-              {menuLinks.map((link) => {
-                const { id, url, text } = link;
-                return (
-                  <li key={id}>
-                    <Link
-                      className="link"
-                      to={url}
-                      onMouseOver={(e) => displaySubmenu(e)}
-                    >
-                      {text}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div>
-            <User />
-          </div>
-          {/* <ul className="social-icons">
-          {social.map((link) => {
-            const { id, url, icon } = link;
-            return (
-              <li key={id}>
-                <a href={url} target="_blank" rel="noreferrer">
-                  {icon}
-                </a>
-              </li>
-            );
-          })}
-        </ul> */}
-        </div>
-      </nav>
+      <AppBar position='sticky' sx={{ p:2 }} >
+        <Toolbar variant="dense">
+          <Link to="/">
+            <img src={logo} alt="logo" height='80vh' onMouseOver={(e) => e.target.style.transform = "scale(1.1)"} onMouseOut={(e) => e.target.style.transform = "scale(1)"} />
+          </Link>
+          <Stack
+            direction='row'
+            justifyContent='center'
+            alignItems='center'
+            spacing={1}
+            sx={{ flexGrow: 1}}>
+            {links.map((link) => {
+              return (link.active&&
+                <Submenu key={link.id} {...link}/>
+              );
+            })}
+          </Stack>
+          <User />
+        </Toolbar>
+      </AppBar>
     </>
   );
 };
-
-export default Navbar;

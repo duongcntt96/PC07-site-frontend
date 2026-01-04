@@ -2,13 +2,13 @@ import userApi from "api/userApi";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 
 import { BiError } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const [values, setValues] = useState({});
   const [error, setError] = useState({});
 
@@ -80,6 +80,7 @@ const Register = () => {
                 </span>
               </>
             )}
+            <br />
             <input
               name="first_name"
               onChange={(e) => handleChange(e)}
@@ -100,6 +101,7 @@ const Register = () => {
                 {error.first_name}
               </span>
             )}
+            <br />
             <input
               name="email"
               onChange={(e) => handleChange(e)}
@@ -120,6 +122,7 @@ const Register = () => {
                 {error.email}
               </span>
             )}
+            <br />
             <input
               name="password"
               onChange={(e) => handleChange(e)}
@@ -140,7 +143,7 @@ const Register = () => {
                 {error.password}
               </span>
             )}
-
+            <br />
             <button className="btn -green" type="submit">
               TẠO TÀI KHOẢN
             </button>

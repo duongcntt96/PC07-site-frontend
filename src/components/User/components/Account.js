@@ -1,16 +1,18 @@
 import avatar from "assets/images/avatar-default.jpg";
 import React from "react";
 import { GoSignIn } from "react-icons/go";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { profiles } from "../data";
 
+import {Button} from '@mui/material'
+
 const Account = ({ show, username }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem("secret");
     console.log("Đăng xuất thành công");
-    history.push("/home");
+    navigate("/");
     window.location.reload();
   };
 
@@ -18,7 +20,9 @@ const Account = ({ show, username }) => {
     <div className={show ? "profile-submenu show" : "profile-submenu"}>
       <div className="profile-user-avatar">
         <img src={avatar} alt="avatar" />
+      <Button onClick={() => logout()}>logout</Button>
       </div>
+
 
       {profiles.map((link, index) => {
         const { id, url, text, icon } = link;
@@ -45,7 +49,7 @@ const Account = ({ show, username }) => {
             <div className="profile-submenu-links">Đăng nhập</div>
             <div
               className="mask"
-              onClick={() => history.push("/user/login")}
+              onClick={() => navigate("/user/login")}
             ></div>
           </>
         )}

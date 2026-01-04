@@ -1,142 +1,171 @@
 import qlptApi from "api/qlptApi";
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import Filter from "features/Coso/components/Filter";
 import Item from "./components/Item";
-import { pushURL } from "./Utils/DWUtils";
+import { treeOptionsConvert } from "../../utils/DWUtils";
+import usePushURL from "hooks/usePushURL";
+
 import Loading from "components/Loading";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const ListKho = () => {
+import {useForm, Controller} from 'react-hook-form'
+import {DevTool} from '@hookform/devtools'
+import {Stack, Typography, TextField, Autocomplete, MenuItem, MenuList} from '@mui/material'
+import {TableContainer, Paper, Alert, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
+
+export const ListKho = () => {
+  const { pushURL } = usePushURL();
   const paramsURL = new URLSearchParams(window.location.search);
-
-  console.log("====================================");
-  console.log(useLocation());
-  console.log("====================================");
-
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
-  const [filters, setValues] = useState({
-    chung_loai: paramsURL.get("chung_loai"),
-    kho_nhap: paramsURL.get("kho_nhap"),
-  });
 
   const [kho, setKho] = useState([]);
   const [chungloai, setChungloai] = useState([]);
-  const [listPT, setListPT] = useState([]);
-  const [tree, setTree] = useState([]);
-  const [isTreeShowing, setIsTreeShowing] = useState(true);
+  const [thucluc, setThucluc] = useState({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data: khoData } = await qlptApi.getListKho();
-      const { data: chungloaiData } = await qlptApi.getListChungloai();
-      setKho(khoData);
-      setChungloai(chungloaiData);
-    }; 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const { data: list_PT } = await qlptApi.getListPhuongtien({ ...filters });
-      setListPT(Array.isArray(list_PT) ? list_PT : []);
-      setLoading(false);
-    };
-    fetchData();
-    pushURL(filters);
-  }, [filters]);
-
-  useEffect(() => {
-    // Normalize listPT to an array in case API returns unexpected shapes
-    const listPTArray = Array.isArray(listPT) ? listPT : [];
-
-    const getChild = (item) => {
-      // populate children and ensure arrays exist
-      item.chungloai = chungloai.filter((f) => f.parent == item.id) || [];
-      item.chungloai.forEach((e) => getChild(e));
-
-      item.phuongtien = listPTArray.filter((f) => {
-        return f.chung_loai === item.id;
-      });
-
-      item.totals = () => {
-        let totals = 0;
-        (item.phuongtien || []).forEach((e) => (totals += e.totals || e.totals));
-        (item.chungloai || []).forEach((e) => (totals += e.totals()));
-        return totals;
-      };
-
-      item.count = () => {
-        let totals = 0;
-        (item.chungloai || []).forEach((e) => (totals += e.count()));
-        return totals + (item.phuongtien ? item.phuongtien.length : 0);
-      };
-
-      return;
-    };
-
-    // Build tree from root nodes (those without parent)
-    const roots = chungloai.filter((c) => !c.parent && c !== undefined) || [];
-    roots.forEach((r) => getChild(r));
-    setTree(roots);
-  }, [listPT, chungloai]);
-
-  const handleChange = (e) => {
-    setValues({ ...filters, [e.target.name]: e.target.value });
+  const {control, register, watch, setValue, getValues} = useForm({
+    defaultValues: {
+      chung_loai: paramsURL.get('chung_loai'),
+      kho_nhap: paramsURL.get('kho_nhap')||1,
+    }
+  })
+  const fetchConst = async () => {
+    setKho(await (await qlptApi.getListKho()).data);
+    setChungloai(treeOptionsConvert((await qlptApi.getListChungloai()).data))
+  }
+  const fetchData = async (value={}) => {
+    setThucluc(await qlptApi.getThucluc({...value}));
   };
+  useEffect(()=>{
+    fetchConst()
+    fetchData(watch())
+  },[])
+  useEffect(() => {
+    let timer;
+    const sub = watch((value)=>{
+      timer = setTimeout(()=>fetchData(value), 300);
+      pushURL(value)
+    })
+    return () => {
+      sub.unsubscribe()
+      clearTimeout(timer);
+    }
+  }, [watch]);
 
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <div className="pt-header">
-        <Filter
-          title="Lọc theo kho"
-          name="kho_nhap"
-          target={filters}
-          filters={kho}
-          handleChange={handleChange}
-        />
-        <Filter
-          title="Lọc theo chủng loại"
-          name="chung_loai"
-          target={filters}
-          filters={chungloai}
-          handleChange={handleChange}
-        />
-      </div>
+    <>
+    <Stack direction='row' justifyContent='flex-end' spacing={1} sx={{mt:3}}>
+      <Controller
+        name='kho_nhap'
+        control={control}
+        defaultValue={null}
+        render={({field})=> (
+          <Autocomplete {...field}
+            disableClearable
+            sx={{width:300}}
+            options={treeOptionsConvert(kho)}
+            getOptionLabel={(option)=> { 
+              return option?.ten || treeOptionsConvert(kho).find(e=>e.id==option)?.ten || "null"
+            }}
+            isOptionEqualToValue={(option,value)=>option.id==value}
+            onChange={(event,value,reason,details)=> setValue('kho_nhap',value?parseInt(value.id):null)}
+            renderInput={(params)=>(
+              <TextField {...params}
+                label="Đơn vị"
+                size="small"
+              />
+            )}
+            renderOption={(props,option)=>(
+              <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+            )}
+          />)}
+      />
+      <Controller
+        name='chung_loai'
+        control={control}
+        defaultValue={null}
+        render={({field})=> (
+          <Autocomplete {...field}
+            // disableClearable
+            sx={{width:300}}
+            options={chungloai}
+            getOptionLabel={(option)=> { 
+              return option?.ten || chungloai.find(e=>e.id==option)?.ten || "null"
+            }}
+            isOptionEqualToValue={(option,value)=>option.id==value}
+            onChange={(event,value,reason,details)=> setValue('chung_loai',value?parseInt(value.id):null)}
+            renderInput={(params)=>(
+              <TextField {...params}
+                label="Danh mục"
+                size="small"
+              />
+            )}
+            renderOption={(props,option)=>(
+              <li {...props} style={{padding:'0 10px', margin: 1, marginLeft: `${option.level * 20}px`, backgroundColor:'lightblue', borderRadius:'0 10px 10px 10px'}}>{option.ten}</li>
+            )}
+            componentsProps={{popper: {style: {width:'fit-content', maxWidth:'60%'}}}}
+          />)}
+      />
+    </Stack>
 
-      <ul id="tree">
-        <li>
-          <h5>
-            <span
-              onClick={() => setIsTreeShowing(!isTreeShowing)}
-              style={{ cursor: "pointer" }}
-              className="unselectable"
-            >
-              {loading ? (
-                <Loading />
-              ) : (
-                `Tìm thấy ${listPT.length} loại phương tiện ${
-                  filters.kho_nhap
-                    ? "tại " + kho.find((e) => e.id == filters.kho_nhap).ten
-                    : ""
-                }`
-              )}
-            </span>
-          </h5>
-          <br />
-          <ul className={`${isTreeShowing ? "nested active" : "nested"}`}>
-            {tree.map((e, i) => (
-              <Item e={e} key={i} />
-            ))}
-          </ul>
-        </li>
-      </ul>
-    </main>
+    {thucluc.count*thucluc.sum?(
+    <Stack sx={{mt:1}}>
+      <Alert severity="success" >
+        {`Tìm thấy ${thucluc.count} danh mục với số lượng ${thucluc.sum} !`}
+      </Alert>
+
+      <TableContainer component={Paper} sx={{ mt: 2}} >
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              {/* <TableCell align="center">TT</TableCell> */}
+              <TableCell align="center">Danh mục</TableCell>
+              <TableCell align="center">Đvt</TableCell>
+              <TableCell align="center" sx={{width: '10%'}}>Số lượng</TableCell>
+              {/* <TableCell align="center">Năm sử dụng</TableCell>
+              <TableCell align="center">Nguyên giá</TableCell> */}
+              {/* <TableCell align="center">Thành tiền</TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {chungloai.filter((e)=>e.maso.includes(chungloai.find(e=>e.id==getValues('chung_loai'))?.maso)||!getValues('chung_loai')).map(({id,level,ten,maso}) => {
+              if (thucluc.data.filter(e=>e.chung_loai__maso.includes(maso)).length) {
+                const subtotals = thucluc.data.filter(e=>e.chung_loai__maso.includes(maso)).reduce((sum,value)=>sum+=value.totals,0)
+                if (subtotals) return (
+                  <>
+                    <TableRow>
+                      <TableCell colSpan={2} sx={{pl:`${level*10}px`, fontWeight:'bold'}}>
+                        {ten}
+                      </TableCell>
+                      <TableCell align="center" sx={{fontWeight:'bold'}}>
+                        {subtotals}
+                      </TableCell>
+                    </TableRow>
+                    {thucluc.data.filter(e=>e.chung_loai==id&&e.totals>0)?.map((f)=>(
+                      <TableRow>
+                        <TableCell sx={{pl:`${(level+1)*10}px`}}>
+                          <Link to={`/qlpt/xuatnhap?search=${f.ten}`}>
+                          {f.ten}
+                          </Link>
+                          </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell align="center">{f.totals}</TableCell>
+                      </TableRow>
+                    ))}
+                  </>
+                )
+              }
+
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
+    ):(
+      <Stack alignItems='center'>
+        <Alert severity="warning" >
+          {`Không có phương tiện được tìm thấy !`}
+        </Alert>
+      </Stack>
+    )}
+    <DevTool control={control}/>
+    </>
   );
 };
-
-export { ListKho };

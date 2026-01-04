@@ -1,6 +1,5 @@
 import axios from "axios";
 import axiosClient from "./axiosClient";
-import { normalizeList } from "./responseHelper";
 
 const userApi = {
   login: ({ username, password }) => {
@@ -13,22 +12,36 @@ const userApi = {
     return axios.post(url, { username, first_name, password, email });
   },
 
-  getAllTeams: async (params) => {
-    const url = "/user/team";
-    const resp = await axiosClient.get(url, { params });
-    return normalizeList(resp);
+  getBophan: (params) => {
+    const url = "/user/bophan";
+    return axiosClient.get(url);
   },
 
-  getAllUsers: async (params) => {
+  getCapbac: (params) => {
+    const url = "/user/capbac";
+    return axiosClient.get(url);
+  },
+
+  getChucvu: (params) => {
+    const url = "/user/chucvu";
+    return axiosClient.get(url);
+  },
+
+  getAllUsers: (params) => {
     const url = "/user/user";
-    const resp = await axiosClient.get(url, { params });
-    return normalizeList(resp);
+    return axiosClient.get(url);
   },
 
   getUser: (id) => {
     const url = `/user/user/${id}`;
     return axiosClient.get(url);
   },
+
+  getAllUserProfiles: (params) => {
+    const url = "/user/profile/";
+    return axiosClient.get(url,{params});
+  },
+  
   getUserProfile: (id) => {
     const url = `/user/profile/${id}`;
     return axiosClient.get(url);

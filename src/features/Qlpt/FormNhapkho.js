@@ -1,339 +1,359 @@
-import qlptApi from "api/qlptApi";
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import Filter from "features/Coso/components/Filter";
-import { pushURL, VNDFormat } from "./Utils/DWUtils";
-import { useParams } from "react-router-dom";
-import { RiDeleteBin5Line, RiSave2Fill } from "react-icons/ri";
-import { BiAddToQueue } from "react-icons/bi";
+import React, { useEffect, useState, useCallback } from 'react'
+import qlptApi from 'api/qlptApi'
+import {Stack, TextField, Button, Typography, CircularProgress, Autocomplete } from '@mui/material'
+import {FaSave} from 'react-icons/fa'
+import {MdKeyboardArrowDown, MdKeyboardArrowUp} from 'react-icons/md'
+import {LoadingButton} from '@mui/lab'
+import {TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
+import { TiDelete } from 'react-icons/ti'
+import {useForm, useFieldArray, Controller} from 'react-hook-form'
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { VNDFormat, swapItems, treeOptionsConvert } from 'utils/DWUtils'
+import { useParams, useNavigate } from 'react-router-dom'
 
-const FormNhapkho = () => {
-  const dispatch = useDispatch();
-  const paramsURL = new URLSearchParams(window.location.search);
-  const [id, setID] = useState(useParams().id || paramsURL.get("id"));
+import {DevTool} from '@hookform/devtools'
 
-  const [phuongTienValues, setPhuongTienValues] = useState({
-    so_luong: null,
-    nam_cap: null,
-    nguyen_gia: null,
-    thanh_tien: null,
-    phuong_tien: null,
-    nguon_cap: null,
-  });
-  const [formValues, setFormValues] = useState({
-    phuong_tiens: [],
-    success: false,
-  });
 
-  const [listPhuongtien, setListPhuongtien] = useState([]);
-  const [kho, setKho] = useState([]);
-  const [nguoncap, setNguoncap] = useState([]);
+export const FormNhapkho = () => {
+  const navigate = useNavigate();
 
-  // get const data list
+  const [kho, setKho] = useState([])
+  const [chungloai, setChungloai] = useState([])
+  const [nguoncap,setNguoncap] = useState([])
   useEffect(() => {
-    const fetchData = async () => {
-      const { data: list } = await qlptApi.getListPhuongtien({ to_import: true });
-      setListPhuongtien(list);
-      const { data: khoData } = await qlptApi.getListKho();
-      const { data: nguonData } = await qlptApi.getListNguoncap();
-      setKho(khoData);
-      setNguoncap(nguonData);
-    };
-    fetchData();
-  }, []);
-
-  // get condition data
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        setFormValues(await qlptApi.getPhieunhap(id));
+    const fetchInitialData = async () => {
+      try {
+        const [khoResponse, chungloaiResponse, nguoncapResponse] = await Promise.all([
+          qlptApi.getListKho(),
+          qlptApi.getListChungloai(),
+          qlptApi.getListNguoncap(),
+        ]);
+        setKho(treeOptionsConvert(khoResponse.data));
+        setChungloai(treeOptionsConvert(chungloaiResponse.data));
+        setNguoncap(treeOptionsConvert(nguoncapResponse.data));
+      } catch (error) {
+        console.error("Failed to fetch initial data", error);
       }
     };
-    fetchData();
-  }, [id]);
+    fetchInitialData();
+  }, []);
 
-  // rewrite data
+  const [loading,setLoading] = useState(false)
+  const [id, setID] = useState(useParams().id)
+  const {control, register, formState, handleSubmit, watch, setValue, getValues} = useForm({
+    defaultValues: {
+    kho_nhap:1,
+    thoi_gian: null,
+    note:"",
+    quyetdinh:"",
+    phuong_tiens:[{
+      chung_loai: null,
+      ten: null,
+      so_luong: null,
+      nam_cap: null,
+      nguon_cap: null,
+      nguyen_gia: null,
+  },]
+  },
+    resolver: yupResolver(yup.object({
+      // success: yup.bool(),
+      kho_nhap: yup.number().typeError("Phải là số").required('Không được bỏ trống'),
+      thoi_gian: yup.string().required('Không được bỏ trống'),
+      note: yup.string(),
+      quyetdinh: yup.string(),
+      phuong_tiens: yup.array(yup.object().shape({
+        chung_loai: yup.number().required("Không được để trống"),
+        ten: yup.string().required("Không được để trống"),
+        so_luong: yup.number().positive(">0").typeError(""),
+        nam_cap: yup.number(),
+        nguon_cap: yup.number(),
+        nguyen_gia: yup.number(),
+    }))
+  }))
+  })
+  const {fields, append, remove, insert, replace, swap} = useFieldArray({
+    name: 'phuong_tiens',
+    control
+  })
+
+  const {errors, isSubmitting} = formState
+
   useEffect(() => {
-    setPhuongTienValues({
-      ...phuongTienValues,
-      thanh_tien: phuongTienValues.nguyen_gia * phuongTienValues.so_luong,
-    });
-  }, [phuongTienValues.nguyen_gia, phuongTienValues.so_luong]);
-  useEffect(() => {
-    setPhuongTienValues({
-      ...phuongTienValues,
-      nguyen_gia: phuongTienValues.so_luong
-        ? phuongTienValues.thanh_tien / phuongTienValues.so_luong
-        : 0,
-    });
-  }, [phuongTienValues.thanh_tien, phuongTienValues.so_luong]);
+    const fetchPhieunhap = async () => {
+      if (id) {
+        setLoading(true);
+        try {
+          const { success, kho_nhap, thoi_gian, note, quyetdinh, phuong_tiens } = await qlptApi.getPhieunhap(id);
+          setValue("kho_nhap", kho_nhap);
+          setValue("thoi_gian", thoi_gian);
+          setValue("note", note);
+          setValue("quyetdinh", quyetdinh);
+          setValue("success", success);
+          replace(phuong_tiens);
+        } catch (error) {
+          console.error("Failed to fetch phieunhap", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchPhieunhap();
+  }, [id, setValue, replace]);
 
-  // Update input data
-  const handleFormValuesChange = (e) => {
-    if (e.target.type === "radio") {
-      setFormValues({
-        ...formValues,
-        [e.target.name]: !formValues[e.target.name],
-      });
-    } else setFormValues({ ...formValues, [e.target.name]: e.target.value });
-  };
-  // Update input data
-  const handlePhuongTienValuesChange = (e) => {
-    if (e.target.type === "radio") {
-      alert(e.target.name + ":" + e.target.checked);
-      setPhuongTienValues({
-        ...phuongTienValues,
-        [e.target.name]: e.target.checked,
-      });
-    } else
-      setPhuongTienValues({
-        ...phuongTienValues,
-        [e.target.name]: e.target.value,
-      });
-  };
-
-  // Push request
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (value) => {
+    // Update
     if (id) {
-      const result = await qlptApi.updatePhieunhap({ ...formValues, id: id });
-    } else {
-      const result = await qlptApi.addPhieunhap({ ...formValues });
-      const ID = await result.id;
-      setID(ID);
-      pushURL({ id: ID });
+      const {kho_nhap, thoi_gian, note, quyetdinh, phuong_tiens,} = await qlptApi.updatePhieunhap({...value,id})
+      setValue('kho_nhap',kho_nhap)
+      setValue('thoi_gian',thoi_gian)
+      setValue('note',note)
+      setValue('quyetdinh',quyetdinh)
+      replace(phuong_tiens)
     }
-  };
+    // Create
+    else {
+      const result = await qlptApi.addPhieunhap(value)
+      setID(result.id)
+      navigate(`/qlpt/xuatnhap/${result.id}`)
+    }
+  }
 
-  // Push request
-  const handleSubSubmit = async (e) => {
-    e.preventDefault();
-    const id2 = id;
-    setID(null);
-    const result = await qlptApi.addChitietPhieunhap({
-      ...phuongTienValues,
-      phieu_nhap: id2,
-    });
-    if (result && result.status !== 400) {
-      setPhuongTienValues({
-        so_luong: null,
-        nam_cap: null,
-        nguyen_gia: null,
-        phuong_tien: null,
-        nguon_cap: null,
-      });
-    } else alert("Lỗi");
-    setID(id2);
-  };
-  // Push request
-  const delItem = async (ID) => {
-    const id2 = id;
-    setID(null);
-    const result = await qlptApi.delChitietPhieunhap(ID);
-    if (result && result.status !== 400) {
-      // alert("Xóa rồi");
-    } else alert("Lỗi");
-    setID(id2);
-  };
-
+  if (loading) return <Stack justifyContent='center' alignItems='center'>
+    <CircularProgress/>
+  </Stack>
+  else
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <div>
-        <h5>{id ? "Chỉnh sửa phiếu nhập" : "Nhập phương tiện"}</h5>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Lý do nhập: </label>
-            <input
-              className="form-control"
-              type="text"
-              name="note"
-              placeholder="Bộ Công an cấp/Tự mua sắm/Thu hồi/..."
-              value={formValues.note}
-              onChange={handleFormValuesChange}
-            />
-          </div>
-
-          <div>
-            <label>Quyết định số: </label>
-            <input
-              className="form-control"
-              type="text"
-              name="quyetdinh"
-              placeholder="123/QĐ-CAT, ngày 1/1/2022"
-              value={formValues.quyetdinh}
-              onChange={handleFormValuesChange}
-            />
-          </div>
-
-          <div>
-            <label>Ngày tháng nhập/xuất: </label>
-            <input
-              className="form-control"
-              type="date"
-              name="thoi_gian"
-              value={formValues.thoi_gian}
-              onChange={handleFormValuesChange}
-            />
-          </div>
-
-          <div>
-            <label>Xuất từ kho: </label>
-            <Filter
-              title="Chọn kho xuất"
-              name="kho_xuat"
-              target={formValues}
-              filters={kho}
-              handleChange={handleFormValuesChange}
-            />
-          </div>
-          <div>
-            <label>Nhập vào kho: </label>
-            <Filter
-              title="Chọn kho nhập"
-              name="kho_nhap"
-              target={formValues}
-              filters={kho}
-              handleChange={handleFormValuesChange}
-            />
-          </div>
-          <div>
-            <span>Đã thực hiện: </span>
-            <input
-              type="radio"
-              name="success"
-              checked={formValues.success}
-              onClick={handleFormValuesChange}
-            />
-          </div>
-
-          <p>Danh mục phương tiện:</p>
-          <div className="alert alert-success">
-            <table>
-              <tr>
-                <th style={{ width: "50px", textAlign: "center" }}>Stt</th>
-                <th style={{ width: "450px", textAlign: "center" }}>
-                  Tên phương tiện
-                </th>
-                <th style={{ width: "90px", textAlign: "center" }}>Số lượng</th>
-                <th style={{ width: "150px", textAlign: "center" }}>
-                  Nguồn cấp
-                </th>
-                <th style={{ width: "90px", textAlign: "center" }}>Năm cấp</th>
-                <th style={{ width: "120px", textAlign: "center" }}>
-                  Nguyên giá
-                </th>
-                <th style={{ width: "120px", textAlign: "center" }}>
-                  Thành tiền
-                </th>
-              </tr>
-              {formValues.phuong_tiens.map((e, i) => (
-                <tr>
-                  <td align="center">{i + 1}</td>
-                  <td align="left">
-                    {listPhuongtien.find((f) => f.id == e.phuong_tien)?.ten}
-                  </td>
-                  <td align="center">{e.so_luong}</td>
-                  <td align="center">
-                    {nguoncap.find((f) => f.id == e.nguon_cap)?.ten}
-                  </td>
-                  <td align="center">{e.nam_cap}</td>
-                  <td align="right">{VNDFormat(e.nguyen_gia)}</td>
-                  <td align="right">{VNDFormat(e.nguyen_gia * e.so_luong)}</td>
-                  <td>
-                    <RiDeleteBin5Line
-                      color="red"
-                      onClick={() => delItem(e.id)}
+  <>
+      <Stack component='form' spacing={2} onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h6">Nhập phương tiện</Typography>
+        <Stack direction="row" spacing={3}>
+          <Stack width="50%" spacing={2}>
+            <Controller
+              name='kho_nhap'
+              control={control}
+              defaultValue={null}
+              render={({field})=> (
+                <Autocomplete {...field}
+                  options={kho}
+                  getOptionLabel={(option)=> { 
+                    return option?.ten || kho.find(e=>e.id==option)?.ten || "null"
+                  }}
+                  isOptionEqualToValue={(option,value)=>option.id==value}
+                  onChange={(event,value,reason,details)=> setValue('kho_nhap',value?parseInt(value.id):null)}
+                  renderInput={(params)=>(
+                    <TextField {...params}
+                      label="Đơn vị quản lý, sử dụng"
+                      size="small"
+                      InputLabelProps={{shrink:true, }}
+                      inputProps={{...params.inputProps, style:{fontSize:'13px'}}}
+                      disabled={isSubmitting}
                     />
-                  </td>
-                </tr>
-              ))}
-              <tr>
-                <td align="center">...</td>
-                <td>
-                  <Filter
-                    title="Chọn phương tiện"
-                    name="phuong_tien"
-                    target={phuongTienValues}
-                    filters={listPhuongtien}
-                    handleChange={handlePhuongTienValuesChange}
-                    handleClick={async (e) => {
-                      // Refresh list of phương tiện for the picker
-                      const { data: list } = await qlptApi.getListPhuongtien({ to_import: true });
-                      setListPhuongtien(Array.isArray(list) ? list : []);
-                    }}
-                  />
-                  <BiAddToQueue
-                    onClick={(e) => {
-                      window.open(
-                        "addPT",
-                        "Thêm phương tiện mới",
-                        "width=600,height=500"
-                      );
-                    }}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="number"
-                    name="so_luong"
-                    value={phuongTienValues.so_luong || ""}
-                    onChange={handlePhuongTienValuesChange}
-                  />
-                </td>
-                <td>
-                  <Filter
-                    title="Chọn nguồn cấp"
-                    name="nguon_cap"
-                    target={phuongTienValues}
-                    filters={nguoncap}
-                    handleChange={handlePhuongTienValuesChange}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="nam_cap"
-                    value={phuongTienValues.nam_cap || ""}
-                    onChange={handlePhuongTienValuesChange}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="number"
-                    name="nguyen_gia"
-                    value={phuongTienValues.nguyen_gia || ""}
-                    onChange={handlePhuongTienValuesChange}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="number"
-                    name="thanh_tien"
-                    value={phuongTienValues.thanh_tien || ""}
-                    onChange={handlePhuongTienValuesChange}
-                  />
-                </td>
-                <td>
-                  <RiSave2Fill color="blue" onClick={handleSubSubmit} />
-                </td>
-              </tr>
-            </table>
-          </div>
-
-          <br />
-          <button className="form-control" type="submit">
-            Lưu
-          </button>
-        </form>
-      </div>
-      <br />
-    </main>
-  );
-};
-
-export { FormNhapkho };
+                  )}
+                  renderOption={(props,option)=>(
+                    <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+                  )}
+                />)}
+            />
+            <TextField label='Ghi chú'
+              size="small"
+              InputLabelProps={{shrink: true}}
+              inputProps={{style:{fontSize:'13px'}}}
+              {...register('note')}
+              error={!!errors.note} helperText={errors.note?.message}
+              disabled={isSubmitting}
+              />
+          </Stack>
+          <Stack width="50%" spacing={2}>
+            <TextField
+            label="Thời gian"
+            size="small"
+            InputLabelProps={{shrink: true}}
+            inputProps={{style:{fontSize:'13px'}}}
+            type='date'
+            {...register('thoi_gian')}
+            error={!!errors.thoi_gian} helperText={errors.thoi_gian?.message}
+            disabled={isSubmitting}
+            />
+            <TextField label="Số chứng từ" size='small' InputLabelProps={{shrink: true}} inputProps={{style:{fontSize:'13px'}}}
+              {...register('quyetdinh')}
+              disabled={isSubmitting}/>
+          </Stack>
+        </Stack>
+            <TableContainer>
+              <Table size='small' padding='none'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center" width={20}>TT</TableCell>
+                    <TableCell align="center" width={280}>Chủng loại</TableCell>
+                    <TableCell align="center" width={400}>Tên phương tiện</TableCell>
+                    <TableCell align="center" width={80}>Số lượng</TableCell>
+                    <TableCell align="center" width={150}>Nguồn cấp</TableCell>
+                    <TableCell align="center" width={70}>Năm sử dụng</TableCell>
+                    <TableCell align="center" width={120}>Nguyên giá</TableCell>
+                    <TableCell align="center" width={130}>Thành tiền</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {fields.map((item,index) => (
+                  <TableRow>
+                    <TableCell padding='none' align='center'>
+                      {index+1}
+                      </TableCell>
+                    <TableCell padding='none'>
+                      <Controller
+                        name={`phuong_tiens.${index}.chung_loai`}
+                        control={control}
+                        defaultValue={null}
+                        render={({field})=> (
+                          <Autocomplete {...field}
+                            options={chungloai}
+                            getOptionLabel={(option)=> option?.ten || chungloai.find(e=>e.id==option)?.ten || "null" }
+                            isOptionEqualToValue={(option,value)=>option.id==value}
+                            onChange={(event,value,reason,details)=> setValue(`phuong_tiens.${index}.chung_loai`,value?parseInt(value.id):null)}
+                            renderInput={(params)=>(
+                              <TextField {...params}
+                                size='small'
+                                maxRows={2}
+                                inputProps={{ ...params.inputProps, style: {fontSize:'13px'}}}
+                                error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].chung_loai)}
+                                disabled={isSubmitting}
+                              />
+                            )}
+                            renderOption={(props,option)=>(
+                              <li {...props} style={{ padding:'0 10px', margin: 1, marginLeft: `${option.level * 20}px`, backgroundColor:'lightblue', borderRadius:'0 10px 10px 10px'}}>{option.ten}</li>
+                            )}
+                            getOptionDisabled={(option)=> {
+                              if(option.children.length) return true
+                              return false
+                            }}
+                            componentsProps={{popper:{style: {width:'fit-content', maxWidth:'70%'}, placement:'bottom-start'}}}
+                          />)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        size='small'
+                        sx={{width:'100%'}}
+                        inputProps={{style:{fontSize:'13px'}}}
+                        {...register(`phuong_tiens.${index}.ten`)}
+                        error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].ten)}
+                        disabled={isSubmitting}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TextField
+                        type="number"
+                        size='small'
+                        inputProps={{min:1, style:{fontSize:'13px', textAlign:'center'}}}
+                        {...register(`phuong_tiens.${index}.so_luong`)}
+                        error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong)}
+                        // helperText={errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong?.message}
+                        disabled={isSubmitting}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Controller
+                        name={`phuong_tiens.${index}.nguon_cap`}
+                        control={control}
+                        defaultValue={null}
+                        render={({field})=> (
+                          <Autocomplete {...field}
+                            disableClearable
+                            options={nguoncap}
+                            getOptionLabel={(option)=> {
+                              return option?.ten || nguoncap.find(e=>e.id==option)?.ten || "null"
+                            }}
+                            isOptionEqualToValue={(option,value)=>option.id==value}
+                            onDoubleClick={() => {
+                              setValue(`phuong_tiens.${index}.nguon_cap`,getValues(`phuong_tiens.${index-1}.nguon_cap`))
+                              setValue(`phuong_tiens.${index}.nam_cap`,getValues(`phuong_tiens.${index-1}.nam_cap`))
+                              setValue(`phuong_tiens.${index}.nguyen_gia`,getValues(`phuong_tiens.${index-1}.nguyen_gia`))
+                              return
+                            }
+                          }
+                            onChange={(event,value,reason,details)=> setValue(`phuong_tiens.${index}.nguon_cap`,value?parseInt(value.id):null)}
+                            renderInput={(params)=> (
+                              <TextField {...params}
+                                size='small'
+                                inputProps={{ ...params.inputProps, style: {fontSize:'13px'}}}
+                                error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].nguon_cap)}
+                                disabled={isSubmitting}
+                              />
+                              )}
+                            renderOption={(props,option)=>(<li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>)}
+                          />)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                    <TextField
+                      type="text"
+                      size='small'
+                      inputProps={{style:{fontSize:'13px', textAlign:'center'}}}
+                      {...register(`phuong_tiens.${index}.nam_cap`)}
+                      onDoubleClick={()=>setValue(`phuong_tiens.${index}.nam_cap`,getValues(`phuong_tiens.${index-1}.nam_cap`))}
+                      error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong)}
+                      disabled={isSubmitting}
+                      />
+                    </TableCell>
+                    <TableCell>
+                    <TextField 
+                      size='small'
+                      inputProps={{style:{fontSize:'13px', textAlign:'right'}}}
+                      {...register(`phuong_tiens.${index}.nguyen_gia`)}
+                      // value={VNDFormat(getValues(`phuong_tiens.${index}.nguyen_gia`))}
+                      onDoubleClick={()=>setValue(`phuong_tiens.${index}.nguyen_gia`,getValues(`phuong_tiens.${index-1}.nguyen_gia`))}
+                      onChange={(e)=>setValue(`phuong_tiens.${index}.nguyen_gia`,parseInt(e.target.value.replaceAll(/[,.]/g,'')))}
+                      error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].nguyen_gia)}
+                      disabled={isSubmitting}
+                      />
+                    </TableCell>
+                    <TableCell>
+                    <TextField
+                      size='small'
+                      inputProps={{style:{fontSize:'13px', textAlign:'right'}}}
+                      {...register(`phuong_tiens.${index}.thanh_tien`)}
+                      disabled={isSubmitting}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {/* <Button
+                        startIcon={<TiDelete/>}
+                        size='small' variant='text' color='error'
+                        onClick={()=>remove(index)}
+                        disabled={isSubmitting}
+                        ></Button> */}
+                      <Stack direction='row' spacing={1} sx={{m:1}}>
+                        {index<fields.length?<MdKeyboardArrowDown
+                            onClick={()=>swap(index,index+1)}
+                            onDoubleClick={()=>{
+                              let _temp = fields[index]
+                              remove(index)
+                              append(_temp)
+                            }}
+                            color='darkblue'/>:<></>}
+                        <TiDelete onClick={()=>remove(index)} color='red'/>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Button disabled={isSubmitting} variant="outlined" size='small' sx={{mt:1}} onClick={()=>append({})}>Thêm</Button>
+          <Stack sx={{mt:5}} direction='row' spacing={2}>
+          <LoadingButton onClick={()=>{
+            setValue('success',false)
+            handleSubmit(onSubmit)()
+          }} endIcon={<FaSave/>} loading={isSubmitting&&getValues('success')==false} disabled={isSubmitting&&getValues('success')==true} loadingPosition='end' variant='contained' color="warning" >{getValues('success')?'Chuyển thành bản nháp':'Lưu bản nháp'}</LoadingButton>
+          <LoadingButton onClick={()=>{
+            setValue('success',true)
+            handleSubmit(onSubmit)()
+          }} endIcon={<FaSave/>} loading={isSubmitting&&getValues('success')==true} disabled={isSubmitting&&getValues('success')==false} loadingPosition='end' type='submit' variant='contained' >{getValues('success')||getValues('success')==undefined?'Lưu':'Lưu thành bản chính thức'}</LoadingButton>
+          </Stack>
+        </Stack>
+    {/* <DevTool control={control}/> */}
+  </>
+  )
+}

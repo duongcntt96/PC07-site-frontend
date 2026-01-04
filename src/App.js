@@ -1,129 +1,236 @@
-// @ts-nocheck
-import Modal from "components/Modal/Form";
-import Scroller from "components/Scroller";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Helmet } from "react-helmet";
+
+// --- Components ---
+import Navbar from "./components/Navbar";
 import SubMenu from "components/SubMenu";
+import Footer from "./components/Footer";
+import Scroller from "components/Scroller";
+
+// --- Features: Home & User ---
+import Home from "features/Home";
+import { Login, Register } from "features/User";
+import Profile from "features/User/Profile";
+
+// --- Features: Phuongtien & Qlpt ---
 import { ChungloaiList, PhuongtienInfo } from "features/Phuongtien";
-import PhuongTienHuHong from "features/PhuongTienHuHong";
-import PhuongtienHuHongForm from "features/PhuongTienHuHong/phuongtienHuHongForm";
+import { Phuongtien } from "features/Qlpt/Phuongtien";
 import {
   FormAddPhuongTien,
   FormNhapkho,
   ListKho,
-  Nhapkho,
+  Nhapkho
 } from "features/Qlpt";
+import { FormXuatkho } from "features/Qlpt/FormXuatkho";
 
+// --- Features: Tochuc & Coso ---
+import Tochuc from "features/Tochuc";
 import Person from "features/Tochuc/Person";
-import { Login, Register } from "features/User";
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import Home from "./features/Home";
-import Tochuc from "./features/Tochuc";
-import PageTitle from "components/PageTitle";
-import Profile from "features/User/Profile";
-import { Diaban } from "features/Coso";
 import Coso from "features/Coso/Coso";
-import { Phuongtien } from "features/Qlpt/Phuongtien";
+import { Diaban } from "features/Coso";
+import { Paper } from "@mui/material";
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <SubMenu />
-      <Switch>
-        <Route path="/" exact>
-          <PageTitle title="Trang chủ" />
-          <Home />
-        </Route>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <SubMenu />
 
-        <Route path="/user/login">
-          <PageTitle title="Đăng nhập" />
-          <Login />
-        </Route>
+        <Paper sx={{ minHeight: '620px', p: 2, boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',}}>
+                
 
-        <Route path="/user/register">
-          <PageTitle title="Đăng ký" />
-          <Register />
-        </Route>
+        <Routes>
+          {/* --- Home --- */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Helmet>
+                  <title>Trang chủ</title>
+                </Helmet>
+                <Home />
+              </>
+            }
+          />
 
-        <Route path="/user/profile">
-          <Profile />
-        </Route>
+          {/* --- User --- */}
+          <Route
+            path="/user/login"
+            element={
+              <>
+                <Helmet>
+                  <title>Đăng nhập</title>
+                </Helmet>
+                <Login />
+              </>
+            }
+          />
 
-        <Route exact path="/phuongtien">
-          <PageTitle title="Phương tiện" />
-          <ChungloaiList />
-        </Route>
+          <Route
+            path="/user/register"
+            element={
+              <>
+                <Helmet>
+                  <title>Đăng ký</title>
+                </Helmet>
+                <Register />
+              </>
+            }
+          />
 
-        <Route exact path="/qlpt">
-          <PageTitle title="Quản lý phương tiện" />
-          <ListKho />
-        </Route>
+          <Route path="/user/profile" element={<Profile />} />
 
-        <Route exact path="/qlpt/nhapkho">
-          <PageTitle title="Nhập kho" />
-          <Nhapkho />
-        </Route>
+          {/* --- QLPT --- */}
+          <Route
+            path="/qlpt"
+            element={
+              <>
+                <Helmet>
+                  <title>Thống kê phương tiện</title>
+                </Helmet>
+                <ListKho />
+              </>
+            }
+          />
 
-        <Route exact path="/qlpt/phuongtien/:id">
-          <PageTitle title="Chi tiết phương tiện" />
-          <Phuongtien />
-        </Route>
+          <Route
+            path="/qlpt/phuongtien/:id"
+            element={
+              <>
+                <Helmet>
+                  <title>Chi tiết phương tiện</title>
+                </Helmet>
+                <Phuongtien />
+              </>
+            }
+          />
 
-        <Route exact path="/qlpt/nhapkho/add">
-          <PageTitle title="Tạo phiếu nhập kho mới" />
-          <FormNhapkho />
-        </Route>
+          <Route
+            path="/qlpt/xuatnhap"
+            element={
+              <>
+                <Helmet>
+                  <title>Thống kê xuất - nhập</title>
+                </Helmet>
+                <Nhapkho />
+              </>
+            }
+          />
 
-        <Route exact path="/qlpt/nhapkho/addPT">
-          <PageTitle title="Thêm phương tiện mới" />
-          <FormAddPhuongTien />
-        </Route>
+          <Route
+            path="/qlpt/xuatnhap/import"
+            element={
+              <>
+                <Helmet>
+                  <title>Nhập kho</title>
+                </Helmet>
+                <FormNhapkho />
+              </>
+            }
+          />
 
-        <Route path="/qlpt/nhapkho/:id">
-          <PageTitle title="Chỉnh sửa phiếu nhập kho" />
-          <FormNhapkho />
-        </Route>
+          <Route
+            path="/qlpt/xuatnhap/export"
+            element={
+              <>
+                <Helmet>
+                  <title>Xuất kho</title>
+                </Helmet>
+                <FormXuatkho />
+              </>
+            }
+          />
 
-        <Route exact path="/phuongtien/huhong">
-          <PageTitle title="Phương tiện hư hỏng" />
-          <PhuongTienHuHong />
-        </Route>
+          <Route
+            path="/qlpt/xuatnhap/addPT"
+            element={
+              <>
+                <Helmet>
+                  <title>Thêm phương tiện mới</title>
+                </Helmet>
+                <FormAddPhuongTien />
+              </>
+            }
+          />
 
-        <Route exact path="/phuongtien/huhong/add">
-          <PageTitle title="Thêm phương tiện hư hỏng" />
-          <PhuongtienHuHongForm />
-        </Route>
+          <Route
+            path="/qlpt/xuatnhap/:id"
+            element={
+              <>
+                <Helmet>
+                  <title>Chỉnh sửa phiếu nhập kho</title>
+                </Helmet>
+                <FormNhapkho />
+              </>
+            }
+          />
 
-        <Route path="/phuongtien/:id">
-          <PhuongtienInfo />
-        </Route>
+          {/* --- Phuong Tien --- */}
+          <Route
+            path="/phuongtien"
+            element={
+              <>
+                <Helmet>
+                  <title>Phương tiện</title>
+                </Helmet>
+                <ChungloaiList />
+              </>
+            }
+          />
 
-        <Route exact path="/coso">
-          <PageTitle title="Quản lý cơ sở" />
-          <Diaban />
-        </Route>
+          <Route path="/phuongtien/:id" element={<PhuongtienInfo />} />
 
-        <Route path="/coso/:id">
-          <PageTitle title="Thông tin cơ sở" />
-          <Coso />
-        </Route>
+          {/* --- Co So --- */}
+          <Route
+            path="/coso"
+            element={
+              <>
+                <Helmet>
+                  <title>Quản lý cơ sở</title>
+                </Helmet>
+                <Diaban />
+              </>
+            }
+          />
 
-        <Route path="/tochuc" exact>
-          <PageTitle title="Bộ máy tổ chức" />
-          <Tochuc />
-        </Route>
+          <Route
+            path="/coso/:id"
+            element={
+              <>
+                <Helmet>
+                  <title>Thông tin cơ sở</title>
+                </Helmet>
+                <Coso />
+              </>
+            }
+          />
 
-        <Route path="/tochuc/person/:id">
-          <Person />
-        </Route>
-      </Switch>
-      <Modal />
-      <Scroller />
+          {/* --- To Chuc --- */}
+          <Route
+            path="/tochuc"
+            element={
+              <>
+                <Helmet>
+                  <title>Bộ máy tổ chức</title>
+                </Helmet>
+                <Tochuc />
+              </>
+            }
+          />
+
+          <Route path="/tochuc/person/:id" element={<Person />} />
+        </Routes>
+
+        </Paper>
+
+        <Scroller />
+      </BrowserRouter>
+
       <Footer />
-    </BrowserRouter>
+    </>
   );
-}
+};
 
 export default App;

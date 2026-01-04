@@ -13,21 +13,75 @@ import { FaBehance, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 export const rootAPI = "http://localhost:8000/api/";
 
 export const links = [
+  // {
+  //   id: 1,
+  //   active: true,
+  //   url: "/",
+  //   text: "Trang chủ",
+  //   children: [],
+  // },
+  // {
+  //   id: 2,
+  //   active: true,
+  //   url: "/tochuc",
+  //   text: "Tổ chức",
+  //   children: [
+  //     {
+  //       id: 1,
+  //       url: "/tochuc",
+  //       text: "Cơ cấu tổ chức",
+  //       icon: <MdGroup />,
+  //     },
+  //     {
+  //       id: 2,
+  //       url: "/tochuc/about",
+  //       text: "Lịch sử thành lập và quá trình phát triển",
+  //       icon: <BsPersonCheck />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: 3,
+  //   active: true,
+  //   url: "/nhacviec",
+  //   text: "Nhắc việc",
+  //   children: [],
+  // },
+  // {
+  //   id: 9,
+  //   active: true,
+  //   url: "/vanban",
+  //   text: "Văn bản",
+  //   children: [],
+  // },
   {
-    id: 2,
+    id: 3,
+    active: true,
     url: "/qlpt",
-    text: "Phương tiện",
+    text: "Tài sản",
     children: [
       {
         id: 1,
         url: "/qlpt",
-        text: "Thống kê tiềm lực",
+        text: "Thống kê tài sản",
         icon: <BsCardChecklist />,
       },
       {
         id: 2,
-        url: "/qlpt/nhapkho",
-        text: "Nhập/Xuất",
+        url: "/qlpt/xuatnhap",
+        text: "Biến động tài sản",
+        icon: <GrTransaction />,
+      },
+      {
+        id: 2,
+        url: "/qlpt/xuatnhap/import",
+        text: "Nhập tài sản",
+        icon: <GrTransaction />,
+      },
+      {
+        id: 2,
+        url: "/qlpt/xuatnhap/export",
+        text: "Xuất kho/Điều chuyển tài sản",
         icon: <GrTransaction />,
       },
       {
@@ -38,82 +92,66 @@ export const links = [
       },
       {
         id: 4,
-        url: "/qlpt/docs",
+        url: "/thuvien?linh_vuc=1",
         text: "Văn bản, tài liệu",
         icon: <SiReadthedocs />,
       },
-      {
-        id: 5,
-        url: "/phuongtien/huhong",
-        text: "Phương tiện hư hỏng",
-        icon: <GiSmallFire />,
-      },
     ],
   },
-  // {
-  //   id: 3,
-  //   url: "/coso",
-  //   text: "Địa bàn",
-  //   children: [
-  //     {
-  //       id: 1,
-  //       url: "/coso",
-  //       text: "Cơ sở thuộc diện quản lý",
-  //       icon: <FcDepartment />,
-  //     },
-  //     {
-  //       id: 2,
-  //       url: "/coso/tuyentruyen",
-  //       text: "Công tác tuyên truyền",
-  //       icon: <GiPublicSpeaker />,
-  //     },
-  //     {
-  //       id: 3,
-  //       url: "/coso/huanluyen",
-  //       text: "Công tác huấn luyện",
-  //       icon: <GiTeacher />,
-  //     },
-  //     {
-  //       id: 3,
-  //       url: "/coso/thuctap",
-  //       text: "Công tác thực tập phương án",
-  //       icon: <GiSmallFire />,
-  //     },
-  //   ],
-  // },
   {
     id: 4,
-    url: "/tochuc",
-    text: "Lực lượng",
+    active: true,
+    url: "/thuquy",
+    text: "Thủ quỹ",
+    children: []
+  },
+  {
+    id: 5,
+    active: false,
+    url: "/coso",
+    text: "Địa bàn",
     children: [
       {
         id: 1,
-        url: "/tochuc/doi",
-        text: "Danh sách các đội",
-        icon: <MdGroup />,
+        url: "/coso",
+        text: "Cơ sở thuộc diện quản lý",
+        icon: <FcDepartment />,
       },
       {
         id: 2,
-        url: "/tochuc/person",
-        text: "Danh sách cán bộ chiến sỹ",
-        icon: <BsPersonCheck />,
+        url: "/coso/tuyentruyen",
+        text: "Công tác tuyên truyền",
+        icon: <GiPublicSpeaker />,
+      },
+      {
+        id: 3,
+        url: "/coso/huanluyen",
+        text: "Công tác huấn luyện",
+        icon: <GiTeacher />,
+      },
+      {
+        id: 3,
+        url: "/coso/thuctap",
+        text: "Công tác thực tập phương án",
+        icon: <GiSmallFire />,
       },
     ],
   },
   {
     id: 5,
-    url: "/thuvien",
+    active: true,
+    url: "/tspl",
     text: "Thư viện",
     children: [
       {
         id: 1,
-        url: "/thuvien/tspl",
+        url: "/tspl",
         text: "Tủ sách pháp luật",
         icon: <GoLaw />,
       },
       {
         id: 2,
-        url: "/thuvien/tlnv",
+        url: "/tlnv",
         text: "Tài liệu nghiệp vụ",
         icon: <IoLibrarySharp />,
       },

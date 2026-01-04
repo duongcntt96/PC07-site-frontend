@@ -2,78 +2,89 @@ import qlptApi from "api/qlptApi";
 import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Filter from "features/Coso/components/Filter";
-import { pushURL, VNDFormat } from "./Utils/DWUtils";
+import { VNDFormat, LocalDateFormat, treeOptionsConvert } from "../../utils/DWUtils";
 import { BiAddToQueue } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ImArrowRight } from "react-icons/im";
 import Loading from "components/Loading";
 
-const Nhapkho = () => {
+import {useForm, Controller} from 'react-hook-form'
+import {Stack, Box, TextField, Switch, MenuItem, Button, Typography } from '@mui/material'
+import {TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
+import {Autocomplete,} from '@mui/material'
+import {DevTool} from '@hookform/devtools'
+import { Link } from "react-router-dom";
+import usePushURL from "hooks/usePushURL";
+
+export const Nhapkho = () => {
+  const { pushURL } = usePushURL();
+  
   const paramsURL = new URLSearchParams(window.location.search);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-
-  const [filters, setValues] = useState({
-    chung_loai: paramsURL.get("chung_loai"),
-    kho_nhap: paramsURL.get("kho_nhap"),
-    kho_xuat: paramsURL.get("kho_xuat"),
-    nguon_cap: paramsURL.get("nguon_cap"),
-    quyetdinh: paramsURL.get("quyetdinh"),
-    success: paramsURL.get("success") || true,
-    thoi_gian__start: paramsURL.get("thoi_gian__start"),
-    thoi_gian__end: paramsURL.get("thoi_gian__end"),
-    chi_tiet_phieu_nhap__phuong_tien: paramsURL.get(
-      "chi_tiet_phieu_nhap__phuong_tien"
-    ),
-  });
-
+  
   const [kho, setKho] = useState([]);
   const [listPhieunhap, setListPhieunhap] = useState([]);
   const [nguoncap, setNguoncap] = useState([]);
-  const [isTreeShowing, setIsTreeShowing] = useState(true);
+  const {control, register, formState: {errors}, watch, setValue} = useForm({
+    defaultValues: {
+      chung_loai: paramsURL.get("chung_loai"),
+      kho_nhap: paramsURL.get("kho_nhap"),
+      kho_xuat: paramsURL.get("kho_xuat"),
+      nguon_cap: paramsURL.get("nguon_cap"),
+      quyetdinh: paramsURL.get("quyetdinh"),
+      success: paramsURL.get("success")=='false'?false:true,
+      thoi_gian__gte: paramsURL.get('thoi_gian__gte'),
+      thoi_gian__lte: paramsURL.get('thoi_gian__lte'),
+      chi_tiet_phieu_nhap__phuong_tien: paramsURL.get(
+        "chi_tiet_phieu_nhap__phuong_tien"
+      ),
+      chi_tiet_phieu_nhap__ten: paramsURL.get(
+        "chi_tiet_phieu_nhap__ten"
+      ),
+      search: paramsURL.get(
+        "search"
+      ),
+    },
+  })
+  const filters = watch()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data: khoData } = await qlptApi.getListKho();
-      const { data: nguonData } = await qlptApi.getListNguoncap();
-      setKho(khoData);
-      setNguoncap(nguonData);
-    };
+  const fetchConst = async () => {
+    setKho(treeOptionsConvert(await (await qlptApi.getListKho()).data));
+    setNguoncap(await (await qlptApi.getListNguoncap()).data);
+  };
+  const fetchData = async (value) => {
     setLoading(true);
-    fetchData();
-    pushURL(filters);
+    const list_PT = await qlptApi.getListPhieunhap({
+      ...value,
+      size: 100,
+    });
+    setListPhieunhap(list_PT.data);
+    pushURL(value);
+    setLoading(false);
+  };
+  useEffect(() => {
+    setLoading(true);
+    fetchConst();
+    fetchData(filters);
     setLoading(false);
   }, []);
-
-  useEffect(() => {
+  useEffect(()=>{
     let timer;
-    const fetchData = async () => {
-      setLoading(true);
-      const list_PT = await qlptApi.getListPhieunhap({
-        ...filters,
-        size: 100,
-      });
-      setListPhieunhap(list_PT.data);
-      pushURL(filters);
-      setLoading(false);
-    };
-    timer = setTimeout(fetchData, 300);
+    const sub = watch((value)=>{
+      timer = setTimeout(()=>fetchData(value), 300);
+      pushURL(value)
+    })
     return () => {
+      sub.unsubscribe()
       clearTimeout(timer);
-    };
-  }, [filters]);
-
-  const handleChange = (e) => {
-    setValues({ ...filters, [e.target.name]: e.target.value });
-  };
+    }
+  },[watch])
 
   const delItem = async (ID) => {
     const result = await qlptApi.delPhieunhap(ID);
-    if (result && result.status !== 400) {
-      // alert("Xóa rồi");
-      setValues({ ...filters, reload: !filters.reload });
-    } else alert("Lỗi");
+    if (result && result.status !== 400) fetchData(watch())
+    else alert("Lỗi");
   };
 
   const tonggia = (phuong_tiens) => {
@@ -85,175 +96,165 @@ const Nhapkho = () => {
   };
 
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
-      <div>
-        <a href="nhapkho/add">
-          <BiAddToQueue />
-          <span> Tạo phiếu mới</span>
-        </a>
-      </div>
-      <div className="pt-header">
-        <input
-          className="form-control"
-          type="date"
-          name="thoi_gian__start"
-          value={filters.thoi_gian__start}
-          onChange={handleChange}
-        />
-        <input
-          className="form-control"
-          type="date"
-          name="thoi_gian__end"
-          value={filters.thoi_gian__end}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="pt-header">
-        <Filter
-          title="Chọn kho xuất"
-          name="kho_xuat"
-          target={filters}
-          filters={kho}
-          handleChange={handleChange}
-        />
-        <Filter
-          title="Chọn kho nhập"
-          name="kho_nhap"
-          target={filters}
-          filters={kho}
-          handleChange={handleChange}
-        />
-      </div>
-      <div className="pt-header">
-        <Filter
-          title="Nguồn cấp"
-          name="nguon_cap"
-          target={filters}
-          filters={nguoncap}
-          handleChange={handleChange}
-        />
-        <Filter
-          title="Trạng thái"
-          name="success"
-          target={filters}
-          filters={[
-            { id: true, ten: "Đã thực hiện" },
-            { id: false, ten: "Chưa thực hiện" },
-          ]}
-          handleChange={handleChange}
-        />
-      </div>
+<Stack>
+  <Stack direction='row' justifyContent='space-between' alignItems='baseline' spacing={1} >
+    <Link to="/qlpt/xuatnhap/import">
+      <Button title="Tạo phiếu mới" startIcon={<BiAddToQueue />}/>
+    </Link>
+    <Stack direction='row' alignItems='baseline' spacing={1}>
+      <Typography>Từ</Typography>
+      <TextField type='Date' InputLabelProps={{shrink: true}} size='small'
+        {...register('thoi_gian__gte')}/>
+        <Typography>đến</Typography>
+      <TextField type='Date' InputLabelProps={{shrink: true}} size='small'
+        {...register('thoi_gian__lte')}/>
+    </Stack>
+  </Stack>
 
-      <h5>
-        <span
-          onClick={() => setIsTreeShowing(!isTreeShowing)}
-          style={{ cursor: "pointer" }}
-          className="unselectable"
-        >
-          {loading ? (
-            <Loading />
-          ) : (
-            `Tìm thấy ${listPhieunhap.length} phiếu nhập ${
-              filters.kho_xuat &&
-              " từ " + kho.find((e) => e.id == filters.kho_xuat)?.ten
-            }${
-              filters.kho_nhap &&
-              " vào " + kho.find((e) => e.id == filters.kho_nhap)?.ten
-            }`
+  <Stack direction='row-reverse' alignItems='center' gap={1} sx={{mt:2}}>
+    <Stack sx={{width: 200}} direction='row' alignItems='center'>
+    <Switch size="small" {...register('success')} checked={filters.success} title="Trạng thái"/>
+    <Typography>{filters.success?'Đã thực hiện':'Chưa thực hiện'}</Typography>
+    </Stack>
+    <Controller
+      name='nguon_cap'
+      control={control}
+      defaultValue={null}
+      render={({field})=> (
+        <Autocomplete
+          {...field}
+          sx={{width:200}}
+          options={treeOptionsConvert(nguoncap)}
+          getOptionLabel={(option)=> { 
+            return option?.ten || treeOptionsConvert(nguoncap).find(e=>e.id==option)?.ten || "null"
+          }}
+          isOptionEqualToValue={(option,value)=>option.id==value}
+          onChange={(event,value,reason,details)=> setValue('nguon_cap',value?parseInt(value.id):null)}
+          renderInput={(params)=>(
+            <TextField {...params}
+              label="Nguồn cấp"
+              size="small"
+            />
           )}
-        </span>
-      </h5>
-      <br />
-      {listPhieunhap.map((e, i) => {
-        if (e.phuong_tiens.length || 1)
-          return (
-            <div>
-              <h6>
-                <span>
-                  Ngày{" "}
-                  <a href={`/qlpt/nhapkho/${e.id}`}>
-                    {e.thoi_gian.slice(8, 10)}/{e.thoi_gian.slice(5, 7)}/
-                    {e.thoi_gian.slice(0, 4)}:
-                  </a>
-                </span>
-                <span> {kho.find((f) => f.id === e.kho_xuat)?.ten} </span>
-                <ImArrowRight
-                  style={{ transform: "translateY(2px)", opacity: "70%" }}
-                />
-                <span> {kho.find((f) => f.id === e.kho_nhap).ten} </span>
-                <br />
-                <span>{e.note && `${e.note}`}</span>
-                <span>
-                  {e.quyetdinh && ` (theo Quyết định số ${e.quyetdinh})`}
-                </span>
-              </h6>
-              {!filters.success && (
-                <RiDeleteBin5Line color="red" onClick={() => delItem(e.id)} />
-              )}
-              <div className="alert alert-success">
-                <table>
-                  <tr>
-                    <th style={{ width: "50px", textAlign: "center" }}>Stt</th>
-                    <th style={{ width: "550px", textAlign: "center" }}>
-                      Tên phương tiện
-                    </th>
-                    <th style={{ width: "90px", textAlign: "center" }}>
-                      Số lượng
-                    </th>
-                    <th style={{ width: "150px", textAlign: "center" }}>
-                      Nguồn cấp
-                    </th>
-                    <th style={{ width: "90px", textAlign: "center" }}>
-                      Năm cấp
-                    </th>
-                    <th style={{ width: "120px", textAlign: "center" }}>
-                      Nguyên giá
-                    </th>
-                    <th style={{ width: "140px", textAlign: "center" }}>
-                      Thành tiền
-                    </th>
-                  </tr>
-                  {e.phuong_tiens.map((e, i) => (
-                    <tr key={e.id}>
-                      <td align="center">{i + 1}</td>
-                      <td
-                        align="left"
-                        style={{
-                          color:
-                            filters.chi_tiet_phieu_nhap__phuong_tien ==
-                              e.info.id && "red",
-                        }}
-                      >
-                        {e.info.ten}
-                      </td>
-                      <td align="center">{e.so_luong}</td>
-                      <td align="center">{e.nguon_cap}</td>
-                      <td align="center">{e.nam_cap}</td>
-                      <td align="right">{VNDFormat(e.nguyen_gia)}</td>
-                      <td align="right">
-                        {VNDFormat(e.nguyen_gia * e.so_luong)}
-                      </td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td></td>
-                    <td>Tổng</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td style={{ color: "red" }} align="right">
-                      {VNDFormat(tonggia(e.phuong_tiens))}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <br />
-            </div>
-          );
-      })}
-    </main>
-  );
-};
+          renderOption={(props,option)=>(
+            <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+          )}
+        />)}
+    />
+    <Controller
+      name='kho_nhap'
+      control={control}
+      defaultValue={null}
+      render={({field})=> (
+        <Autocomplete {...field}
+          sx={{width:300}}
+          options={kho}
+          getOptionLabel={(option)=> { 
+            return option?.ten || treeOptionsConvert(kho).find(e=>e.id==option)?.ten || "null"
+          }}
+          isOptionEqualToValue={(option,value)=>option.id==value}
+          onChange={(event,value,reason,details)=> setValue('kho_nhap',value?parseInt(value.id):null)}
+          renderInput={(params)=>(
+            <TextField {...params}
+              label="Kho nhập"
+              size="small"
+            />
+          )}
+          renderOption={(props,option)=>(
+            <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+          )}
+        />)}
+    />
+    <Controller
+    name='kho_xuat'
+    control={control}
+    defaultValue={null}
+    render={({field})=> (
+      <Autocomplete {...field}
+        sx={{width:300}}
+        options={treeOptionsConvert(kho)}
+        getOptionLabel={(option)=> { 
+          return option?.ten || treeOptionsConvert(kho).find(e=>e.id==option)?.ten || "null"
+        }}
+        isOptionEqualToValue={(option,value)=>option.id==value}
+        onChange={(event,value,reason,details)=> setValue('kho_xuat',value?parseInt(value.id):null)}
+        renderInput={(params)=>(
+          <TextField {...params}
+            label="Kho xuất"
+            size="small"
+          />
+        )}
+        renderOption={(props,option)=>(
+          <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+        )}
+      />)}
+    />
+  </Stack>
 
-export { Nhapkho };
+  <Stack sx={{mt:2}}>
+    {loading ? <Loading />: (
+  <Stack>
+    <Typography>
+      {`Tìm thấy ${listPhieunhap.length} phiếu nhập`}
+    </Typography>
+    {listPhieunhap.map((e, i) => {
+      if (e.phuong_tiens.length || 1)
+      return (
+        <Stack sx={{mt:3}}>
+          <Link to={`/qlpt/xuatnhap/${e.id}`}>
+            <Typography>
+              {`Ngày ${LocalDateFormat(e.thoi_gian)}: ${kho.find((f) => f.id === e.kho_xuat)?.ten||''}`}
+              <ImArrowRight style={{ transform: "translateY(2px)", opacity: "70%" }}/>
+              {`${kho.find((f) => f.id === e.kho_nhap)?.ten||''}`}
+            </Typography>
+            <Typography>
+              {e.note && `${e.note}`} {e.quyetdinh && ` (theo Quyết định số ${e.quyetdinh})`}
+            </Typography>
+          </Link>
+            {!filters.success && (
+              <RiDeleteBin5Line color="red" onClick={() => delItem(e.id)} />
+              )}
+            <TableContainer component={Paper}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">TT</TableCell>
+                    <TableCell align="center">Tên phương tiện</TableCell>
+                    <TableCell align="center">Số lượng</TableCell>
+                    <TableCell align="center">Nguồn cấp</TableCell>
+                    <TableCell align="center">Năm sử dụng</TableCell>
+                    <TableCell align="center">Nguyên giá</TableCell>
+                    <TableCell align="center">Thành tiền</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {e.phuong_tiens.map((e, i) => (
+                    <TableRow>
+                    <TableCell align="center">{i + 1}</TableCell>
+                    <TableCell sx={{color: filters.search == e.ten && "red",}}>{e.ten}</TableCell>
+                    <TableCell align="center">{e.so_luong}</TableCell>
+                    <TableCell align="center">{nguoncap.find((f)=>f.id == e.nguon_cap)?.ten}</TableCell>
+                    <TableCell align="center">{e.nam_cap}</TableCell>
+                    <TableCell align="right">{VNDFormat(e.nguyen_gia)}</TableCell>
+                    <TableCell align="right">{VNDFormat(e.nguyen_gia * e.so_luong)}</TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow>
+                    <TableCell colSpan={6}></TableCell>
+                    <TableCell align="right">
+                     <b>{VNDFormat(e.phuong_tiens.reduce((tonggia,e)=>tonggia+=e.nguyen_gia*e.so_luong,0))}</b>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Stack>
+        );
+      })}
+  </Stack>
+  )}
+  </Stack>
+  <DevTool control={control}/>
+</Stack>
+);
+};
