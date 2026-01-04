@@ -22,19 +22,25 @@ const Login = () => {
       .login({...value})
       .then(function (response) {
         // success
-        response = response.data;
-        localStorage.setItem("secret", JSON.stringify(response));
-        if (response.status) return;
-        else {
-          // check redirect url exist
-          const query = new URLSearchParams(window.location.search);
-          const url = query.get("url") || "profile";
-          // redirect
-          window.location.replace(url);
+        if (response && response.data) {
+          response = response.data;
+          localStorage.setItem("secret", JSON.stringify(response));
+          if (response?.status) return;
+          else {
+            // check redirect url exist
+            const query = new URLSearchParams(window.location.search);
+            const url = query.get("url") || "profile";
+            // redirect
+            window.location.replace(url);
+          }
+        } else {
+          // Handle case where response or response.data is null/undefined
+          console.error("Login API returned no data.");
+          alert("Đăng nhập thất bại: Không nhận được dữ liệu phản hồi.");
         }
       })
       .catch(function (error) {
-        alert( error.response.status + ": " + error.response.data.detail);
+        alert( error.response?.status + ": " + error.response?.data?.detail);
       });
   }
   return (
@@ -52,7 +58,7 @@ const Login = () => {
           <Button variant="outlined" href="register" disabled>Đăng ký</Button>
         </Stack>
       </Stack>
-      <DevTool control={control}/>
+      {/* <DevTool control={control}/> */}
       </form>
   );
 };

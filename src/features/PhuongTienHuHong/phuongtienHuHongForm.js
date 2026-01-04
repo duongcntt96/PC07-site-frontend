@@ -70,7 +70,7 @@ const PhuongtienHuHongForm = () => {
       };
 
       const resp = await phuongtienhuhongApi.add(payload);
-      if (resp.status === 201 || resp.status === 200 || resp.id) {
+      if (resp && (resp.status === 201 || resp.status === 200 || resp.id)) {
         window.location.replace("/phuongtien/huhong");
       }
     } catch (err) {

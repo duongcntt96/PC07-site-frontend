@@ -11,15 +11,14 @@ export default function Submenu ({ id, active, url, text, children }) {
         <Stack>
             <Link to={url}
                 style={{ padding: '15px 20px'}}
-                onMouseOver={(e) => { setOpen(true);
-                    e.target.style.transform = "scale(1.25)";
-                    e.target.style.transition = "transform 0.5s ease-in-out"; 
+                sx={{
+transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
                 }}
-                onMouseOut={(e) => { if(!visible) setOpen(false);
-                    e.target.style.transform = "scale(1)";
-                    e.target.style.transition = "transform 0.5s ease-in-out";
-                    e.target.style.color = "rgba(255, 255, 255, 1)";
-                }} 
+                onMouseOver={() => setOpen(true)}
+                onMouseOut={() => { if(!visible) setOpen(false); }}
                 >
                 <Typography color='white' fontSize='18px'>
                  {text}

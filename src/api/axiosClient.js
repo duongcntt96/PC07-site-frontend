@@ -37,11 +37,20 @@ axiosClient.interceptors.request.use(async (config) => {
             process.env.REACT_APP_API_URL + "/user/refresh_token  ",
             { refresh }
           );
-          // set header with new access token
-          config.headers.Authorization = `Bearer ${rp.data.access}`;
-          rp.data.refresh = refresh;
-          // set local token
-          localStorage.setItem("secret", JSON.stringify(rp.data));
+          if (rp && rp.data && rp.data.access) {
+            // set header with new access token
+            config.headers.Authorization = `Bearer ${rp.data.access}`;
+            rp.data.refresh = refresh;
+            // set local token
+            localStorage.setItem("secret", JSON.stringify(rp.data));
+          } else {
+            // Handle case where refresh token request failed or returned no access token
+            console.error("Failed to refresh access token.");
+            localStorage.removeItem("secret");
+            window.location.replace(
+              "/user/login?url=" + window.location.pathname
+            );
+          }
         }
       } else {
         // access token valid
@@ -52,6 +61,21 @@ axiosClient.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+axiosClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status) {
+      // console.error("API Error: ", error.response.status, error.response.data);
+      // Centralized error handling based on status codes can go here
+      // For example, redirect to login for 401, show a generic error for 500, etc.
+      // alert(error.response.status + ": " + error.response.data.detail);
+    }
+    return Promise.reject(error);
+  }
+);
 
 axiosClient.interceptors.response.use(
   (response) => {

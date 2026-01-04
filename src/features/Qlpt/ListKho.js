@@ -18,7 +18,8 @@ export const ListKho = () => {
 
   const [kho, setKho] = useState([]);
   const [chungloai, setChungloai] = useState([]);
-  const [thucluc, setThucluc] = useState({});
+  const [thucluc, setThucluc] = useState({ count: 0, sum: 0, data: [] });
+
 
   const {control, register, watch, setValue, getValues} = useForm({
     defaultValues: {
@@ -105,10 +106,10 @@ export const ListKho = () => {
       />
     </Stack>
 
-    {thucluc.count*thucluc.sum?(
+    {thucluc?.count * thucluc?.sum ? (
     <Stack sx={{mt:1}}>
       <Alert severity="success" >
-        {`Tìm thấy ${thucluc.count} danh mục với số lượng ${thucluc.sum} !`}
+        {`Tìm thấy ${thucluc?.count || 0} danh mục với số lượng ${thucluc?.sum || 0} !`}
       </Alert>
 
       <TableContainer component={Paper} sx={{ mt: 2}} >
