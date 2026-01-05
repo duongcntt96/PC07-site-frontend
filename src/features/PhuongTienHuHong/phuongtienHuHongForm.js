@@ -18,6 +18,7 @@ import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import phuongtienhuhongApi from "api/phuongtienhuhongApi";
 import { docSoThanhChu } from "features/Qlpt/Utils/DWUtils";
 import PageTitle from "components/PageTitle";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   don_vi_quan_ly: yup.string().required("Đơn vị quản lý là bắt buộc"),
@@ -37,6 +38,7 @@ const schema = yup.object().shape({
 });
 
 const PhuongtienHuHongForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [generalError, setGeneralError] = useState(null);
 
@@ -71,7 +73,8 @@ const PhuongtienHuHongForm = () => {
 
       const resp = await phuongtienhuhongApi.add(payload);
       if (resp && (resp.status === 201 || resp.status === 200 || resp.id)) {
-        window.location.replace("/phuongtien/huhong");
+        navigate("/qlpt/huhong/");
+        // window.location.replace("/phuongtien/huhong");
       }
     } catch (err) {
       console.error(err);
@@ -177,7 +180,7 @@ const PhuongtienHuHongForm = () => {
                         fullWidth
                         size="small"
                         {...register("du_tru_kinh_phi")}
-                        value={Number(du_tru_kinh_phi_value).toLocaleString('vi-VN') === "0" ? "" : Number(du_tru_kinh_phi_value).toLocaleString('vi-VN')}
+                        value={Number(du_tru_kinh_phi_value) === "0" ? "" : Number(du_tru_kinh_phi_value)}
                         onChange={(e) => setValue("du_tru_kinh_phi", e.target.value.replace(/\D/g, ""))}
                         InputProps={{
                           startAdornment: (
