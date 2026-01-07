@@ -2,13 +2,14 @@ import qlptApi from "api/qlptApi";
 import { treeOptionsConvert, VNDFormat } from "utils/DWUtils";
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate} from "react-router-dom";
+import Loading from "components/Loading";
 
 import {useForm, useFieldArray, Controller} from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {DevTool} from '@hookform/devtools'
 
-import {Alert, InputAdornment, Stack, TextField, Button, Typography, CircularProgress, Autocomplete } from '@mui/material'
+import {Alert, InputAdornment, Stack, TextField, Button, Typography, Autocomplete } from '@mui/material'
 import {TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
 
 
@@ -19,6 +20,7 @@ const FormXuatkho = () => {
   const [kho, setKho] = useState([]);
   const [chungloai, setChungloai] = useState([]);
   const [nguoncap, setNguoncap] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state here
   // get const data list
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -33,6 +35,8 @@ const FormXuatkho = () => {
         setChungloai(treeOptionsConvert(chungloaiResponse.data));
       } catch (error) {
         console.error("Failed to fetch initial data", error);
+      } finally {
+        setLoading(false); // Set loading to false after data fetch
       }
     };
     fetchInitialData();
@@ -99,6 +103,8 @@ const FormXuatkho = () => {
     navigate(`/qlpt/xuatnhap/${result.id}`)
     // alert("Submited")
   }
+
+  if (loading) return <Loading />;
 
   return (
     <Stack component='form' spacing={2} onSubmit={handleSubmit(onSubmit)}>

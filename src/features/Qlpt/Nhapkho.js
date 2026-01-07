@@ -64,10 +64,8 @@ export const Nhapkho = () => {
     setLoading(false);
   };
   useEffect(() => {
-    setLoading(true);
     fetchConst();
     fetchData(filters);
-    setLoading(false);
   }, []);
   useEffect(()=>{
     let timer;

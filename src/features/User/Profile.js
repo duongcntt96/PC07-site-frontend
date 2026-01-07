@@ -53,14 +53,18 @@ const Profile = () => {
       <Helmet>
         <title>{`${ten} - Thông tin cá nhân !`}</title>
       </Helmet>
-      <Stack direction='row' spacing={3} sx={{mt:5}}>
-        <Stack>
-          <Avatar sx={{ width: 200, height: 200}}>
+      <Stack 
+        direction={{ xs: 'column', md: 'row' }} 
+        spacing={{ xs: 2, md: 3 }} 
+        sx={{mt:5}}
+      >
+        <Stack alignItems="center">
+          <Avatar sx={{ width: {xs: 150, md: 200}, height: {xs: 150, md: 200}}}>
             <img src={avatar||avatar_default} alt="avatar" height='100%'/>
           </Avatar>
-          <p>{capbac.find(e=>e.id==cap_bac)?.ten}</p>
-          <p>{ten}</p>
-          <p>{ LocalDateFormat(ngay_vao_nganh)}</p>
+          <Typography variant="subtitle1">{capbac.find(e=>e.id==cap_bac)?.ten}</Typography>
+          <Typography variant="h6">{ten}</Typography>
+          <Typography variant="body2">{ LocalDateFormat(ngay_vao_nganh)}</Typography>
         </Stack>
 
         <Stack sx={{ flexGrow:3}}>
@@ -69,7 +73,7 @@ const Profile = () => {
               <TextField label="Họ và tên" value={ten} disabled
                 InputLabelProps={{shrink: true}}
               />
-              <TextField label="Ngày sinh" value={ngay_sinh} disabled 
+              <TextField label="Ngày sinh" value={LocalDateFormat(ngay_sinh)} disabled
                 InputLabelProps={{shrink: true}}
               />
               <TextField label="Số điện thoại" value={sdt} disabled

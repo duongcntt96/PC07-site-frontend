@@ -2,7 +2,7 @@ import avatar from "assets/images/avatar-default.jpg";
 import { decode } from "base-64";
 import React, { useEffect, useState } from "react";
 import { IoCaretDown, IoNotifications, IoPerson } from "react-icons/io5";
-import { GoSignIn } from "react-icons/go";
+import { AiOutlineLogin, AiOutlineLogout  } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Account from "./components/Account";
 import {Stack, Button, Avatar, Typography} from '@mui/material'
@@ -39,27 +39,30 @@ const User = () => {
 
   if (accessInfo?.username)
   return (
-      <Stack direction='row' spacing={2} alignItems='center'>
-        <Avatar sx={{ width: 76, height: 76}} src={accessInfo.avatar?(process.env.REACT_APP_API_URL.replace('/api','') + '/'+accessInfo.avatar):avatar} />
+      <Stack direction='row' spacing={2} alignItems='center' justifyContent="flex-end">
+        <Avatar sx={{ width: 46, height: 46}} 
+          src={accessInfo.avatar?(process.env.REACT_APP_API_URL.replace('/api','') + '/'+accessInfo.avatar):avatar}
+          />
+        <Link to="/user/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
         <Typography>
           {accessInfo.username}
         </Typography>
+        </Link>
         <IoPerson />
         <IoNotifications />
-        
-        <Button startIcon={<GoSignIn />} onClick={() => logout()} color='warning'/>
+        <AiOutlineLogout onClick={() => logout()} title="Đăng xuất"/>
         {/* <IoCaretDown onClick={() => toggleProfile()} /> */}
         {/* <Account show={isProfileMenuOpen} username={accessInfo.username} /> */}
       </Stack>
       )
-   return (
-   <Stack direction='row' spacing={2} alignItems='center' sx={{width: 200}}>
-    <Avatar sx={{ width: 76, height: 76}}  src={avatar} alt="avatar"/>
-      <Link to="/user/login">
-        Đăng nhập
-      </Link>
-    </Stack>
-    )
+   return (<Stack onClick={() => navigate("/user/login")} sx={{cursor: "pointer"}} direction='row' spacing={2} alignItems='center' justifyContent="flex-end">
+    <Avatar sx={{ width: 46, height: 46}} src={avatar}/>
+    <Typography>
+      Đăng nhập
+    </Typography>   
+    <AiOutlineLogin title="Đăng nhập"/>
+   </Stack>
+)
   };
 
 export default User;

@@ -1,64 +1,24 @@
 import React from "react";
 import { BsCardChecklist, BsPersonCheck } from "react-icons/bs";
-import { GrTransaction } from "react-icons/gr";
 import { GoReport, GoLaw } from "react-icons/go";
 import { SiReadthedocs } from "react-icons/si";
 import { IoLibrarySharp } from "react-icons/io5";
 import { FcDepartment } from "react-icons/fc";
-import { MdGroup } from "react-icons/md";
-import { GiPublicSpeaker, GiTeacher, GiSmallFire } from "react-icons/gi";
-
+import { RiExchangeFundsFill } from "react-icons/ri";
+import { TiExportOutline  } from "react-icons/ti";
+import { CgImport    } from "react-icons/cg";
+import { FaChartPie } from "react-icons/fa";
+import { AiOutlineSchedule  } from "react-icons/ai";
 import { FaBehance, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export const rootAPI = "http://localhost:8000/api/";
 
 export const links = [
-  // {
-  //   id: 1,
-  //   active: true,
-  //   url: "/",
-  //   text: "Trang chủ",
-  //   children: [],
-  // },
-  // {
-  //   id: 2,
-  //   active: true,
-  //   url: "/tochuc",
-  //   text: "Tổ chức",
-  //   children: [
-  //     {
-  //       id: 1,
-  //       url: "/tochuc",
-  //       text: "Cơ cấu tổ chức",
-  //       icon: <MdGroup />,
-  //     },
-  //     {
-  //       id: 2,
-  //       url: "/tochuc/about",
-  //       text: "Lịch sử thành lập và quá trình phát triển",
-  //       icon: <BsPersonCheck />,
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: 3,
-  //   active: true,
-  //   url: "/nhacviec",
-  //   text: "Nhắc việc",
-  //   children: [],
-  // },
-  // {
-  //   id: 9,
-  //   active: true,
-  //   url: "/vanban",
-  //   text: "Văn bản",
-  //   children: [],
-  // },
   {
-    id: 3,
+    id: 1,
     active: true,
     url: "/qlpt",
-    text: "Phương tiện",
+    text: "THỰC LỰC",
     children: [
       {
         id: 1,
@@ -69,26 +29,20 @@ export const links = [
       {
         id: 2,
         url: "/qlpt/xuatnhap",
-        text: "Biến động tăng - giảm",
-        icon: <GrTransaction />,
+        text: "Lịch sử biến động",
+        icon: <RiExchangeFundsFill />,
       },
       {
         id: 3,
         url: "/qlpt/xuatnhap/import",
         text: "Nhập phương tiện",
-        icon: <GrTransaction />,
+        icon: <CgImport  />,
       },
       {
         id: 4,
         url: "/qlpt/xuatnhap/export",
         text: "Xuất/Điều chuyển phương tiện",
-        icon: <GrTransaction />,
-      },
-      {
-        id: 5,
-        url: "/qlpt/huhong",
-        text: "Phương tiện hư hỏng",
-        icon: <GrTransaction />,
+        icon: <TiExportOutline  />,
       },
       {
         id: 6,
@@ -105,49 +59,56 @@ export const links = [
     ],
   },
   {
-    id: 4,
+    id: 2,
     active: true,
-    url: "/thuquy",
-    text: "Thủ quỹ",
-    children: []
-  },
-  {
-    id: 5,
-    active: false,
-    url: "/coso",
-    text: "Địa bàn",
+    url: "/qlpt/huhong",
+    text: "BẢO DƯỠNG, SỬA CHỮA",
     children: [
       {
         id: 1,
-        url: "/coso",
-        text: "Cơ sở thuộc diện quản lý",
-        icon: <FcDepartment />,
+        url: "/qlpt/huhong",
+        text: "Theo dõi phương tiện hư hỏng",
+        icon: <FaChartPie />,
       },
       {
         id: 2,
-        url: "/coso/tuyentruyen",
-        text: "Công tác tuyên truyền",
-        icon: <GiPublicSpeaker />,
+        url: "/qlpt/huhong/add",
+        text: "Báo cáo phương tiện hư hỏng",
+        icon: <IoLibrarySharp />,
       },
       {
         id: 3,
-        url: "/coso/huanluyen",
-        text: "Công tác huấn luyện",
-        icon: <GiTeacher />,
-      },
-      {
-        id: 3,
-        url: "/coso/thuctap",
-        text: "Công tác thực tập phương án",
-        icon: <GiSmallFire />,
+        url: "/qlpt/dangkiem",
+        text: "Lịch đăng kiểm",
+        icon: <AiOutlineSchedule  />,
       },
     ],
   },
   {
-    id: 5,
+    id: 3,
+    active: true,
+    url: "/nhattrinh",
+    text: "NHẬT TRÌNH",
+    children: [
+      {
+        id: 1,
+        url: "/nhattrinh",
+        text: "Nhật trình hoạt động",
+        icon: <GoLaw />,
+      },
+      {
+        id: 2,
+        url: "/nhattrinh",
+        text: "Thêm lịch trình",
+        icon: <IoLibrarySharp />,
+      },
+    ],
+  },
+  {
+    id: 3,
     active: true,
     url: "/tspl",
-    text: "Thư viện",
+    text: "THƯ VIỆN",
     children: [
       {
         id: 1,
@@ -158,7 +119,7 @@ export const links = [
       {
         id: 2,
         url: "/tlnv",
-        text: "Tài liệu nghiệp vụ",
+        text: "Tài liệu",
         icon: <IoLibrarySharp />,
       },
     ],
@@ -168,7 +129,7 @@ export const links = [
 export const social = [
   {
     id: 1,
-    url: "https://www.twitter.com",
+    url: "https://www.facebook.com",
     icon: <FaFacebook />,
   },
   {
@@ -178,12 +139,12 @@ export const social = [
   },
   {
     id: 3,
-    url: "https://www.twitter.com",
+    url: "https://www.linkedin.com",
     icon: <FaLinkedin />,
   },
   {
     id: 4,
-    url: "https://www.twitter.com",
+    url: "https://www.behance.net",
     icon: <FaBehance />,
   },
 ];

@@ -46,7 +46,14 @@ const Login = () => {
   return (
       <form onSubmit={handleSubmit(onSubmit)}>
       <Stack sx={{m:5}}>
-        <Stack spacing={2} sx={{width:'50%', alignSelf:'center'}}>
+        <Stack 
+          spacing={2} 
+          sx={{
+            width: { xs: '90%', sm: '70%', md: '50%' },
+            maxWidth: '500px',
+            alignSelf:'center'
+          }}
+        >
           <TextField type="text" label="Tên đăng nhập" {...register('username')}
             error={!!errors.username} helperText={errors.username?.message}/>
           <TextField type="password" label="Mật khẩu" {...register('password')}

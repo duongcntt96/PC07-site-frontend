@@ -1,41 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import React from "react";
+import { Box, CircularProgress } from "@mui/material";
 
 const Loading = () => {
-  const RADIAL_SPEED = 10;
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((index + 1) % (360 / RADIAL_SPEED));
-    }, 10);
-    return () => {
-      clearInterval(interval);
-    };
-  });
-
   return (
-    <div
-      style={{
-        position: "fixed",
-        left: 0,
-        top: 0,
-        zIndex: 9999,
-        backgroundColor: "blue",
+    <Box
+      sx={{
+        // position: "fixed",
+        // left: 0,
+        // top: 0,
+        // zIndex: 9999,
+        backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent white backdrop
         width: "100%",
-        height: "100%",
-        opacity: "20%",
+        height: "50vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <AiOutlineLoading3Quarters
-        style={{
-          transform: `rotate(${index * RADIAL_SPEED}deg) scale(5)`,
-          position: "relative",
-          left: "48%",
-          top: "50%",
-        }}
-      />
-    </div>
+      <CircularProgress sx={{ color: "#334155" }} size={60} thickness={5} />
+    </Box>
   );
 };
 

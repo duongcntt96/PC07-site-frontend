@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import qlptApi from 'api/qlptApi'
-import {Stack, TextField, Button, Typography, CircularProgress, Autocomplete } from '@mui/material'
+import {Stack, TextField, Button, Typography, Autocomplete } from '@mui/material'
 import {FaSave} from 'react-icons/fa'
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from 'react-icons/md'
 import {LoadingButton} from '@mui/lab'
@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { VNDFormat, swapItems, treeOptionsConvert } from 'utils/DWUtils'
 import { useParams, useNavigate } from 'react-router-dom'
+import Loading from "components/Loading";
 
 import {DevTool} from '@hookform/devtools'
 
@@ -119,9 +120,7 @@ export const FormNhapkho = () => {
     }
   }
 
-  if (loading) return <Stack justifyContent='center' alignItems='center'>
-    <CircularProgress/>
-  </Stack>
+  if (loading) return <Loading/>
   else
   return (
   <>

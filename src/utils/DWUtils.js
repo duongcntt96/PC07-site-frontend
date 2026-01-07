@@ -14,14 +14,14 @@ const LocalDateFormat = (val) => {
 };
 
 const treeOptionsConvert = (tree, level = 0) => {
-  let option = [];
+  const options = [];
   tree.forEach(e => {
-    option.push({ ...e, level });
+    options.push({ ...e, level });
     if (e.children?.length) {
-      option = option.concat(treeOptionsConvert(e.children, level + 1));
+      options.push(...treeOptionsConvert(e.children, level + 1));
     }
   });
-  return option;
+  return options;
 };
 
 const swapItems = (arr, index1, index2) => {

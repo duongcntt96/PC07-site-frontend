@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import {
   Container, Box, Stack, Typography, Button, TextField, Paper, 
   Chip, TableContainer, Table, TableHead, TableBody, TableRow, 
-  TableCell, Autocomplete, InputAdornment
+  TableCell, Autocomplete, InputAdornment,
+  Toolbar
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import XLSX from 'xlsx-js-style';
@@ -81,18 +82,29 @@ const PhuongTienHuHong = () => {
     XLSX.writeFile(workbook, "Danh_sach_phuong_tien_hu_hong.xlsx");
   };
 
-  if (loading) return <Loading />;
-
   return (
-    <main onMouseOver={() => dispatch(closeSubMenu())} style={{ backgroundColor: '#f8fafc', minHeight: '100vh', paddingBottom: '40px' }}>
+    <main onMouseOver={() => dispatch(closeSubMenu())}>
       <PageTitle title="Phương tiện hư hỏng" />
 
       {/* BỘ LỌC */}
-      <Stack sx={{mt:5, mb:2, py:2, borderRadius:2, backgroundColor:'rgba(234, 234, 234, 0.38)'}} spacing={3}>
-        <Stack direction="row" justifyContent="space-around" alignItems="center" sx={{ width: '100%'}}>
+      <Stack 
+        component={Paper}
+        elevation={0}
+        variant="outlined"
+        sx={{
+          mt: 2, 
+          mb: 2, 
+          p: 2,
+          borderRadius: 2
+        }} 
+      >
+        <Stack 
+          direction={{ xs: 'column', lg: 'row' }} 
+          spacing={2} 
+          alignItems={{ xs: 'stretch', lg: 'center' }}
+        >
           <TextField 
             type="text" 
-            sx={{minWidth: "25%"}}
             label="Tìm kiếm bằng biển số hoặc nhãn hiệu"
             size="small"
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -103,17 +115,24 @@ const PhuongTienHuHong = () => {
                 </InputAdornment>
               ),
             }}
+            sx={{ flex: '1 1 auto' }}
           />
 
           <Autocomplete 
             multiple
             limitTags={2}
             filterSelectedOptions
-            sx={{minWidth: "25%", maxWidth: "30%"}}
-            options={danhSachDonVi}
             getOptionLabel={(option) => option}
             value={selectedDonVi}
-            onChange={(event, newValue) => setSelectedDonVi(newValue)}
+            options={["Tất cả", ...danhSachDonVi]}
+            onChange={(event, newValue) => {
+              if (newValue.includes("Tất cả")) {
+                setSelectedDonVi(danhSachDonVi);
+                return;
+              }
+              setSelectedDonVi(newValue)
+
+            }}
             renderInput={(params) => (
               <TextField {...params} label="Lọc theo đơn vị quản lý" size="small" />
             )}
@@ -128,17 +147,23 @@ const PhuongTienHuHong = () => {
                 />
               ))
             }
+            sx={{ flex: '1 1 auto' }}
           />
 
           <Autocomplete 
             multiple
             limitTags={2}
             filterSelectedOptions
-            sx={{minWidth: "25%", maxWidth: "35%"}}
-            options={danhSachKetQua}
             getOptionLabel={(option) => option}
             value={selectedKetQua}
-            onChange={(event, newValue) => setSelectedKetQua(newValue)}
+            options={["Tất cả", ...danhSachKetQua]}
+            onChange={(event, newValue) => {
+              if (newValue.includes("Tất cả")) {
+                setSelectedKetQua(danhSachKetQua);
+                return;
+              }
+              setSelectedKetQua(newValue)
+            }}
             renderInput={(params) => (
               <TextField {...params} label="Lọc theo Hiện trạng/Kết quả" size="small" />
             )}
@@ -153,91 +178,102 @@ const PhuongTienHuHong = () => {
                 />
               ))
             }
+            sx={{ flex: '1 1 auto' }}
           />
-
-          <Button 
-            variant="contained" 
-            onClick={exportToExcel} 
-            disabled={!filteredItems.length}
-            startIcon={<FileDownloadIcon />}
-            sx={{ backgroundColor: '#334155' }}
-          >
-            {filteredItems.length ? `Tải về (${filteredItems.length})` : "null"}
-          </Button>
         </Stack>
       </Stack>
 
-      <Box sx={{ mx: 2 }}>
-        <Stack sx={{mb:2}} direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>Thống kê phương tiện hư hỏng</Typography>
-          <Link style={{borderRadius: '8px', padding: '10px 20px'}} to="/qlpt/huhong/add">
-            <Button variant="outlined" startIcon={<AddCircleOutlineIcon />}>
-              Thêm mới
-            </Button>
-          </Link>
-        </Stack>
+      {loading ? <Loading /> : (
+        <Box sx={{ mx: 1 }}>
+          <Stack 
+            sx={{mb:2}} 
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2 }}
+            justifyContent="space-between" 
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>Thống kê phương tiện hư hỏng</Typography>
+            <Toolbar disableGutters sx={{ gap: 2, p: 0 }}>
+            <Link style={{borderRadius: '8px'}} to="/qlpt/huhong/add">
+              <Button variant="contained" startIcon={<AddCircleOutlineIcon />}>
+                Thêm mới
+              </Button>
+            </Link>
+            <Button 
+              variant="contained" 
+              onClick={exportToExcel} 
+              disabled={!filteredItems.length}
+              startIcon={<FileDownloadIcon />}
+              sx={{ backgroundColor: '#334155', flexShrink: 0 }}
+              >
+            {filteredItems.length ? `Tải về (${filteredItems.length})` : "null"}
+          </Button>
+          </Toolbar>
+          </Stack>
 
-        <TableContainer component={Paper} className="table-card shadow-sm" sx={{transform: 'rotateX(180deg)', borderRadius: 3}}>
-          <Table size="small" sx={{ minWidth: 2500, transform: 'rotateX(180deg)' }} className="table-custom">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: '#f1f5f9' }}>
-                <TableCell style={{ width: '35px', textAlign: 'center', fontWeight: 700 }}>Stt</TableCell>
-                <TableCell style={{ width: '160px', textAlign: 'center', fontWeight: 700 }}>Đơn vị quản lý</TableCell>
-                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Loại PT</TableCell>
-                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu</TableCell>
-                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu xe nền</TableCell>
-                <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Biển số</TableCell>
-                <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Người trực tiếp quản lý, sử dụng</TableCell>
-                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Tình trạng, Nguyên nhân hư hỏng</TableCell>
-                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Biện pháp đã thực hiện</TableCell>
-                <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Đề xuất</TableCell>
-                <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Dự trù kinh phí</TableCell>
-                <TableCell style={{ width: '120px', textAlign: 'center', fontWeight: 700 }}>Hiện trạng/Kết quả</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredItems.map((item, index) => {
-                const isFinished = (item.ket_qua || "").includes('Đã hoàn thành') || (item.ket_qua || "").includes('Đã sửa xong');
-                return (
-                  <TableRow key={item.id || index} sx={{ "&:nth-of-type(even)": { backgroundColor: '#f8fafc' }, "&:hover": { backgroundColor: '#f1f5f9' } }}>
-                    <TableCell className="text-center text-muted">{index + 1}</TableCell>
-                    <TableCell className="fw-bold">{item.don_vi_quan_ly}</TableCell>
-                    <TableCell className="text-center">{item.loai_phuong_tien}</TableCell>
-                    <TableCell className="text-center">{item.nhan_hieu}</TableCell>
-                    <TableCell className="text-center">{item.nhan_hieu_sat_xi}</TableCell>
-                    <TableCell className="text-center fw-bold text-primary">{item.bien_kiem_soat}</TableCell>
-                    <TableCell className="text-center">{item.nguoi_quan_ly}</TableCell>
-                    <TableCell className="text-justify">{item.nguyen_nhan_hu_hong}</TableCell>
-                    <TableCell className="text-justify">{item.bien_phap_thuc_hien}</TableCell>
-                    <TableCell className="text-justify">{item.de_xuat}</TableCell>
-                    <TableCell className="text-right fw-bold">
-                      {item.du_tru_kinh_phi ? Number(item.du_tru_kinh_phi).toLocaleString("vi-VN") : "0"}
-                    </TableCell>
-                    <TableCell align="center">
-                      <span className={`badge-status ${isFinished ? 'bg-success text-white' : 'bg-warning text-dark'}`} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap' }}>
-                        {item.ket_qua || 'Đang xử lý'}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          <TableContainer component={Paper} className="table-card shadow-sm" sx={{transform: 'rotateX(180deg)', borderRadius: 3}}>
+            <Table size="small" sx={{ minWidth: 2500, transform: 'rotateX(180deg)' }} className="table-custom">
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#f1f5f9' }}>
+                  <TableCell style={{ width: '35px', textAlign: 'center', fontWeight: 700 }}>Stt</TableCell>
+                  <TableCell style={{ width: '160px', textAlign: 'center', fontWeight: 700 }}>Đơn vị quản lý</TableCell>
+                  <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Loại PT</TableCell>
+                  <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu</TableCell>
+                  <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Nhãn hiệu xe nền</TableCell>
+                  <TableCell style={{ width: '100px', textAlign: 'center', fontWeight: 700 }}>Biển số</TableCell>
+                  <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Người trực tiếp quản lý, sử dụng</TableCell>
+                  <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Tình trạng, Nguyên nhân hư hỏng</TableCell>
+                  <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Biện pháp đã thực hiện</TableCell>
+                  <TableCell style={{ width: '280px', textAlign: 'center', fontWeight: 700 }}>Đề xuất</TableCell>
+                  <TableCell style={{ width: '130px', textAlign: 'center', fontWeight: 700 }}>Dự trù kinh phí</TableCell>
+                  <TableCell style={{ width: '120px', textAlign: 'center', fontWeight: 700 }}>Hiện trạng/Kết quả</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredItems.map((item, index) => {
+                  const isFinished = (item.ket_qua || "").includes('Đã hoàn thành') || (item.ket_qua || "").includes('Đã sửa xong');
+                  return (
+                    <TableRow key={item.id || index} sx={{ "&:nth-of-type(even)": { backgroundColor: '#f8fafc' }, "&:hover": { backgroundColor: '#f1f5f9' } }}>
+                      <TableCell className="text-center text-muted">{index + 1}</TableCell>
+                      <TableCell className="fw-bold">{item.don_vi_quan_ly}</TableCell>
+                      <TableCell className="text-center">{item.loai_phuong_tien}</TableCell>
+                      <TableCell className="text-center">{item.nhan_hieu}</TableCell>
+                      <TableCell className="text-center">{item.nhan_hieu_sat_xi}</TableCell>
+                      <TableCell className="text-center fw-bold text-primary">{item.bien_kiem_soat}</TableCell>
+                      <TableCell className="text-center">{item.nguoi_quan_ly}</TableCell>
+                      <TableCell className="text-justify">{item.nguyen_nhan_hu_hong}</TableCell>
+                      <TableCell className="text-justify">{item.bien_phap_thuc_hien}</TableCell>
+                      <TableCell className="text-justify">{item.de_xuat}</TableCell>
+                      <TableCell className="text-right fw-bold">
+                        {item.du_tru_kinh_phi ? Number(item.du_tru_kinh_phi).toLocaleString("vi-VN") : "0"}
+                      </TableCell>
+                      <TableCell align="center">
+                        <span className={`badge-status ${isFinished ? 'bg-success text-white' : 'bg-warning text-dark'}`} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                          {item.ket_qua || 'Đang xử lý'}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        {filteredItems.length > 0 && (
-          <Paper elevation={0} sx={{ mt: 2, p: 2.5, borderRadius: 3, border: '1px solid #e2e8f0', backgroundColor: '#fff', textAlign: 'right' }}>
-            <Typography sx={{ fontWeight: 600, color: '#64748b' }}>
-              TỔNG CỘNG: <span style={{ fontSize: '1.4rem', color: '#ef4444', marginLeft: '10px' }}>{totalKinhPhi.toLocaleString("vi-VN")} VNĐ</span>
-            </Typography>
-            <Typography sx={{ mt: 0.5, fontStyle: 'italic', color: '#94a3b8' }}>
-              {docSoThanhChu(totalKinhPhi)}
-            </Typography>
-          </Paper>
-        )}
-      </Box>
+          {filteredItems.length > 0 && (
+            <Paper elevation={0} sx={{ mt: 2, p: 2.5, borderRadius: 3, border: '1px solid #e2e8f0', backgroundColor: '#fff', textAlign: 'right' }}>
+              <Typography sx={{ fontWeight: 600, color: '#64748b' }}>
+                TỔNG CỘNG: <span style={{ fontSize: '1.4rem', color: '#ef4444', marginLeft: '10px' }}>{totalKinhPhi.toLocaleString("vi-VN")} VNĐ</span>
+              </Typography>
+              <Typography sx={{ mt: 0.5, fontStyle: 'italic', color: '#94a3b8' }}>
+                {docSoThanhChu(totalKinhPhi)}
+              </Typography>
+            </Paper>
+          )}
+        </Box>
+      )}
     </main>
   );
 };
+
 
 export default PhuongTienHuHong;

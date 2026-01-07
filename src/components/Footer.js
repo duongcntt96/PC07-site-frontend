@@ -24,7 +24,7 @@ const Footer = () => {
     <Box 
       component="footer" 
       sx={{ 
-        bgcolor: 'primary.main', 
+        bgcolor: '#394d69ff', 
         color: 'white', 
         py: 4, 
         mt: 'auto' // Pushes footer to bottom if using Flexbox on parent

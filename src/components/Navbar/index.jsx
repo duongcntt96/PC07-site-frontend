@@ -65,7 +65,7 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar position='sticky' sx={{ p:2 }} >
+      <AppBar position='sticky' sx={{ py: 1}}>
         <Toolbar variant="dense" sx={{ justifyContent: 'space-between', flexDirection: 'row' }}>
           <Stack direction="row" alignItems="center" spacing={1}> {/* Group hamburger and logo */}
             <IconButton
@@ -84,7 +84,8 @@ export default function Navbar() {
                 src={logo}
                 alt="logo"
                 sx={{
-                  height: '80px',
+                  display: { xs: 'none', sm: 'block', md: 'block' },
+                  height: '60px',
                   transition: 'transform 0.3s ease-in-out',
                   '&:hover': {
                     transform: 'scale(1.1)',
@@ -101,9 +102,14 @@ export default function Navbar() {
             alignItems='center'
             spacing={1}
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}> {/* Hide on extra small, show as flex on small and up */}
-            {links.map((link) => {
-              return (link.active&&
-                <Submenu key={link.id} {...link} handleDrawerClose={handleDrawerClose}/>
+            {links.map((link, index) => {
+              return (
+                link.active && (
+                  <React.Fragment key={link.id}>
+                    <Submenu {...link} handleDrawerClose={handleDrawerClose} />
+                    {index < links.filter(l => l.active).length - 1 && <Divider orientation="vertical" flexItem />}
+                  </React.Fragment>
+                )
               );
             })}
           </Stack>
@@ -135,6 +141,20 @@ export default function Navbar() {
       >
         {/* <Toolbar /> */}
         <Box sx={{ width: 280, pt: 2}}>
+              <Link to="/">
+              <Box
+                component="img"
+                src={logo}
+                alt="logo"
+                sx={{
+                  height: '60px',
+                  transition: 'transform 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              />
+            </Link>
         <List component="nav" sx={{ px: 1.5 }}>
           {links.filter(link => link.active).map((item) => (
             <React.Fragment key={item.id}>
@@ -170,13 +190,13 @@ export default function Navbar() {
                         }}
                       >
                         {child.icon && (
-                          <ListItemIcon sx={{ minWidth: 40 }}> {/* Removed color */}
+                          <ListItemIcon sx={{ minWidth: 40 }}>
                             {child.icon}
                           </ListItemIcon>
                         )}
                         <ListItemText 
                           primary={child.text} 
-                          primaryTypographyProps={{ fontSize: '0.9rem' }} // Removed color
+                          primaryTypographyProps={{ fontSize: '0.9rem' }}
                         />
                       </ListItemButton>
                     ))}
@@ -188,7 +208,7 @@ export default function Navbar() {
           ))}
         </List>
         </Box>
-        <Box sx={{ width: '100%', alignSelf: 'center',  backgroundColor:"#f0f0f0", justifyContent:"center", display:"flex", p:2,}}> {/* Neutral background */}
+        <Box sx={{ width: '100%', alignSelf: 'center',  backgroundColor:"#f0f0f0", justifyContent:"center", display:"flex", p:2,}}>
           <User />
         </Box>
       </Drawer>
