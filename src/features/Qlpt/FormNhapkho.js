@@ -14,24 +14,27 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Loading from "components/Loading";
 
 import {DevTool} from '@hookform/devtools'
+import { chungloai as chungloai_ } from 'data'
 
 
 export const FormNhapkho = () => {
   const navigate = useNavigate();
-
+  const chungloai = treeOptionsConvert(chungloai_)
   const [kho, setKho] = useState([])
-  const [chungloai, setChungloai] = useState([])
+  // const [chungloai, setChungloai] = useState([])
   const [nguoncap,setNguoncap] = useState([])
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [khoResponse, chungloaiResponse, nguoncapResponse] = await Promise.all([
+        const [khoResponse, 
+          // chungloaiResponse, 
+          nguoncapResponse] = await Promise.all([
           qlptApi.getListKho(),
-          qlptApi.getListChungloai(),
+          // qlptApi.getListChungloai(),
           qlptApi.getListNguoncap(),
         ]);
         setKho(treeOptionsConvert(khoResponse.data));
-        setChungloai(treeOptionsConvert(chungloaiResponse.data));
+        // setChungloai(treeOptionsConvert(chungloaiResponse.data));
         setNguoncap(treeOptionsConvert(nguoncapResponse.data));
       } catch (error) {
         console.error("Failed to fetch initial data", error);

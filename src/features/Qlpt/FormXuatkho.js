@@ -11,28 +11,33 @@ import {DevTool} from '@hookform/devtools'
 
 import {Alert, InputAdornment, Stack, TextField, Button, Typography, Autocomplete } from '@mui/material'
 import {TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
+import { chungloai as chungloai_ } from "data";
 
 
 const FormXuatkho = () => {
   const navigate = useNavigate();
+  const chungloai = treeOptionsConvert(chungloai_)
   const paramsURL = new URLSearchParams(window.location.search);
   const [id, setID] = useState(useParams().id || paramsURL.get("id"));
   const [kho, setKho] = useState([]);
-  const [chungloai, setChungloai] = useState([]);
+  // const [chungloai, setChungloai] = useState([]);
   const [nguoncap, setNguoncap] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state here
   // get const data list
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [khoResponse, nguoncapResponse, chungloaiResponse] = await Promise.all([
+        const [khoResponse, 
+          nguoncapResponse, 
+          // chungloaiResponse
+        ] = await Promise.all([
           qlptApi.getListKho(),
           qlptApi.getListNguoncap(),
-          qlptApi.getListChungloai(),
+          // qlptApi.getListChungloai(),
         ]);
         setKho(treeOptionsConvert(khoResponse.data));
         setNguoncap(nguoncapResponse.data);
-        setChungloai(treeOptionsConvert(chungloaiResponse.data));
+        // setChungloai(treeOptionsConvert(chungloaiResponse.data));
       } catch (error) {
         console.error("Failed to fetch initial data", error);
       } finally {

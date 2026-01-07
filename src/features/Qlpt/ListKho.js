@@ -9,15 +9,16 @@ import { Link, useLocation } from "react-router-dom";
 
 import {useForm, Controller} from 'react-hook-form'
 import {DevTool} from '@hookform/devtools'
-import {Stack, Typography, TextField, Autocomplete, MenuItem, MenuList} from '@mui/material'
+import {Stack, Typography, TextField, Autocomplete, MenuItem, MenuList, Skeleton} from '@mui/material'
 import {TableContainer, Paper, Alert, Table, TableHead, TableBody, TableRow, TableCell} from '@mui/material'
+import { chungloai } from "data";
 
 export const ListKho = () => {
   const { pushURL } = usePushURL();
   const paramsURL = new URLSearchParams(window.location.search);
 
   const [kho, setKho] = useState([]);
-  const [chungloai, setChungloai] = useState([]);
+  // const [chungloai, setChungloai] = useState([]);
   const [thucluc, setThucluc] = useState({ count: 0, sum: 0, data: [] });
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +37,9 @@ export const ListKho = () => {
     try {
       const khoData = await qlptApi.getListKho();
       setKho(khoData.data);
-      const chungloaiData = await qlptApi.getListChungloai();
-      setChungloai(treeOptionsConvert(chungloaiData.data));
+      // const chungloaiData = await qlptApi.getListChungloai();
+      // setChungloai(chungloaiData.data);
+      // setChungloai(treeOptionsConvert(chungloaiData.data));
     } catch (error) {
       console.error("Failed to fetch constants", error);
     } finally {
@@ -94,8 +96,16 @@ export const ListKho = () => {
                 size="small"
               />
             )}
-            renderOption={(props,option)=>(
-              <li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>
+            renderOption={(props, option) => (
+              <li {...props} style={{ 
+                padding: '6px 16px', 
+                marginLeft: `${option.level * 20}px`,
+                borderLeft: option.level > 0 ? '1px dashed #ccc' : 'none', // Thêm đường kẻ phụ
+                fontSize: option.level === 0 ? '0.9rem' : '0.85rem',
+                fontWeight: option.level === 0 ? 'bold' : 'normal'
+              }}>
+                {option.level > 0 && "-"} {option.ten}
+              </li>
             )}
           />)}
       />
@@ -119,21 +129,31 @@ export const ListKho = () => {
                 size="small"
               />
             )}
-            renderOption={(props,option)=>(
-              <li {...props} style={{padding:'0 10px', margin: 1, marginLeft: `${option.level * 20}px`, backgroundColor:'lightblue', borderRadius:'0 10px 10px 10px'}}>{option.ten}</li>
+            renderOption={(props, option) => (
+              <li {...props} style={{ 
+                padding: '6px 16px', 
+                marginLeft: `${option.level * 20}px`,
+                borderLeft: option.level > 0 ? '1px dashed #ccc' : 'none', // Thêm đường kẻ phụ
+                fontSize: option.level === 0 ? '0.9rem' : '0.85rem',
+                fontWeight: option.level === 0 ? 'bold' : 'normal'
+              }}>
+                {option.level > 0 && "-"} {option.ten}
+              </li>
             )}
             componentsProps={{popper: {style: {width:'fit-content', maxWidth:'60%'}}}}
           />)}
       />
     </Stack>
 
-    {loading && chungloai !== [] ? <Loading /> : (
+    {loading ? <Stack spacing={1} sx={{mt:1}}>
+    <Skeleton variant="rectangular" width="100%" height={40} />
+    <Skeleton variant="rectangular" width="100%" height={500} />
+  </Stack> : (
       thucluc?.count * thucluc?.sum ? (
       <Stack sx={{mt:1}}>
         <Alert severity="success" >
           {`Tìm thấy ${thucluc?.count || 0} danh mục với số lượng ${thucluc?.sum || 0} !`}
         </Alert>
-
         <TableContainer component={Paper} sx={{ mt: 2}} >
           <Table size="small">
             <TableHead>
@@ -148,7 +168,7 @@ export const ListKho = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {chungloai.filter((e)=>e.maso.includes(chungloai.find(e=>e.id==getValues('chung_loai'))?.maso)||!getValues('chung_loai')).map(({id,level,ten,maso}) => {
+              {memoizedChungloaiOptions.filter((e)=>e.maso.includes(memoizedChungloaiOptions.find(e=>e.id==getValues('chung_loai'))?.maso)||!getValues('chung_loai')).map(({id,level,ten,maso}) => {
                 if (thucluc.data.filter(e=>e.chung_loai__maso.includes(maso)).length) {
                   const subtotals = thucluc.data.filter(e=>e.chung_loai__maso.includes(maso)).reduce((sum,value)=>sum+=value.totals,0)
                   if (subtotals) return (

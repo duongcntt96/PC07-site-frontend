@@ -2,6 +2,10 @@ import axiosClient from "./axiosClient";
 import { normalizeList } from "./responseHelper";
 const qlptApi = {
   // #######################################
+  bulkCreateChungLoai : (data) => {
+        const url = "/qlpt/chungloai/bulk_create_chungloai/";
+        return axiosClient.post(url, data);
+  },
   getThucluc: (params) => {
     const url = "/qlpt/thucluc";
     return axiosClient.get(url, { params });
@@ -72,12 +76,12 @@ const qlptApi = {
     return chunks.map(buildUrl);
   },
   getListChungloai: async (params) => {
-    const url = "/qlpt/chungloai";
+    const url = "/qlpt/chungloai/";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
   getListKho: async (params) => {
-    const url = "/qlpt/kho";
+    const url = "/qlpt/kho/";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
@@ -87,7 +91,7 @@ const qlptApi = {
     return normalizeList(resp);
   },
   getListPhuongtien: async (params) => {
-    const url = "/qlpt/phuongtien";
+    const url = "/qlpt/phuongtien/";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
@@ -96,7 +100,7 @@ const qlptApi = {
     return axiosClient.get(url);
   },
   getListPhieunhap: async (params) => {
-    const url = "/qlpt/phieunhap";
+    const url = "/qlpt/phieunhap/";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
