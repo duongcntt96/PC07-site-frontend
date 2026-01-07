@@ -3,7 +3,7 @@ import {
   Button, Box, Paper, Typography, Table, TableBody, 
   TableCell, TableContainer, TableHead, TableRow, Stack, Alert 
 } from '@mui/material';
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import qlptApi from "api/qlptApi"; // Giả định bạn đã có hàm bulkCreate
 export const BulkCreateChungLoai = () => {
   const [data, setData] = useState([]);
