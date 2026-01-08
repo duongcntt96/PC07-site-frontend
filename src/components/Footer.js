@@ -1,5 +1,6 @@
 import React from "react";
-import { FaUserCheck, FaPhoneSquare, FaFacebook, FaTwitter, FaYoutube, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaUserCheck, FaPhoneSquare, FaFacebook, FaYoutube, FaGithub } from "react-icons/fa";
+import { SiZalo } from "react-icons/si";
 import { FiMail } from "react-icons/fi";
 import { AiOutlineHome } from "react-icons/ai";
 import { Stack, Box, Typography, Link, Container, IconButton } from '@mui/material';
@@ -12,11 +13,10 @@ const contactInfo = [
 ];
 
 const socialLinks = [
+  { icon: <SiZalo />, label: "zalo", href: "https://zalo.me/@0965881681" },
+  { icon: <FaYoutube />, label: "youtube", href: "https://www.youtube.com/@dangbaduong" },
   { icon: <FaFacebook />, label: "facebook", href: "#" },
-  { icon: <FaTwitter />, label: "twitter", href: "#" },
-  { icon: <FaYoutube />, label: "youtube", href: "#" },
   { icon: <FaGithub />, label: "github", href: "#" },
-  { icon: <FaLinkedin />, label: "linkedin", href: "#" },
 ];
 
 const Footer = () => {
@@ -37,7 +37,7 @@ const Footer = () => {
           spacing={4}
         >
           {/* Left Side: Description */}
-          <Stack spacing={2} sx={{ maxWidth: { md: '70%' } }}>
+          <Stack spacing={1} sx={{ maxWidth: { md: '70%' } }}>
             <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 'bold' }}>
               Quản lý phương tiện PCCC và CNCH
             </Typography>
@@ -47,11 +47,11 @@ const Footer = () => {
           </Stack>
 
           {/* Right Side: Contact & Socials */}
-          <Stack spacing={2}>
+          <Stack spacing={1}>
             <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 'bold' }}>
               Liên hệ, góp ý
             </Typography>
-            <Stack spacing={1.5} sx={{ opacity: 0.8, fontWeight: 'bold' }}>
+            <Stack spacing={0.5} sx={{ opacity: 0.8, fontWeight: 'bold' }}>
               {contactInfo.map((item, index) => (
                 <Stack key={index} direction="row" alignItems="center" spacing={1.5}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>{item.icon}</Box>

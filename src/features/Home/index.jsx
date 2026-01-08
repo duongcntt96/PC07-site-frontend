@@ -1,10 +1,40 @@
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import PageTitle from "components/PageTitle";
-
 import TTSControls from "components/TTSControls";
+import { Box, Grid, Typography, Card, CardContent, styled } from "@mui/material";
+import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 
+
+const StyledVideoCard = styled(Card)({
+  borderRadius: "8px",
+  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+  overflow: "hidden",
+  marginBottom: '8px',
+});
+
+const VideoResponsiveContainer = styled(Box)({
+  position: "relative",
+  width: "100%",
+  paddingTop: "56.25%", // 16:9 aspect ratio
+  overflow: "hidden",
+  borderRadius: "6px",
+  "& iframe": {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    border: 0,
+  },
+});
+
+const SidebarStyled = styled(Grid)({
+  position: "sticky",
+  top: '16px',
+  justifyContent: "center",
+  alignSelf: "start",
+});
 
 function Home() {
   const dispatch = useDispatch();
@@ -39,53 +69,69 @@ function Home() {
     },
   ];
 
-  // TTS behavior moved to `TTSControls` component (uses `useTTS` hook).
-  // This keeps Home focused on layout and video cards.
+
 
   const VideoCard = ({ v }) => (
-    <section className="video-card">
-      <h4>{v.title}</h4>
-      {v.note && <h5>{v.note}</h5>}
-      <div className="video-responsive">
-        <iframe
-          src={v.src}
-          title={v.title}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
-      </div>
-    </section>
+    <StyledVideoCard>
+      <CardContent sx={{ padding: '12px' }}>
+        <Typography variant="h5" component="h4" sx={{ mb: 1 }}>
+          {v.title}
+        </Typography>
+        {v.note && (
+          <Typography variant="subtitle2" component="h5" color="text.secondary" sx={{ mb: 1 }}>
+            {v.note}
+          </Typography>
+        )}
+        <VideoResponsiveContainer>
+          <iframe
+            src={v.src}
+            title={v.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </VideoResponsiveContainer>
+      </CardContent>
+    </StyledVideoCard>
   );
 
   return (
-    <main onMouseOver={(e) => dispatch(closeSubMenu())}>
+    <Box onMouseOver={() => dispatch(closeSubMenu())} sx={{ flexGrow: 1, p: '16px' }}>
       <PageTitle title="Trang chủ" />
-
-      <div className="home-container">
-        <div className="content">
-          {videos.map((v) => (
-            <VideoCard v={v} key={v.id} />
-          ))}
-        </div>
-
-        <aside className="sidebar">
-          <div style={{ marginBottom: 16 }}>
+      <Grid container spacing={2} sx={{ mt: '16px' }}>
+        <Grid item xs={12} md={8}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: '16px' }}>
+            {videos.map((v) => (
+              <VideoCard v={v} key={v.id} />
+            ))}
+          </Box>
+        </Grid>
+        <SidebarStyled item xs={12} md={4}>
+          <Box sx={{ mb: '16px' }}>
             <TTSControls />
-          </div>
-
-          <div style={{ marginTop: 16 }} className="video-card">
-            <h4>Tài liệu & Liên kết</h4>
-            <ul>
-              <li><a href="/thuvien/tspl">Tủ sách pháp luật</a></li>
-              <li><a href="/thuvien/tlnv">Tài liệu nghiệp vụ</a></li>
-              <li><a href="/phuongtien/huhong">Báo cáo phương tiện hư hỏng</a></li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </main>
+          </Box>
+          <StyledVideoCard>
+            <CardContent sx={{ padding: '12px' }}>
+              <Typography variant="h6" component="h4" sx={{ mb: 1 }}>
+                Tài liệu & Liên kết
+              </Typography>
+              <ul>
+                <li>
+                  <a href="/thuvien/tspl">Tủ sách pháp luật</a>
+                </li>
+                <li>
+                  <a href="/thuvien/tlnv">Tài liệu nghiệp vụ</a>
+                </li>
+                <li>
+                  <a href="/phuongtien/huhong">Báo cáo phương tiện hư hỏng</a>
+                </li>
+              </ul>
+            </CardContent>
+          </StyledVideoCard>
+        </SidebarStyled>
+      </Grid>
+    </Box>
   );
 }
 

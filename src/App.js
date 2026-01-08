@@ -22,8 +22,8 @@ import { FormXuatkho } from "features/Qlpt/FormXuatkho";
 // --- Features: Tochuc & Coso ---
 import Tochuc from "features/Tochuc";
 import Person from "features/Tochuc/Person";
-import Coso from "features/Coso/Coso";
-import { Diaban } from "features/Coso";
+import { Coso, Diaban } from "features/Coso";
+import GisMap from "features/Gis";
 import { Breadcrumbs, Paper } from "@mui/material";
 import PhuongTienHuHong from "features/PhuongTienHuHong";
 import PhuongtienHuHongForm from "features/PhuongTienHuHong/phuongtienHuHongForm";
@@ -33,7 +33,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Navbar />
-        <Breadcrumbs aria-label="breadcrumb" sx={{ p: 2, bgcolor: '#f9fafb' }}/>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ p: 1, bgcolor: '#f9fafb' }}/>
         <SubMenu />
 
         <Paper sx={{ minHeight: '620px', p: 2, boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',}}>
@@ -131,6 +131,18 @@ const App = () => {
             }
           />
 
+          <Route
+            path="/qlpt/xuatnhap/:id"
+            element={
+              <>
+                <Helmet>
+                  <title>Chỉnh sửa</title>
+                </Helmet>
+                <FormNhapkho />
+              </>
+            }
+          />
+
 
 
           <Route
@@ -168,16 +180,25 @@ const App = () => {
             }
           />
 
-
-
           <Route
-            path="/coso/:id"
+            path="/coso"
             element={
               <>
                 <Helmet>
                   <title>Thông tin cơ sở</title>
                 </Helmet>
-                <Coso />
+                <GisMap />
+              </>
+            }
+          />
+          <Route
+            path="/gis"
+            element={
+              <>
+                <Helmet>
+                  <title>Bản đồ số GIS</title>
+                </Helmet>
+                <GisMap />
               </>
             }
           />
