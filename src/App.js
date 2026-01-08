@@ -33,7 +33,7 @@ const App = () => {
     <>
       <BrowserRouter>
         <Navbar />
-        <Breadcrumbs aria-label="breadcrumb" sx={{ p: 1, bgcolor: '#f9fafb' }}/>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ p: 1.75, bgcolor: '#f9fafb' }}/>
         <SubMenu />
 
         <Paper sx={{ minHeight: '620px', p: 2, boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',}}>
