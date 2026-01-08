@@ -5,10 +5,10 @@ import { SiReadthedocs } from "react-icons/si";
 import { IoLibrarySharp } from "react-icons/io5";
 import { FcDepartment } from "react-icons/fc";
 import { RiExchangeFundsFill } from "react-icons/ri";
-import { TiExportOutline  } from "react-icons/ti";
-import { CgImport    } from "react-icons/cg";
+import { TiExportOutline } from "react-icons/ti";
+import { CgImport } from "react-icons/cg";
 import { FaChartPie } from "react-icons/fa";
-import { AiOutlineSchedule  } from "react-icons/ai";
+import { AiOutlineSchedule } from "react-icons/ai";
 import { FaBehance, FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { PiTruckLight } from "react-icons/pi";
 
@@ -38,19 +38,19 @@ export const links = [
         id: 3,
         url: "/qlpt/xuatnhap/import",
         text: "Nhập phương tiện",
-        icon: <CgImport  />,
+        icon: <CgImport />,
       },
       {
         id: 4,
         url: "/qlpt/xuatnhap/export",
         text: "Xuất/Điều chuyển phương tiện",
-        icon: <TiExportOutline  />,
+        icon: <TiExportOutline />,
       },
       {
         id: 5,
         url: "/qlpt/bulkcreate",
         text: "Thêm chủng loại hàng loạt",
-        icon: <CgImport  />,
+        icon: <CgImport />,
       },
     ],
   },
@@ -76,9 +76,16 @@ export const links = [
         id: 3,
         url: "/qlpt/dangkiem",
         text: "Lịch đăng kiểm",
-        icon: <AiOutlineSchedule  />,
+        icon: <AiOutlineSchedule />,
       },
     ],
+  },
+  {
+    id: 6,
+    active: true,
+    url: "/gis",
+    text: "BẢN ĐỒ SỐ",
+    children: [],
   },
   {
     id: 3,
@@ -146,1871 +153,1871 @@ export const social = [
 ];
 
 export const chungloai = [
-        {
-            "id": 1,
-            "ten": "NHÓM PHƯƠNG TIỆN CHỮA CHÁY, CNCH PHỤC VỤ CÔNG TÁC HUẤN LUYỆN, CHIẾN ĐẤU",
-            "maso": "A",
-            "children": [
-                {
-                    "id": 2,
-                    "ten": "Xe chữa cháy, xe chuyên dùng phục vụ chữa cháy, cứu nạn, cứu hộ",
-                    "maso": "A01",
-                    "children": [
-                        {
-                            "id": 3,
-                            "ten": "Xe chữa cháy",
-                            "maso": "A0101",
-                            "children": [
-                                {
-                                    "id": 5,
-                                    "ten": "Xe chữa cháy (sử dụng nước hoặc nước và bọt thông thường)",
-                                    "maso": "A010101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 6,
-                                    "ten": "Xe chữa cháy sử dụng công nghệ CAFS",
-                                    "maso": "A010102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 7,
-                                    "ten": "Xe chữa cháy sử dụng công nghệ 1-7",
-                                    "maso": "A010103",
-                                    "children": []
-                                },
-                                {
-                                    "id": 8,
-                                    "ten": "Xe chữa cháy đa năng (có hệ thống tời, tháp đèn chiếu sáng)",
-                                    "maso": "A010104",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 4,
-                            "ten": "Xe chữa cháy hóa chất (chữa cháy bằng bột, chất tạo bọt, khí)",
-                            "maso": "A0102",
-                            "children": []
-                        },
-                        {
-                            "id": 9,
-                            "ten": "Xe chữa cháy đường hầm",
-                            "maso": "A0103",
-                            "children": [
-                                {
-                                    "id": 10,
-                                    "ten": "Xe chữa cháy (sử dụng nước và bọt thông thường)",
-                                    "maso": "A010301",
-                                    "children": []
-                                },
-                                {
-                                    "id": 11,
-                                    "ten": "Xe chữa cháy sử dụng công nghệ CAFS",
-                                    "maso": "A010302",
-                                    "children": []
-                                },
-                                {
-                                    "id": 12,
-                                    "ten": "Xe chữa cháy sử dụng công nghệ 1-7",
-                                    "maso": "A010303",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 13,
-                            "ten": "Xe chữa cháy đường sắt",
-                            "maso": "A0104",
-                            "children": []
-                        },
-                        {
-                            "id": 14,
-                            "ten": "Xe chữa cháy rừng",
-                            "maso": "A0105",
-                            "children": []
-                        },
-                        {
-                            "id": 15,
-                            "ten": "Xe chữa cháy lưỡng cư",
-                            "maso": "A0106",
-                            "children": []
-                        },
-                        {
-                            "id": 16,
-                            "ten": "Xe thang",
-                            "maso": "A0107",
-                            "children": [
-                                {
-                                    "id": 17,
-                                    "ten": "Xe thang (cao < 30m)",
-                                    "maso": "A010701",
-                                    "children": []
-                                },
-                                {
-                                    "id": 18,
-                                    "ten": "Xe thang (cao 30 đến 32m)",
-                                    "maso": "A010702",
-                                    "children": []
-                                },
-                                {
-                                    "id": 19,
-                                    "ten": "Xe thang (cao 45 đến 52m)",
-                                    "maso": "A010703",
-                                    "children": []
-                                },
-                                {
-                                    "id": 20,
-                                    "ten": "Xe thang (cao 60 đến 65m)",
-                                    "maso": "A010704",
-                                    "children": []
-                                },
-                                {
-                                    "id": 21,
-                                    "ten": "Xe thang (cao > 65m)",
-                                    "maso": "A010705",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 22,
-                            "ten": "Xe cứu nạn, cứu hộ",
-                            "maso": "A0108",
-                            "children": [
-                                {
-                                    "id": 23,
-                                    "ten": "Xe cứu nạn, cứu hộ trên cạn (có cẩu, tời, tháp đèn cố định và các trang thiết bị CNCH kèm theo)",
-                                    "maso": "A010801",
-                                    "children": []
-                                },
-                                {
-                                    "id": 24,
-                                    "ten": "Xe cứu nạn, cứu hộ dưới nước (phục vụ CNCH dưới nước)",
-                                    "maso": "A010802",
-                                    "children": []
-                                },
-                                {
-                                    "id": 25,
-                                    "ten": "Xe cứu nạn, cứu hộ trong môi trường nhiễm NBC (Hạt nhân - Sinh học - Hoá học)",
-                                    "maso": "A010803",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 26,
-                            "ten": "Xe trạm bơm",
-                            "maso": "A0109",
-                            "children": []
-                        },
-                        {
-                            "id": 27,
-                            "ten": "Xe chở nước",
-                            "maso": "A0110",
-                            "children": []
-                        },
-                        {
-                            "id": 28,
-                            "ten": "Xe chỉ huy chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0111",
-                            "children": []
-                        },
-                        {
-                            "id": 29,
-                            "ten": "Xe chở phương tiện",
-                            "maso": "A0112",
-                            "children": []
-                        },
-                        {
-                            "id": 30,
-                            "ten": "Xe chở quân",
-                            "maso": "A0113",
-                            "children": []
-                        },
-                        {
-                            "id": 31,
-                            "ten": "Xe hút khói",
-                            "maso": "A0114",
-                            "children": []
-                        },
-                        {
-                            "id": 32,
-                            "ten": "Xe khám nghiệm hiện trường cháy",
-                            "maso": "A0115",
-                            "children": []
-                        },
-                        {
-                            "id": 33,
-                            "ten": "Xe sửa chữa, bảo dưỡng kỹ thuật",
-                            "maso": "A0116",
-                            "children": []
-                        },
-                        {
-                            "id": 34,
-                            "ten": "Xe chiếu sáng chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0117",
-                            "children": []
-                        },
-                        {
-                            "id": 35,
-                            "ten": "Xe cứu thương",
-                            "maso": "A0118",
-                            "children": []
-                        },
-                        {
-                            "id": 41,
-                            "ten": "Xe nâng",
-                            "maso": "A0119",
-                            "children": []
-                        },
-                        {
-                            "id": 42,
-                            "ten": "Xe trung tâm thông tin chỉ huy",
-                            "maso": "A0120",
-                            "children": []
-                        },
-                        {
-                            "id": 43,
-                            "ten": "Xe chở hoá chất",
-                            "maso": "A0121",
-                            "children": []
-                        },
-                        {
-                            "id": 44,
-                            "ten": "Xe xử lý hoá chất độc hại, sinh học và hạt nhân",
-                            "maso": "A0122",
-                            "children": []
-                        },
-                        {
-                            "id": 45,
-                            "ten": "Xe cung cấp chất khí chữa cháy",
-                            "maso": "A0123",
-                            "children": []
-                        },
-                        {
-                            "id": 46,
-                            "ten": "Xe chở và nạp bình khí thở chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0124",
-                            "children": []
-                        },
-                        {
-                            "id": 47,
-                            "ten": "Mô tô chữa cháy, cứu hộ, cứu thương dung tích xi-lanh dưới 175 cm3",
-                            "maso": "A0125",
-                            "children": []
-                        },
-                        {
-                            "id": 48,
-                            "ten": "Mô tô chữa cháy, cứu hộ, cứu thương dung tích xi-lanh trên 175 cm3",
-                            "maso": "A0126",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 49,
-                    "ten": "Tàu, xuồng, ca nô, mô tô nước chữa cháy, cứu nạn, cứu hộ",
-                    "maso": "A02",
-                    "children": [
-                        {
-                            "id": 50,
-                            "ten": "Tàu chữa cháy",
-                            "maso": "A0201",
-                            "children": [
-                                {
-                                    "id": 51,
-                                    "ten": "Tàu chữa cháy (Công suất P > 3000 CV)",
-                                    "maso": "A020101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 52,
-                                    "ten": "Tàu chữa cháy (Công suất 2000 CV ≤ P ≤ 3000 CV)",
-                                    "maso": "A020102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 53,
-                                    "ten": "Tàu chữa cháy (Công suất 1000 CV ≤ P< 2000 CV)",
-                                    "maso": "A020103",
-                                    "children": []
-                                },
-                                {
-                                    "id": 54,
-                                    "ten": "Tàu chữa cháy (Công suất 1000 CV < P)",
-                                    "maso": "A020104",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 55,
-                            "ten": "Canô chữa cháy, cứu nạn cứu hộ",
-                            "maso": "A0202",
-                            "children": [
-                                {
-                                    "id": 56,
-                                    "ten": "Canô chữa cháy, cứu nạn cứu hộ  (Công suất P > 1000 CV)",
-                                    "maso": "A020201",
-                                    "children": []
-                                },
-                                {
-                                    "id": 57,
-                                    "ten": "Canô chữa cháy, cứu nạn cứu hộ  (Công suất 500 ≤ P < 1000 CV)",
-                                    "maso": "A020202",
-                                    "children": []
-                                },
-                                {
-                                    "id": 58,
-                                    "ten": "Canô chữa cháy, cứu nạn cứu hộ  (Công suất P < 500 CV)",
-                                    "maso": "A020203",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 59,
-                            "ten": "Xuồng cứu nạn, cứu hộ (có động cơ)",
-                            "maso": "A0203",
-                            "children": [
-                                {
-                                    "id": 60,
-                                    "ten": "Xuồng cứu nạn cứu hộ  (Công suất P ≥ 500 CV)",
-                                    "maso": "A020301",
-                                    "children": []
-                                },
-                                {
-                                    "id": 61,
-                                    "ten": "Xuồng cứu nạn cứu hộ (Công suất 100 ≤ P < 500 CV)",
-                                    "maso": "A020302",
-                                    "children": []
-                                },
-                                {
-                                    "id": 62,
-                                    "ten": "Xuồng cứu nạn cứu hộ (Công suất P < 100 CV)",
-                                    "maso": "A020303",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 63,
-                            "ten": "Mô tô nước",
-                            "maso": "A0204",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 64,
-                    "ten": "Máy bơm chữa cháy",
-                    "maso": "A03",
-                    "children": [
-                        {
-                            "id": 65,
-                            "ten": "Máy bơm chữa cháy (khiêng tay)",
-                            "maso": "A0301",
-                            "children": [
-                                {
-                                    "id": 66,
-                                    "ten": "Máy bơm chữa cháy (Lưu lượng lớn nhất Qmax ≤ 1000 l/p)",
-                                    "maso": "A030101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 67,
-                                    "ten": "Máy bơm chữa cháy (Lưu lượng lớn nhất 1000 < Qmax ≤ 1500 l/p)",
-                                    "maso": "A030102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 68,
-                                    "ten": "Máy bơm chữa cháy (Lưu lượng lớn nhất 1500 < Qmax ≤ 1800 l/p)",
-                                    "maso": "A030103",
-                                    "children": []
-                                },
-                                {
-                                    "id": 69,
-                                    "ten": "Máy bơm chữa cháy (Lưu lượng lớn nhất Qmax > 1800 l/p)",
-                                    "maso": "A030104",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 70,
-                            "ten": "Máy bơm nổi chữa cháy",
-                            "maso": "A0302",
-                            "children": [
-                                {
-                                    "id": 71,
-                                    "ten": "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất Qmax ≤ 1000 l/p)",
-                                    "maso": "A030201",
-                                    "children": []
-                                },
-                                {
-                                    "id": 72,
-                                    "ten": "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất 1000 < Qmax ≤ 1500 l/p)",
-                                    "maso": "A030202",
-                                    "children": []
-                                },
-                                {
-                                    "id": 73,
-                                    "ten": "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất 1500 < Qmax ≤ 1800 l/p)",
-                                    "maso": "A030203",
-                                    "children": []
-                                },
-                                {
-                                    "id": 74,
-                                    "ten": "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất Qmax > 1800 l/p)",
-                                    "maso": "A030204",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": 75,
-                    "ten": "Phương tiện chữa cháy và cứu nạn, cứu hộ cơ giới khác",
-                    "maso": "A04",
-                    "children": [
-                        {
-                            "id": 76,
-                            "ten": "Robot chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0401",
-                            "children": []
-                        },
-                        {
-                            "id": 77,
-                            "ten": "Phương tiện bay không người lái chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0402",
-                            "children": []
-                        },
-                        {
-                            "id": 78,
-                            "ten": "Máy nạp khí sạch",
-                            "maso": "A0403",
-                            "children": [
-                                {
-                                    "id": 79,
-                                    "ten": "Máy nạp khí sạch (sử dụng động cơ đốt trong)",
-                                    "maso": "A040301",
-                                    "children": [
-                                        {
-                                            "id": 80,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax ≤ 100 l/p)",
-                                            "maso": "A04030101",
-                                            "children": []
-                                        },
-                                        {
-                                            "id": 81,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất 100 <Qmax ≤ 200 l/p)",
-                                            "maso": "A04030102",
-                                            "children": []
-                                        },
-                                        {
-                                            "id": 82,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất 200 <Qmax ≤ 300 l/p)",
-                                            "maso": "A04030103",
-                                            "children": []
-                                        },
-                                        {
-                                            "id": 83,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax > 300 l/p)",
-                                            "maso": "A04030104",
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "id": 84,
-                                    "ten": "Máy nạp khí sạch (sử dụng động cơ điện)",
-                                    "maso": "A040302",
-                                    "children": [
-                                        {
-                                            "id": 85,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax ≤ 300 l/p)",
-                                            "maso": "A04030201",
-                                            "children": []
-                                        },
-                                        {
-                                            "id": 86,
-                                            "ten": "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax > 300 l/p)",
-                                            "maso": "A04030202",
-                                            "children": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "id": 87,
-                            "ten": "Thiết bị chữa cháy đeo vai có động cơ",
-                            "maso": "A0404",
-                            "children": []
-                        },
-                        {
-                            "id": 88,
-                            "ten": "Máy cưa",
-                            "maso": "A0405",
-                            "children": []
-                        },
-                        {
-                            "id": 89,
-                            "ten": "Máy cắt",
-                            "maso": "A0406",
-                            "children": [
-                                {
-                                    "id": 90,
-                                    "ten": "Máy cắt kim loại",
-                                    "maso": "A040601",
-                                    "children": []
-                                },
-                                {
-                                    "id": 91,
-                                    "ten": "Máy cắt bê tông",
-                                    "maso": "A040602",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 92,
-                            "ten": "Máy khoan phá bê tông",
-                            "maso": "A0407",
-                            "children": []
-                        },
-                        {
-                            "id": 93,
-                            "ten": "Máy khoan, cắt dưới nước",
-                            "maso": "A0408",
-                            "children": []
-                        },
-                        {
-                            "id": 94,
-                            "ten": "Máy hàn, cắt chuyên dụng",
-                            "maso": "A0409",
-                            "children": []
-                        },
-                        {
-                            "id": 95,
-                            "ten": "Thiết bị đục, đập, tời, kéo (có sử dụng động cơ)",
-                            "maso": "A0410",
-                            "children": []
-                        },
-                        {
-                            "id": 96,
-                            "ten": "Bộ thiết bị banh, cắt, kích, nâng",
-                            "maso": "A0411",
-                            "children": [
-                                {
-                                    "id": 97,
-                                    "ten": "Bộ thiết bị banh, cắt, kích, nâng thuỷ lực sử dụng động cơ xăng",
-                                    "maso": "A041101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 98,
-                                    "ten": "Thiết bị banh, cắt sử dụng động cơ điện (pin)",
-                                    "maso": "A041102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 99,
-                                    "ten": "Thiết bị cắt cáp thuỷ lực",
-                                    "maso": "A041103",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 100,
-                            "ten": "Thiết bị kích, nâng sử dụng khí nén",
-                            "maso": "A0412",
-                            "children": []
-                        },
-                        {
-                            "id": 101,
-                            "ten": "Thiết bị xử lý thực bì (máy cắt thực bì, máy cắt cỏ)",
-                            "maso": "A0413",
-                            "children": []
-                        },
-                        {
-                            "id": 102,
-                            "ten": "Quạt hút khói",
-                            "maso": "A0414",
-                            "children": []
-                        },
-                        {
-                            "id": 103,
-                            "ten": "Quạt thổi khói",
-                            "maso": "A0415",
-                            "children": []
-                        },
-                        {
-                            "id": 104,
-                            "ten": "Máy thổi gió",
-                            "maso": "A0416",
-                            "children": []
-                        },
-                        {
-                            "id": 105,
-                            "ten": "Máy phát điện",
-                            "maso": "A0417",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 106,
-                    "ten": "Phương tiện chữa cháy thông dụng",
-                    "maso": "A05",
-                    "children": [
-                        {
-                            "id": 107,
-                            "ten": "Vòi chữa cháy VP51 (bao gồm đầu nối)",
-                            "maso": "A0501",
-                            "children": []
-                        },
-                        {
-                            "id": 108,
-                            "ten": "Vòi chữa cháy VP66 (bao gồm đầu nối)",
-                            "maso": "A0502",
-                            "children": []
-                        },
-                        {
-                            "id": 109,
-                            "ten": "Vòi chữa cháy VP 77 (bao gồm đầu nối)",
-                            "maso": "A0503",
-                            "children": []
-                        },
-                        {
-                            "id": 110,
-                            "ten": "Vòi chữa cháy VP110 - VP150 hoặc lớn hơn",
-                            "maso": "A0504",
-                            "children": []
-                        },
-                        {
-                            "id": 111,
-                            "ten": "Ống hút xe chữa cháy (bao gồm đầu nối, giỏ lọc)",
-                            "maso": "A0505",
-                            "children": []
-                        },
-                        {
-                            "id": 112,
-                            "ten": "Ống hút máy bơm chữa cháy khiêng tay (bao gồm đầu nối, giỏ lọc).",
-                            "maso": "A0506",
-                            "children": []
-                        },
-                        {
-                            "id": 113,
-                            "ten": "Lăng A",
-                            "maso": "A0507",
-                            "children": []
-                        },
-                        {
-                            "id": 114,
-                            "ten": "Lăng B",
-                            "maso": "A0508",
-                            "children": []
-                        },
-                        {
-                            "id": 115,
-                            "ten": "Lăng giá di động",
-                            "maso": "A0509",
-                            "children": []
-                        },
-                        {
-                            "id": 116,
-                            "ten": "Lăng phun bọt",
-                            "maso": "A0510",
-                            "children": []
-                        },
-                        {
-                            "id": 117,
-                            "ten": "Đầu nối hỗn hợp ĐH 66x51",
-                            "maso": "A0511",
-                            "children": []
-                        },
-                        {
-                            "id": 118,
-                            "ten": "Đầu nối hỗn hợp ĐH 77x51",
-                            "maso": "A0512",
-                            "children": []
-                        },
-                        {
-                            "id": 119,
-                            "ten": "Đầu nối hỗn hợp ĐH 77x66",
-                            "maso": "A0513",
-                            "children": []
-                        },
-                        {
-                            "id": 120,
-                            "ten": "Hai chạc chữa cháy",
-                            "maso": "A0514",
-                            "children": []
-                        },
-                        {
-                            "id": 121,
-                            "ten": "Ba chạc chữa cháy",
-                            "maso": "A0515",
-                            "children": []
-                        },
-                        {
-                            "id": 122,
-                            "ten": "Ezectơ hút nước",
-                            "maso": "A0516",
-                            "children": []
-                        },
-                        {
-                            "id": 123,
-                            "ten": "Ezectơ hút bọt (gồm Tuy ô hút bọt)",
-                            "maso": "A0517",
-                            "children": []
-                        },
-                        {
-                            "id": 124,
-                            "ten": "Chìa khoá vòi hút, phun",
-                            "maso": "A0518",
-                            "children": []
-                        },
-                        {
-                            "id": 125,
-                            "ten": "Chìa khóa trụ nước",
-                            "maso": "A0519",
-                            "children": []
-                        },
-                        {
-                            "id": 126,
-                            "ten": "Thang chữa cháy, cứu người",
-                            "maso": "A0520",
-                            "children": [
-                                {
-                                    "id": 127,
-                                    "ten": "Thang hai",
-                                    "maso": "A052001",
-                                    "children": []
-                                },
-                                {
-                                    "id": 128,
-                                    "ten": "Thang ba",
-                                    "maso": "A052002",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 129,
-                            "ten": "Bình chữa cháy",
-                            "maso": "A0521",
-                            "children": [
-                                {
-                                    "id": 130,
-                                    "ten": "Bình chữa cháy xách tay, xe đẩy (sử dụng bột)",
-                                    "maso": "A052101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 131,
-                                    "ten": "Bình chữa cháy xách tay, xe đẩy (sử dụng bọt)",
-                                    "maso": "A052102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 132,
-                                    "ten": "Bình chữa cháy xách tay, xe đẩy (sử dụng khí)",
-                                    "maso": "A052103",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 133,
-                            "ten": "Thiết bị bảo vệ đường vòi (cầu bảo vệ vòi, vá vòi, móc vòi, kẹp thay vòi)",
-                            "maso": "A0522",
-                            "children": [
-                                {
-                                    "id": 134,
-                                    "ten": "Cầu bảo vệ vòi qua đường",
-                                    "maso": "A052201",
-                                    "children": []
-                                },
-                                {
-                                    "id": 135,
-                                    "ten": "Vá vòi",
-                                    "maso": "A052202",
-                                    "children": []
-                                },
-                                {
-                                    "id": 136,
-                                    "ten": "Móc treo",
-                                    "maso": "A052203",
-                                    "children": []
-                                },
-                                {
-                                    "id": 137,
-                                    "ten": "Kẹp thay vòi",
-                                    "maso": "A052204",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": 138,
-                    "ten": "Chất chữa cháy",
-                    "maso": "A06",
-                    "children": [
-                        {
-                            "id": 139,
-                            "ten": "Chất tạo bọt chữa cháy thông thường",
-                            "maso": "A0601",
-                            "children": [
-                                {
-                                    "id": 140,
-                                    "ten": "Chất tạo bọt chữa cháy thông thường 3%",
-                                    "maso": "A060101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 141,
-                                    "ten": "Chất tạo bọt chữa cháy thông thường 6%",
-                                    "maso": "A060102",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 142,
-                            "ten": "Chất tạo bọt chữa cháy cô đặc",
-                            "maso": "A0602",
-                            "children": [
-                                {
-                                    "id": 143,
-                                    "ten": "Chất tạo bọt chữa cháy công nghệ CAFS",
-                                    "maso": "A060201",
-                                    "children": []
-                                },
-                                {
-                                    "id": 144,
-                                    "ten": "Chất tạo bọt chữa cháy công nghệ 1-7",
-                                    "maso": "A060202",
-                                    "children": []
-                                },
-                                {
-                                    "id": 145,
-                                    "ten": "Chất tạo bọt chữa cháy đa năng Pyrocool",
-                                    "maso": "A060203",
-                                    "children": []
-                                },
-                                {
-                                    "id": 146,
-                                    "ten": "Chất tạo bọt chữa cháy đa năng F500",
-                                    "maso": "A060204",
-                                    "children": []
-                                },
-                                {
-                                    "id": 147,
-                                    "ten": "Chất tạo bọt chữa cháy đa năng FireAde 2000",
-                                    "maso": "A060205",
-                                    "children": []
-                                },
-                                {
-                                    "id": 148,
-                                    "ten": "Chất tạo bọt chữa cháy đa năng (loại khác …)",
-                                    "maso": "A060206",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 149,
-                            "ten": "Hoá chất chữa cháy gốc nước",
-                            "maso": "A0603",
-                            "children": []
-                        },
-                        {
-                            "id": 150,
-                            "ten": "Bột chữa cháy (không tính các loại bình chữa cháy)",
-                            "maso": "A0604",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 151,
-                    "ten": "Trang phục và thiết bị bảo hộ cá nhân",
-                    "maso": "A07",
-                    "children": [
-                        {
-                            "id": 152,
-                            "ten": "Quần áo chữa cháy chuyên dụng",
-                            "maso": "A0701",
-                            "children": []
-                        },
-                        {
-                            "id": 153,
-                            "ten": "Quần áo chữa cháy, cứu nạn, cứu hộ thông thường",
-                            "maso": "A0702",
-                            "children": []
-                        },
-                        {
-                            "id": 154,
-                            "ten": "Mũ chữa cháy",
-                            "maso": "A0703",
-                            "children": []
-                        },
-                        {
-                            "id": 155,
-                            "ten": "Mũ cứu nạn, cứu hộ",
-                            "maso": "A0704",
-                            "children": []
-                        },
-                        {
-                            "id": 156,
-                            "ten": "Găng tay chữa cháy",
-                            "maso": "A0705",
-                            "children": []
-                        },
-                        {
-                            "id": 157,
-                            "ten": "Găng tay cứu nạn, cứu hộ",
-                            "maso": "A0706",
-                            "children": []
-                        },
-                        {
-                            "id": 158,
-                            "ten": "Ủng chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0707",
-                            "children": []
-                        },
-                        {
-                            "id": 159,
-                            "ten": "Giày chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0708",
-                            "children": []
-                        },
-                        {
-                            "id": 160,
-                            "ten": "Mũ vải chống nóng trùm đầu",
-                            "maso": "A0709",
-                            "children": []
-                        },
-                        {
-                            "id": 161,
-                            "ten": "Thắt lưng chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A0710",
-                            "children": []
-                        },
-                        {
-                            "id": 162,
-                            "ten": "Kính mắt chuyên dụng cứu nạn, cứu hộ",
-                            "maso": "A0711",
-                            "children": []
-                        },
-                        {
-                            "id": 163,
-                            "ten": "Đèn pin, thiết bị chiếu sáng chữa cháy, cứu nạn, cứu hộ cá nhân (loại cầm tay hoặc gắn trên trang phục)",
-                            "maso": "A0712",
-                            "children": []
-                        },
-                        {
-                            "id": 164,
-                            "ten": "Khẩu trang chữa cháy",
-                            "maso": "A0713",
-                            "children": []
-                        },
-                        {
-                            "id": 165,
-                            "ten": "Quần áo cách nhiệt (bao gồm: quần, áo, mũ, giày, ủng, găng tay cách nhiệt)",
-                            "maso": "A0714",
-                            "children": []
-                        },
-                        {
-                            "id": 166,
-                            "ten": "Ủng cách điện",
-                            "maso": "A0715",
-                            "children": []
-                        },
-                        {
-                            "id": 167,
-                            "ten": "Găng tay cách điện",
-                            "maso": "A0716",
-                            "children": []
-                        },
-                        {
-                            "id": 168,
-                            "ten": "Mặt nạ lọc đọc (gồm quả lọc)",
-                            "maso": "A0717",
-                            "children": []
-                        },
-                        {
-                            "id": 169,
-                            "ten": "Mặt nạ phòng độc cách ly",
-                            "maso": "A0718",
-                            "children": []
-                        },
-                        {
-                            "id": 170,
-                            "ten": "Mặt nạ phòng độc cách ly tuần hoàn khí thở",
-                            "maso": "A0719",
-                            "children": []
-                        },
-                        {
-                            "id": 171,
-                            "ten": "Thiết bị định vị cầm tay",
-                            "maso": "A0720",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 172,
-                    "ten": "Phương tiện cứu người",
-                    "maso": "A08",
-                    "children": [
-                        {
-                            "id": 173,
-                            "ten": "Dây cứu nạn, cứu hộ",
-                            "maso": "A0801",
-                            "children": []
-                        },
-                        {
-                            "id": 174,
-                            "ten": "Đai cứu nạn, cứu hộ",
-                            "maso": "A0802",
-                            "children": []
-                        },
-                        {
-                            "id": 175,
-                            "ten": "Đệm cứu người",
-                            "maso": "A0803",
-                            "children": []
-                        },
-                        {
-                            "id": 176,
-                            "ten": "Ống tụt cứu người",
-                            "maso": "A0804",
-                            "children": []
-                        },
-                        {
-                            "id": 177,
-                            "ten": "Thiết bị dò tìm người",
-                            "maso": "A0805",
-                            "children": [
-                                {
-                                    "id": 178,
-                                    "ten": "Thiết bị cảm biến âm thanh, hình ảnh, địa chấn tìm kiếm người bị nạn",
-                                    "maso": "A080501",
-                                    "children": [
-                                        {
-                                            "id": 179,
-                                            "ten": "Thiết bị cảm biến âm thanh, hình ảnh, địa chấn tìm kiếm người bị nạn (trên cạn)",
-                                            "maso": "A08050101",
-                                            "children": []
-                                        },
-                                        {
-                                            "id": 180,
-                                            "ten": "Thiết bị tìm kiếm người bị nạn dưới nước (gồm camera và cuộn dây thông tin và màn hình hiển thị)",
-                                            "maso": "A08050102",
-                                            "children": []
-                                        }
-                                    ]
-                                },
-                                {
-                                    "id": 181,
-                                    "ten": "Thiết bị cảm biến sử dụng sóng Radio, radar tìm kiếm người bị nạn",
-                                    "maso": "A080502",
-                                    "children": []
-                                },
-                                {
-                                    "id": 182,
-                                    "ten": "Thiết bị cảm biến sử dụng sóng sonar tìm kiếm người bị nạn",
-                                    "maso": "A080503",
-                                    "children": []
-                                },
-                                {
-                                    "id": 183,
-                                    "ten": "Camera nhiệt dò tìm người bị nạn (phục vụ chữa cháy và cứu nạn, cứu hộ)",
-                                    "maso": "A080504",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": 184,
-                    "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ",
-                    "maso": "A09",
-                    "children": [
-                        {
-                            "id": 185,
-                            "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ trên cao",
-                            "maso": "A0901",
-                            "children": []
-                        },
-                        {
-                            "id": 186,
-                            "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ dưới nước",
-                            "maso": "A0902",
-                            "children": [
-                                {
-                                    "id": 187,
-                                    "ten": "Bộ đồ lặn kèm thiết bị lặn",
-                                    "maso": "A090201",
-                                    "children": []
-                                },
-                                {
-                                    "id": 188,
-                                    "ten": "Thiết bị kéo, đẩy thợ lặn sử dụng động cơ điện",
-                                    "maso": "A090202",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 189,
-                            "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ trong không gian hạn chế",
-                            "maso": "A0903",
-                            "children": []
-                        },
-                        {
-                            "id": 190,
-                            "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ sự cố hoá chất",
-                            "maso": "A0904",
-                            "children": [
-                                {
-                                    "id": 191,
-                                    "ten": "Bộ quần áo chống hoá chất",
-                                    "maso": "A090401",
-                                    "children": []
-                                },
-                                {
-                                    "id": 192,
-                                    "ten": "Máy phân tích nồng độ hoá chất",
-                                    "maso": "A090402",
-                                    "children": []
-                                },
-                                {
-                                    "id": 193,
-                                    "ten": "Thiết bị tẩy rửa, khử nhiễm, chống độc",
-                                    "maso": "A090403",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 194,
-                            "ten": "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ sự cố phóng xạ",
-                            "maso": "A0905",
-                            "children": [
-                                {
-                                    "id": 195,
-                                    "ten": "Bộ quần áo chống phóng xạ",
-                                    "maso": "A090501",
-                                    "children": []
-                                },
-                                {
-                                    "id": 196,
-                                    "ten": "Máy đo cường độ phóng xạ",
-                                    "maso": "A090502",
-                                    "children": []
-                                },
-                                {
-                                    "id": 197,
-                                    "ten": "Thiết bị khử nhiễm phóng xạ",
-                                    "maso": "A090503",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 198,
-                            "ten": "Thiết bị phục vụ sơ cứu người bị nạn (túi cứu thương)",
-                            "maso": "A0906",
-                            "children": []
-                        },
-                        {
-                            "id": 199,
-                            "ten": "Hệ thống đèn chiếu sáng di động (có máy phát điện hoặc sử dụng bình ắc quy)",
-                            "maso": "A0907",
-                            "children": []
-                        },
-                        {
-                            "id": 200,
-                            "ten": "Đèn pin (chuyên dụng phục vụ cứu nạn, cứu hộ dưới nước)",
-                            "maso": "A0908",
-                            "children": []
-                        },
-                        {
-                            "id": 201,
-                            "ten": "Đèn pin cầm tay (không tính đèn pin theo trang phục, thiết bị bảo hộ cá nhân)",
-                            "maso": "A0909",
-                            "children": []
-                        },
-                        {
-                            "id": 202,
-                            "ten": "Tấm lưới phục vụ cứu người (vật liệu sợi, kích thước 5x5m)",
-                            "maso": "A0910",
-                            "children": []
-                        },
-                        {
-                            "id": 203,
-                            "ten": "Bộ ròng rọc điện (bộ ròng rọc sử dụng pin và trang bị cùng cuộn dây CNCH, phục vụ CBCS cứu nạn, cứu hộ trên cao dưới sâu)",
-                            "maso": "A0911",
-                            "children": []
-                        },
-                        {
-                            "id": 204,
-                            "ten": "Thiết bị camera hành trình cá nhân phục vụ trinh sát tại hiện trường",
-                            "maso": "A0912",
-                            "children": []
-                        },
-                        {
-                            "id": 205,
-                            "ten": "Thiết bị phóng dây, phao cứu sinh tự bơm + bình khí",
-                            "maso": "A0913",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 206,
-                    "ten": "Phương tiện phá dỡ thô sơ",
-                    "maso": "A10",
-                    "children": [
-                        {
-                            "id": 207,
-                            "ten": "Kìm",
-                            "maso": "A1001",
-                            "children": []
-                        },
-                        {
-                            "id": 208,
-                            "ten": "Cưa",
-                            "maso": "A1002",
-                            "children": []
-                        },
-                        {
-                            "id": 209,
-                            "ten": "Búa",
-                            "maso": "A1003",
-                            "children": []
-                        },
-                        {
-                            "id": 210,
-                            "ten": "Rìu",
-                            "maso": "A1004",
-                            "children": []
-                        },
-                        {
-                            "id": 211,
-                            "ten": "Cuốc",
-                            "maso": "A1005",
-                            "children": []
-                        },
-                        {
-                            "id": 212,
-                            "ten": "Xẻng",
-                            "maso": "A1006",
-                            "children": []
-                        },
-                        {
-                            "id": 213,
-                            "ten": "Xà beng",
-                            "maso": "A1007",
-                            "children": []
-                        },
-                        {
-                            "id": 214,
-                            "ten": "Dụng cụ phá dỡ đa năng",
-                            "maso": "A1008",
-                            "children": [
-                                {
-                                    "id": 215,
-                                    "ten": "Bộ thiết bị phá dỡ đa năng cầm tay (paratech, shilla,...)",
-                                    "maso": "A100801",
-                                    "children": []
-                                },
-                                {
-                                    "id": 216,
-                                    "ten": "Bộ thiết bị phá dỡ hooligan cầm tay",
-                                    "maso": "A100802",
-                                    "children": []
-                                },
-                                {
-                                    "id": 217,
-                                    "ten": "Súng phá dỡ sử dụng khí nén (paratech,…)",
-                                    "maso": "A100803",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": 218,
-                    "ten": "Phương tiện, thiết bị thông tin liên lạc phục vụ chữa cháy, cứu nạn, cứu hộ",
-                    "maso": "A11",
-                    "children": [
-                        {
-                            "id": 219,
-                            "ten": "Bộ đàm, hệ thống thông tin vô tuyến",
-                            "maso": "A1101",
-                            "children": [
-                                {
-                                    "id": 220,
-                                    "ten": "Bộ đàm cầm tay VHF/UHF",
-                                    "maso": "A110101",
-                                    "children": []
-                                },
-                                {
-                                    "id": 221,
-                                    "ten": "Bộ đàm công suất lớn di động VHF/UHF",
-                                    "maso": "A110102",
-                                    "children": []
-                                },
-                                {
-                                    "id": 222,
-                                    "ten": "Bộ đàm công suất lớn cố định VHF/UHF",
-                                    "maso": "A110103",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 223,
-                            "ten": "Hệ thống thông tin hữu tuyến",
-                            "maso": "A1102",
-                            "children": []
-                        },
-                        {
-                            "id": 224,
-                            "ten": "Hệ thống thông tin chỉ huy điều hành công tác PCCC và cứu nạn cứu hộ (bao gồm hệ thống máy chủ, máy trạm; thiết bị phục vụ ghi âm, tiếp nhận thông tin báo cháy; hệ thống bản đồ số chuyên ngành PCCC; hệ thống cảnh báo cháy; thiết bị kết nối mạng; hệ thống đường truyền dữ liệu; thiết bị bảo mật; thiết bị định vị GPS; các phần mềm chuyên dụng và các thiết bị khác có liên quan).",
-                            "maso": "A1103",
-                            "children": []
-                        },
-                        {
-                            "id": 225,
-                            "ten": "Thiết bị liên lạc, chỉ huy",
-                            "maso": "A1104",
-                            "children": [
-                                {
-                                    "id": 226,
-                                    "ten": "Loa pin",
-                                    "maso": "A110401",
-                                    "children": []
-                                },
-                                {
-                                    "id": 227,
-                                    "ten": "Bàn chỉ huy",
-                                    "maso": "A110402",
-                                    "children": []
-                                },
-                                {
-                                    "id": 228,
-                                    "ten": "Cờ chỉ huy",
-                                    "maso": "A110403",
-                                    "children": []
-                                },
-                                {
-                                    "id": 229,
-                                    "ten": "Băng chỉ huy",
-                                    "maso": "A110404",
-                                    "children": []
-                                },
-                                {
-                                    "id": 230,
-                                    "ten": "Lều bạt chỉ huy chữa cháy, cứu nạn, cứu hộ",
-                                    "maso": "A110405",
-                                    "children": []
-                                },
-                                {
-                                    "id": 231,
-                                    "ten": "Lều bạt cho chiến sĩ chữa cháy, cứu nạn, cứu hộ",
-                                    "maso": "A110406",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 232,
-                            "ten": "Thiết bị giám sát phục vụ chữa cháy",
-                            "maso": "A1105",
-                            "children": [
-                                {
-                                    "id": 233,
-                                    "ten": "Thiết bị ghi hình cài áo hoặc mũ thu thập chứng cứ",
-                                    "maso": "A110501",
-                                    "children": []
-                                },
-                                {
-                                    "id": 234,
-                                    "ten": "Hệ thống quan sát, quay, chụp, ghi hình ảnh từ trên cao ứng dụng phần mềm tác chiến phục vụ công tác chữa cháy, cứu nạn, cứu hộ",
-                                    "maso": "A110502",
-                                    "children": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": 235,
-                    "ten": "Thiết bị, dụng cụ huấn luyện chữa cháy, cứu nạn, cứu hộ",
-                    "maso": "A12",
-                    "children": [
-                        {
-                            "id": 236,
-                            "ten": "Bộ thiết bị tập thể lực (tạ, xà đơn, xà kép, máy chạy bộ, thang trượt, máy đạp xe, thiết bị tập cơ bụng,…)",
-                            "maso": "A1201",
-                            "children": []
-                        },
-                        {
-                            "id": 237,
-                            "ten": "Dụng cụ phục vụ huấn luyện thể thao nghiệp vụ chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A1202",
-                            "children": []
-                        },
-                        {
-                            "id": 238,
-                            "ten": "Mô hình học tập kỹ, chiến thuật chữa cháy, cứu nạn, cứu hộ (chữa cháy gas; chữa cháy trong điều kiện có khói, khí độc; cứu hộ dưới nước; chữa cháy, cứu hộ trên cao; mô hình cứu hộ trong không gian hạn chế,…).",
-                            "maso": "A1203",
-                            "children": []
-                        },
-                        {
-                            "id": 239,
-                            "ten": "Mô hình thực tế ảo phục vụ huấn luyện, đào tạo kỹ, chiến thuật chữa cháy, cứu nạn, cứu hộ",
-                            "maso": "A1204",
-                            "children": []
-                        },
-                        {
-                            "id": 240,
-                            "ten": "Thiết bị phục vụ học tập Phương án chữa cháy (máy chiếu, máy tính xách tay, loa pin sử dụng micro không dây)",
-                            "maso": "A1205",
-                            "children": []
-                        },
-                        {
-                            "id": 241,
-                            "ten": "Hình nộm đóng người bị tai nạn dưới nước (toàn thân)",
-                            "maso": "A1206",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 242,
-                    "ten": "Thiết bị kỹ thuật nghiệp vụ khác phục vụ công tác chữa cháy, cứu nạn, cứu hộ",
-                    "maso": "A13",
-                    "children": [
-                        {
-                            "id": 243,
-                            "ten": "Thiết bị ghi hình quan sát đám cháy",
-                            "maso": "A1301",
-                            "children": []
-                        },
-                        {
-                            "id": 244,
-                            "ten": "Máy buộc vòi",
-                            "maso": "A1302",
-                            "children": []
-                        },
-                        {
-                            "id": 245,
-                            "ten": "Máy giặt vòi, giá phơi vòi",
-                            "maso": "A1303",
-                            "children": []
-                        },
-                        {
-                            "id": 246,
-                            "ten": "Thiết bị kiểm tra mặt nạ",
-                            "maso": "A1304",
-                            "children": []
-                        },
-                        {
-                            "id": 247,
-                            "ten": "Bể chứa nước chữa cháy di động",
-                            "maso": "A1305",
-                            "children": []
-                        },
-                        {
-                            "id": 248,
-                            "ten": "Trang thiết bị khoanh vùng khu vực cháy, cứu nạn, cứu hộ",
-                            "maso": "A1306",
-                            "children": []
-                        },
-                        {
-                            "id": 249,
-                            "ten": "Thiết bị đánh dấu hoá chất",
-                            "maso": "A1307",
-                            "children": []
-                        },
-                        {
-                            "id": 250,
-                            "ten": "Bộ dây nổi",
-                            "maso": "A1308",
-                            "children": []
-                        },
-                        {
-                            "id": 251,
-                            "ten": "Phao quây dầu tràn",
-                            "maso": "A1309",
-                            "children": []
-                        },
-                        {
-                            "id": 252,
-                            "ten": "Phao cứu sinh phục vụ cứu nạn, cứu hộ",
-                            "maso": "A1310",
-                            "children": []
-                        },
-                        {
-                            "id": 253,
-                            "ten": "Áo phao dùng cho Cảnh sát PCCC&CNCH",
-                            "maso": "A1311",
-                            "children": []
-                        },
-                        {
-                            "id": 254,
-                            "ten": "Bộ thả neo đánh dấu",
-                            "maso": "A1312",
-                            "children": []
-                        },
-                        {
-                            "id": 255,
-                            "ten": "Thiết bị báo hiệu vùng cấm (trên mặt nước)",
-                            "maso": "A1313",
-                            "children": []
-                        },
-                        {
-                            "id": 256,
-                            "ten": "Thiết bị chữa cháy siêu cao áp phục vụ chữa cháy, cứu nạn, cứu hộ (sử dụng tia nước áp lực cao có khả năng xuyên tường hoặc các vật liệu kim loại, bê tông cốt thép,…)",
-                            "maso": "A1314",
-                            "children": []
-                        },
-                        {
-                            "id": 257,
-                            "ten": "Máy nạp điện ắc quy",
-                            "maso": "A1315",
-                            "children": []
-                        },
-                        {
-                            "id": 258,
-                            "ten": "Thiết bị bơm lốp xe",
-                            "maso": "A1316",
-                            "children": []
-                        },
-                        {
-                            "id": 259,
-                            "ten": "Thiết bị phục vụ bảo dưỡng, sửa chữa phương tiện PCCC và CNCH (kích nâng, cầu nâng, bơm dầu, mỡ, máy ra vào lốp tự động, bộ dụng cụ đồ nghề chuyên dùng cho sửa chữa động cơ, máy bơm nước rửa phương tiện,...)",
-                            "maso": "A1317",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 260,
-                    "ten": "Phương tiện, thiết bị phục vụ công tác phòng cháy",
-                    "maso": "A14",
-                    "children": [
-                        {
-                            "id": 261,
-                            "ten": "Valy khám nghiệm hiện trường",
-                            "maso": "A1401",
-                            "children": []
-                        },
-                        {
-                            "id": 262,
-                            "ten": "Am pe kìm đo điện",
-                            "maso": "A1402",
-                            "children": []
-                        },
-                        {
-                            "id": 263,
-                            "ten": "Đồng hồ đo điện vạn năng",
-                            "maso": "A1403",
-                            "children": []
-                        },
-                        {
-                            "id": 264,
-                            "ten": "Thiết bị đo khoảng cách",
-                            "maso": "A1404",
-                            "children": []
-                        },
-                        {
-                            "id": 265,
-                            "ten": "Máy đo độ phóng xạ",
-                            "maso": "A1405",
-                            "children": []
-                        },
-                        {
-                            "id": 266,
-                            "ten": "Thiết bị đo áp suất (chất lỏng, chất khí)",
-                            "maso": "A1406",
-                            "children": []
-                        },
-                        {
-                            "id": 267,
-                            "ten": "Thiết bị đo điện trở cách điện (đồng hồ MΩ)",
-                            "maso": "A1407",
-                            "children": []
-                        },
-                        {
-                            "id": 268,
-                            "ten": "Thiết bị đo điện trở hệ thống chống sét",
-                            "maso": "A1408",
-                            "children": []
-                        },
-                        {
-                            "id": 269,
-                            "ten": "Thiết bị dò nguồn điện hở",
-                            "maso": "A1409",
-                            "children": []
-                        },
-                        {
-                            "id": 270,
-                            "ten": "Thiết bị đo độ ẩm, áp suất không khí, vận tốc gió",
-                            "maso": "A1410",
-                            "children": []
-                        },
-                        {
-                            "id": 271,
-                            "ten": "Thiết bị đo nồng độ khí nguy hiểm cháy, nổ; nồng độ khí độc",
-                            "maso": "A1411",
-                            "children": []
-                        },
-                        {
-                            "id": 272,
-                            "ten": "Thiết bị siêu âm đo lượng chất lỏng, chất khí trong bình",
-                            "maso": "A1412",
-                            "children": []
-                        },
-                        {
-                            "id": 273,
-                            "ten": "Thiết bị đo nhiệt độ",
-                            "maso": "A1413",
-                            "children": []
-                        },
-                        {
-                            "id": 274,
-                            "ten": "Thiết bị đo hàm lượng bụi trong không khí",
-                            "maso": "A1414",
-                            "children": []
-                        },
-                        {
-                            "id": 275,
-                            "ten": "Thiết bị đo độ dày lớp sơn phủ",
-                            "maso": "A1415",
-                            "children": []
-                        },
-                        {
-                            "id": 276,
-                            "ten": "Thiết bị đo lưu lượng chất lỏng (đo xác định thông số vận tốc, áp lực dòng chảy)",
-                            "maso": "A1416",
-                            "children": []
-                        },
-                        {
-                            "id": 277,
-                            "ten": "Thiết bị đo tốc độ vòng quay động cơ",
-                            "maso": "A1417",
-                            "children": []
-                        },
-                        {
-                            "id": 278,
-                            "ten": "Máy tạo khói, dung dịch chất tạo khói",
-                            "maso": "A1418",
-                            "children": []
-                        },
-                        {
-                            "id": 279,
-                            "ten": "Thiết bị đo cường độ ánh sáng, cường độ âm thanh",
-                            "maso": "A1419",
-                            "children": []
-                        },
-                        {
-                            "id": 280,
-                            "ten": "Thiết bị đo nồng độ chất tạo bọt",
-                            "maso": "A1420",
-                            "children": []
-                        },
-                        {
-                            "id": 281,
-                            "ten": "Thiết bị đo độ dày vật liệu (Kim loại, kính, PVC)",
-                            "maso": "A1421",
-                            "children": []
-                        },
-                        {
-                            "id": 282,
-                            "ten": "Thiết bị kiểm tra bình khí nén",
-                            "maso": "A1422",
-                            "children": []
-                        },
-                        {
-                            "id": 283,
-                            "ten": "Thiết bị thử, kiểm tra đầu báo cháy",
-                            "maso": "A1423",
-                            "children": []
-                        },
-                        {
-                            "id": 284,
-                            "ten": "Thiết bị quan sát hoặc quay, chụp tầm xa ngày hoặc đêm",
-                            "maso": "A1424",
-                            "children": []
-                        },
-                        {
-                            "id": 285,
-                            "ten": "La bàn",
-                            "maso": "A1425",
-                            "children": []
-                        },
-                        {
-                            "id": 286,
-                            "ten": "Thiết bị ghi hình có âm thanh",
-                            "maso": "A1426",
-                            "children": []
-                        },
-                        {
-                            "id": 287,
-                            "ten": "Máy ảnh nghiệp vụ",
-                            "maso": "A1427",
-                            "children": []
-                        },
-                        {
-                            "id": 288,
-                            "ten": "Thiết bị ghi âm",
-                            "maso": "A1428",
-                            "children": []
-                        },
-                        {
-                            "id": 289,
-                            "ten": "Hệ thống camera giám sát và kiểm soát an ninh",
-                            "maso": "A1429",
-                            "children": []
-                        },
-                        {
-                            "id": 290,
-                            "ten": "Thiết bị phát hiện kim loại",
-                            "maso": "A1430",
-                            "children": []
-                        },
-                        {
-                            "id": 291,
-                            "ten": "Loa pin",
-                            "maso": "A1431",
-                            "children": []
-                        },
-                        {
-                            "id": 292,
-                            "ten": "Thiết bị siêu âm đo khối (đo độ sâu, thể tích bể nước chữa cháy)",
-                            "maso": "A1432",
-                            "children": []
-                        },
-                        {
-                            "id": 293,
-                            "ten": "Hệ thống quét và dựng hiện trường",
-                            "maso": "A1433",
-                            "children": []
-                        },
-                        {
-                            "id": 294,
-                            "ten": "Cân trọng lượng hiển thị chỉ số",
-                            "maso": "A1434",
-                            "children": []
-                        },
-                        {
-                            "id": 295,
-                            "ten": "Thiết bị chiếu sáng công suất lớn",
-                            "maso": "A1435",
-                            "children": []
-                        },
-                        {
-                            "id": 296,
-                            "ten": "Thiết bị ghi hình nhiệt, hồng ngoại",
-                            "maso": "A1436",
-                            "children": []
-                        },
-                        {
-                            "id": 297,
-                            "ten": "Thiết bị kiểm tra tài liệu",
-                            "maso": "A1437",
-                            "children": []
-                        },
-                        {
-                            "id": 298,
-                            "ten": "Thiết bị sao chép và lưu trữ dữ liệu số điện tử",
-                            "maso": "A1438",
-                            "children": []
-                        },
-                        {
-                            "id": 299,
-                            "ten": "USB an toàn",
-                            "maso": "A1439",
-                            "children": []
-                        },
-                        {
-                            "id": 300,
-                            "ten": "Tủ bảo quản các thiết bị điện tử, quang học",
-                            "maso": "A1440",
-                            "children": []
-                        },
-                        {
-                            "id": 301,
-                            "ten": "Hệ thống lưu trữ cơ sở dữ liệu hồ sơ",
-                            "maso": "A1441",
-                            "children": []
-                        },
-                        {
-                            "id": 302,
-                            "ten": "Giá sắt lưu trữ vật chứng hoặc hồ sơ",
-                            "maso": "A1442",
-                            "children": []
-                        },
-                        {
-                            "id": 303,
-                            "ten": "Tủ lưu trữ vật chứng hoặc hồ sơ nghiệp vụ",
-                            "maso": "A1443",
-                            "children": []
-                        },
-                        {
-                            "id": 304,
-                            "ten": "Máy tính xách tay cấu hình cao phục vụ biên tập phim, ảnh",
-                            "maso": "A1444",
-                            "children": []
-                        },
-                        {
-                            "id": 305,
-                            "ten": "Máy tính cấu hình cao phục vụ công tác thẩm duyệt nghiệm thu PCCC",
-                            "maso": "A1445",
-                            "children": []
-                        },
-                        {
-                            "id": 306,
-                            "ten": "Thiết bị đo độ dốc",
-                            "maso": "A1446",
-                            "children": []
-                        },
-                        {
-                            "id": 307,
-                            "ten": "Thiết bị điểm danh tự động phục vụ công tác quản lý cán bộ, học viên bằng khuôn mặt",
-                            "maso": "A1447",
-                            "children": []
-                        },
-                        {
-                            "id": 308,
-                            "ten": "Bộ thiết bị kết nối với Trung tâm dữ liệu, thông tin Bộ Công an",
-                            "maso": "A1448",
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": 309,
-                    "ten": "Phương tiện khác",
-                    "maso": "A15",
-                    "children": []
-                }
-            ]
-        }
-    ]
+  {
+    id: 1,
+    ten: "NHÓM PHƯƠNG TIỆN CHỮA CHÁY, CNCH PHỤC VỤ CÔNG TÁC HUẤN LUYỆN, CHIẾN ĐẤU",
+    maso: "A",
+    children: [
+      {
+        id: 2,
+        ten: "Xe chữa cháy, xe chuyên dùng phục vụ chữa cháy, cứu nạn, cứu hộ",
+        maso: "A01",
+        children: [
+          {
+            id: 3,
+            ten: "Xe chữa cháy",
+            maso: "A0101",
+            children: [
+              {
+                id: 5,
+                ten: "Xe chữa cháy (sử dụng nước hoặc nước và bọt thông thường)",
+                maso: "A010101",
+                children: [],
+              },
+              {
+                id: 6,
+                ten: "Xe chữa cháy sử dụng công nghệ CAFS",
+                maso: "A010102",
+                children: [],
+              },
+              {
+                id: 7,
+                ten: "Xe chữa cháy sử dụng công nghệ 1-7",
+                maso: "A010103",
+                children: [],
+              },
+              {
+                id: 8,
+                ten: "Xe chữa cháy đa năng (có hệ thống tời, tháp đèn chiếu sáng)",
+                maso: "A010104",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 4,
+            ten: "Xe chữa cháy hóa chất (chữa cháy bằng bột, chất tạo bọt, khí)",
+            maso: "A0102",
+            children: [],
+          },
+          {
+            id: 9,
+            ten: "Xe chữa cháy đường hầm",
+            maso: "A0103",
+            children: [
+              {
+                id: 10,
+                ten: "Xe chữa cháy (sử dụng nước và bọt thông thường)",
+                maso: "A010301",
+                children: [],
+              },
+              {
+                id: 11,
+                ten: "Xe chữa cháy sử dụng công nghệ CAFS",
+                maso: "A010302",
+                children: [],
+              },
+              {
+                id: 12,
+                ten: "Xe chữa cháy sử dụng công nghệ 1-7",
+                maso: "A010303",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 13,
+            ten: "Xe chữa cháy đường sắt",
+            maso: "A0104",
+            children: [],
+          },
+          {
+            id: 14,
+            ten: "Xe chữa cháy rừng",
+            maso: "A0105",
+            children: [],
+          },
+          {
+            id: 15,
+            ten: "Xe chữa cháy lưỡng cư",
+            maso: "A0106",
+            children: [],
+          },
+          {
+            id: 16,
+            ten: "Xe thang",
+            maso: "A0107",
+            children: [
+              {
+                id: 17,
+                ten: "Xe thang (cao < 30m)",
+                maso: "A010701",
+                children: [],
+              },
+              {
+                id: 18,
+                ten: "Xe thang (cao 30 đến 32m)",
+                maso: "A010702",
+                children: [],
+              },
+              {
+                id: 19,
+                ten: "Xe thang (cao 45 đến 52m)",
+                maso: "A010703",
+                children: [],
+              },
+              {
+                id: 20,
+                ten: "Xe thang (cao 60 đến 65m)",
+                maso: "A010704",
+                children: [],
+              },
+              {
+                id: 21,
+                ten: "Xe thang (cao > 65m)",
+                maso: "A010705",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 22,
+            ten: "Xe cứu nạn, cứu hộ",
+            maso: "A0108",
+            children: [
+              {
+                id: 23,
+                ten: "Xe cứu nạn, cứu hộ trên cạn (có cẩu, tời, tháp đèn cố định và các trang thiết bị CNCH kèm theo)",
+                maso: "A010801",
+                children: [],
+              },
+              {
+                id: 24,
+                ten: "Xe cứu nạn, cứu hộ dưới nước (phục vụ CNCH dưới nước)",
+                maso: "A010802",
+                children: [],
+              },
+              {
+                id: 25,
+                ten: "Xe cứu nạn, cứu hộ trong môi trường nhiễm NBC (Hạt nhân - Sinh học - Hoá học)",
+                maso: "A010803",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 26,
+            ten: "Xe trạm bơm",
+            maso: "A0109",
+            children: [],
+          },
+          {
+            id: 27,
+            ten: "Xe chở nước",
+            maso: "A0110",
+            children: [],
+          },
+          {
+            id: 28,
+            ten: "Xe chỉ huy chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0111",
+            children: [],
+          },
+          {
+            id: 29,
+            ten: "Xe chở phương tiện",
+            maso: "A0112",
+            children: [],
+          },
+          {
+            id: 30,
+            ten: "Xe chở quân",
+            maso: "A0113",
+            children: [],
+          },
+          {
+            id: 31,
+            ten: "Xe hút khói",
+            maso: "A0114",
+            children: [],
+          },
+          {
+            id: 32,
+            ten: "Xe khám nghiệm hiện trường cháy",
+            maso: "A0115",
+            children: [],
+          },
+          {
+            id: 33,
+            ten: "Xe sửa chữa, bảo dưỡng kỹ thuật",
+            maso: "A0116",
+            children: [],
+          },
+          {
+            id: 34,
+            ten: "Xe chiếu sáng chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0117",
+            children: [],
+          },
+          {
+            id: 35,
+            ten: "Xe cứu thương",
+            maso: "A0118",
+            children: [],
+          },
+          {
+            id: 41,
+            ten: "Xe nâng",
+            maso: "A0119",
+            children: [],
+          },
+          {
+            id: 42,
+            ten: "Xe trung tâm thông tin chỉ huy",
+            maso: "A0120",
+            children: [],
+          },
+          {
+            id: 43,
+            ten: "Xe chở hoá chất",
+            maso: "A0121",
+            children: [],
+          },
+          {
+            id: 44,
+            ten: "Xe xử lý hoá chất độc hại, sinh học và hạt nhân",
+            maso: "A0122",
+            children: [],
+          },
+          {
+            id: 45,
+            ten: "Xe cung cấp chất khí chữa cháy",
+            maso: "A0123",
+            children: [],
+          },
+          {
+            id: 46,
+            ten: "Xe chở và nạp bình khí thở chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0124",
+            children: [],
+          },
+          {
+            id: 47,
+            ten: "Mô tô chữa cháy, cứu hộ, cứu thương dung tích xi-lanh dưới 175 cm3",
+            maso: "A0125",
+            children: [],
+          },
+          {
+            id: 48,
+            ten: "Mô tô chữa cháy, cứu hộ, cứu thương dung tích xi-lanh trên 175 cm3",
+            maso: "A0126",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 49,
+        ten: "Tàu, xuồng, ca nô, mô tô nước chữa cháy, cứu nạn, cứu hộ",
+        maso: "A02",
+        children: [
+          {
+            id: 50,
+            ten: "Tàu chữa cháy",
+            maso: "A0201",
+            children: [
+              {
+                id: 51,
+                ten: "Tàu chữa cháy (Công suất P > 3000 CV)",
+                maso: "A020101",
+                children: [],
+              },
+              {
+                id: 52,
+                ten: "Tàu chữa cháy (Công suất 2000 CV ≤ P ≤ 3000 CV)",
+                maso: "A020102",
+                children: [],
+              },
+              {
+                id: 53,
+                ten: "Tàu chữa cháy (Công suất 1000 CV ≤ P< 2000 CV)",
+                maso: "A020103",
+                children: [],
+              },
+              {
+                id: 54,
+                ten: "Tàu chữa cháy (Công suất 1000 CV < P)",
+                maso: "A020104",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 55,
+            ten: "Canô chữa cháy, cứu nạn cứu hộ",
+            maso: "A0202",
+            children: [
+              {
+                id: 56,
+                ten: "Canô chữa cháy, cứu nạn cứu hộ  (Công suất P > 1000 CV)",
+                maso: "A020201",
+                children: [],
+              },
+              {
+                id: 57,
+                ten: "Canô chữa cháy, cứu nạn cứu hộ  (Công suất 500 ≤ P < 1000 CV)",
+                maso: "A020202",
+                children: [],
+              },
+              {
+                id: 58,
+                ten: "Canô chữa cháy, cứu nạn cứu hộ  (Công suất P < 500 CV)",
+                maso: "A020203",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 59,
+            ten: "Xuồng cứu nạn, cứu hộ (có động cơ)",
+            maso: "A0203",
+            children: [
+              {
+                id: 60,
+                ten: "Xuồng cứu nạn cứu hộ  (Công suất P ≥ 500 CV)",
+                maso: "A020301",
+                children: [],
+              },
+              {
+                id: 61,
+                ten: "Xuồng cứu nạn cứu hộ (Công suất 100 ≤ P < 500 CV)",
+                maso: "A020302",
+                children: [],
+              },
+              {
+                id: 62,
+                ten: "Xuồng cứu nạn cứu hộ (Công suất P < 100 CV)",
+                maso: "A020303",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 63,
+            ten: "Mô tô nước",
+            maso: "A0204",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 64,
+        ten: "Máy bơm chữa cháy",
+        maso: "A03",
+        children: [
+          {
+            id: 65,
+            ten: "Máy bơm chữa cháy (khiêng tay)",
+            maso: "A0301",
+            children: [
+              {
+                id: 66,
+                ten: "Máy bơm chữa cháy (Lưu lượng lớn nhất Qmax ≤ 1000 l/p)",
+                maso: "A030101",
+                children: [],
+              },
+              {
+                id: 67,
+                ten: "Máy bơm chữa cháy (Lưu lượng lớn nhất 1000 < Qmax ≤ 1500 l/p)",
+                maso: "A030102",
+                children: [],
+              },
+              {
+                id: 68,
+                ten: "Máy bơm chữa cháy (Lưu lượng lớn nhất 1500 < Qmax ≤ 1800 l/p)",
+                maso: "A030103",
+                children: [],
+              },
+              {
+                id: 69,
+                ten: "Máy bơm chữa cháy (Lưu lượng lớn nhất Qmax > 1800 l/p)",
+                maso: "A030104",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 70,
+            ten: "Máy bơm nổi chữa cháy",
+            maso: "A0302",
+            children: [
+              {
+                id: 71,
+                ten: "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất Qmax ≤ 1000 l/p)",
+                maso: "A030201",
+                children: [],
+              },
+              {
+                id: 72,
+                ten: "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất 1000 < Qmax ≤ 1500 l/p)",
+                maso: "A030202",
+                children: [],
+              },
+              {
+                id: 73,
+                ten: "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất 1500 < Qmax ≤ 1800 l/p)",
+                maso: "A030203",
+                children: [],
+              },
+              {
+                id: 74,
+                ten: "Máy bơm nổi chữa cháy (Lưu lượng lớn nhất Qmax > 1800 l/p)",
+                maso: "A030204",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 75,
+        ten: "Phương tiện chữa cháy và cứu nạn, cứu hộ cơ giới khác",
+        maso: "A04",
+        children: [
+          {
+            id: 76,
+            ten: "Robot chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0401",
+            children: [],
+          },
+          {
+            id: 77,
+            ten: "Phương tiện bay không người lái chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0402",
+            children: [],
+          },
+          {
+            id: 78,
+            ten: "Máy nạp khí sạch",
+            maso: "A0403",
+            children: [
+              {
+                id: 79,
+                ten: "Máy nạp khí sạch (sử dụng động cơ đốt trong)",
+                maso: "A040301",
+                children: [
+                  {
+                    id: 80,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax ≤ 100 l/p)",
+                    maso: "A04030101",
+                    children: [],
+                  },
+                  {
+                    id: 81,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất 100 <Qmax ≤ 200 l/p)",
+                    maso: "A04030102",
+                    children: [],
+                  },
+                  {
+                    id: 82,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất 200 <Qmax ≤ 300 l/p)",
+                    maso: "A04030103",
+                    children: [],
+                  },
+                  {
+                    id: 83,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax > 300 l/p)",
+                    maso: "A04030104",
+                    children: [],
+                  },
+                ],
+              },
+              {
+                id: 84,
+                ten: "Máy nạp khí sạch (sử dụng động cơ điện)",
+                maso: "A040302",
+                children: [
+                  {
+                    id: 85,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax ≤ 300 l/p)",
+                    maso: "A04030201",
+                    children: [],
+                  },
+                  {
+                    id: 86,
+                    ten: "Máy nạp khí sạch (lưu lượng nạp lớn nhất Qmax > 300 l/p)",
+                    maso: "A04030202",
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 87,
+            ten: "Thiết bị chữa cháy đeo vai có động cơ",
+            maso: "A0404",
+            children: [],
+          },
+          {
+            id: 88,
+            ten: "Máy cưa",
+            maso: "A0405",
+            children: [],
+          },
+          {
+            id: 89,
+            ten: "Máy cắt",
+            maso: "A0406",
+            children: [
+              {
+                id: 90,
+                ten: "Máy cắt kim loại",
+                maso: "A040601",
+                children: [],
+              },
+              {
+                id: 91,
+                ten: "Máy cắt bê tông",
+                maso: "A040602",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 92,
+            ten: "Máy khoan phá bê tông",
+            maso: "A0407",
+            children: [],
+          },
+          {
+            id: 93,
+            ten: "Máy khoan, cắt dưới nước",
+            maso: "A0408",
+            children: [],
+          },
+          {
+            id: 94,
+            ten: "Máy hàn, cắt chuyên dụng",
+            maso: "A0409",
+            children: [],
+          },
+          {
+            id: 95,
+            ten: "Thiết bị đục, đập, tời, kéo (có sử dụng động cơ)",
+            maso: "A0410",
+            children: [],
+          },
+          {
+            id: 96,
+            ten: "Bộ thiết bị banh, cắt, kích, nâng",
+            maso: "A0411",
+            children: [
+              {
+                id: 97,
+                ten: "Bộ thiết bị banh, cắt, kích, nâng thuỷ lực sử dụng động cơ xăng",
+                maso: "A041101",
+                children: [],
+              },
+              {
+                id: 98,
+                ten: "Thiết bị banh, cắt sử dụng động cơ điện (pin)",
+                maso: "A041102",
+                children: [],
+              },
+              {
+                id: 99,
+                ten: "Thiết bị cắt cáp thuỷ lực",
+                maso: "A041103",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 100,
+            ten: "Thiết bị kích, nâng sử dụng khí nén",
+            maso: "A0412",
+            children: [],
+          },
+          {
+            id: 101,
+            ten: "Thiết bị xử lý thực bì (máy cắt thực bì, máy cắt cỏ)",
+            maso: "A0413",
+            children: [],
+          },
+          {
+            id: 102,
+            ten: "Quạt hút khói",
+            maso: "A0414",
+            children: [],
+          },
+          {
+            id: 103,
+            ten: "Quạt thổi khói",
+            maso: "A0415",
+            children: [],
+          },
+          {
+            id: 104,
+            ten: "Máy thổi gió",
+            maso: "A0416",
+            children: [],
+          },
+          {
+            id: 105,
+            ten: "Máy phát điện",
+            maso: "A0417",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 106,
+        ten: "Phương tiện chữa cháy thông dụng",
+        maso: "A05",
+        children: [
+          {
+            id: 107,
+            ten: "Vòi chữa cháy VP51 (bao gồm đầu nối)",
+            maso: "A0501",
+            children: [],
+          },
+          {
+            id: 108,
+            ten: "Vòi chữa cháy VP66 (bao gồm đầu nối)",
+            maso: "A0502",
+            children: [],
+          },
+          {
+            id: 109,
+            ten: "Vòi chữa cháy VP 77 (bao gồm đầu nối)",
+            maso: "A0503",
+            children: [],
+          },
+          {
+            id: 110,
+            ten: "Vòi chữa cháy VP110 - VP150 hoặc lớn hơn",
+            maso: "A0504",
+            children: [],
+          },
+          {
+            id: 111,
+            ten: "Ống hút xe chữa cháy (bao gồm đầu nối, giỏ lọc)",
+            maso: "A0505",
+            children: [],
+          },
+          {
+            id: 112,
+            ten: "Ống hút máy bơm chữa cháy khiêng tay (bao gồm đầu nối, giỏ lọc).",
+            maso: "A0506",
+            children: [],
+          },
+          {
+            id: 113,
+            ten: "Lăng A",
+            maso: "A0507",
+            children: [],
+          },
+          {
+            id: 114,
+            ten: "Lăng B",
+            maso: "A0508",
+            children: [],
+          },
+          {
+            id: 115,
+            ten: "Lăng giá di động",
+            maso: "A0509",
+            children: [],
+          },
+          {
+            id: 116,
+            ten: "Lăng phun bọt",
+            maso: "A0510",
+            children: [],
+          },
+          {
+            id: 117,
+            ten: "Đầu nối hỗn hợp ĐH 66x51",
+            maso: "A0511",
+            children: [],
+          },
+          {
+            id: 118,
+            ten: "Đầu nối hỗn hợp ĐH 77x51",
+            maso: "A0512",
+            children: [],
+          },
+          {
+            id: 119,
+            ten: "Đầu nối hỗn hợp ĐH 77x66",
+            maso: "A0513",
+            children: [],
+          },
+          {
+            id: 120,
+            ten: "Hai chạc chữa cháy",
+            maso: "A0514",
+            children: [],
+          },
+          {
+            id: 121,
+            ten: "Ba chạc chữa cháy",
+            maso: "A0515",
+            children: [],
+          },
+          {
+            id: 122,
+            ten: "Ezectơ hút nước",
+            maso: "A0516",
+            children: [],
+          },
+          {
+            id: 123,
+            ten: "Ezectơ hút bọt (gồm Tuy ô hút bọt)",
+            maso: "A0517",
+            children: [],
+          },
+          {
+            id: 124,
+            ten: "Chìa khoá vòi hút, phun",
+            maso: "A0518",
+            children: [],
+          },
+          {
+            id: 125,
+            ten: "Chìa khóa trụ nước",
+            maso: "A0519",
+            children: [],
+          },
+          {
+            id: 126,
+            ten: "Thang chữa cháy, cứu người",
+            maso: "A0520",
+            children: [
+              {
+                id: 127,
+                ten: "Thang hai",
+                maso: "A052001",
+                children: [],
+              },
+              {
+                id: 128,
+                ten: "Thang ba",
+                maso: "A052002",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 129,
+            ten: "Bình chữa cháy",
+            maso: "A0521",
+            children: [
+              {
+                id: 130,
+                ten: "Bình chữa cháy xách tay, xe đẩy (sử dụng bột)",
+                maso: "A052101",
+                children: [],
+              },
+              {
+                id: 131,
+                ten: "Bình chữa cháy xách tay, xe đẩy (sử dụng bọt)",
+                maso: "A052102",
+                children: [],
+              },
+              {
+                id: 132,
+                ten: "Bình chữa cháy xách tay, xe đẩy (sử dụng khí)",
+                maso: "A052103",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 133,
+            ten: "Thiết bị bảo vệ đường vòi (cầu bảo vệ vòi, vá vòi, móc vòi, kẹp thay vòi)",
+            maso: "A0522",
+            children: [
+              {
+                id: 134,
+                ten: "Cầu bảo vệ vòi qua đường",
+                maso: "A052201",
+                children: [],
+              },
+              {
+                id: 135,
+                ten: "Vá vòi",
+                maso: "A052202",
+                children: [],
+              },
+              {
+                id: 136,
+                ten: "Móc treo",
+                maso: "A052203",
+                children: [],
+              },
+              {
+                id: 137,
+                ten: "Kẹp thay vòi",
+                maso: "A052204",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 138,
+        ten: "Chất chữa cháy",
+        maso: "A06",
+        children: [
+          {
+            id: 139,
+            ten: "Chất tạo bọt chữa cháy thông thường",
+            maso: "A0601",
+            children: [
+              {
+                id: 140,
+                ten: "Chất tạo bọt chữa cháy thông thường 3%",
+                maso: "A060101",
+                children: [],
+              },
+              {
+                id: 141,
+                ten: "Chất tạo bọt chữa cháy thông thường 6%",
+                maso: "A060102",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 142,
+            ten: "Chất tạo bọt chữa cháy cô đặc",
+            maso: "A0602",
+            children: [
+              {
+                id: 143,
+                ten: "Chất tạo bọt chữa cháy công nghệ CAFS",
+                maso: "A060201",
+                children: [],
+              },
+              {
+                id: 144,
+                ten: "Chất tạo bọt chữa cháy công nghệ 1-7",
+                maso: "A060202",
+                children: [],
+              },
+              {
+                id: 145,
+                ten: "Chất tạo bọt chữa cháy đa năng Pyrocool",
+                maso: "A060203",
+                children: [],
+              },
+              {
+                id: 146,
+                ten: "Chất tạo bọt chữa cháy đa năng F500",
+                maso: "A060204",
+                children: [],
+              },
+              {
+                id: 147,
+                ten: "Chất tạo bọt chữa cháy đa năng FireAde 2000",
+                maso: "A060205",
+                children: [],
+              },
+              {
+                id: 148,
+                ten: "Chất tạo bọt chữa cháy đa năng (loại khác …)",
+                maso: "A060206",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 149,
+            ten: "Hoá chất chữa cháy gốc nước",
+            maso: "A0603",
+            children: [],
+          },
+          {
+            id: 150,
+            ten: "Bột chữa cháy (không tính các loại bình chữa cháy)",
+            maso: "A0604",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 151,
+        ten: "Trang phục và thiết bị bảo hộ cá nhân",
+        maso: "A07",
+        children: [
+          {
+            id: 152,
+            ten: "Quần áo chữa cháy chuyên dụng",
+            maso: "A0701",
+            children: [],
+          },
+          {
+            id: 153,
+            ten: "Quần áo chữa cháy, cứu nạn, cứu hộ thông thường",
+            maso: "A0702",
+            children: [],
+          },
+          {
+            id: 154,
+            ten: "Mũ chữa cháy",
+            maso: "A0703",
+            children: [],
+          },
+          {
+            id: 155,
+            ten: "Mũ cứu nạn, cứu hộ",
+            maso: "A0704",
+            children: [],
+          },
+          {
+            id: 156,
+            ten: "Găng tay chữa cháy",
+            maso: "A0705",
+            children: [],
+          },
+          {
+            id: 157,
+            ten: "Găng tay cứu nạn, cứu hộ",
+            maso: "A0706",
+            children: [],
+          },
+          {
+            id: 158,
+            ten: "Ủng chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0707",
+            children: [],
+          },
+          {
+            id: 159,
+            ten: "Giày chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0708",
+            children: [],
+          },
+          {
+            id: 160,
+            ten: "Mũ vải chống nóng trùm đầu",
+            maso: "A0709",
+            children: [],
+          },
+          {
+            id: 161,
+            ten: "Thắt lưng chữa cháy, cứu nạn, cứu hộ",
+            maso: "A0710",
+            children: [],
+          },
+          {
+            id: 162,
+            ten: "Kính mắt chuyên dụng cứu nạn, cứu hộ",
+            maso: "A0711",
+            children: [],
+          },
+          {
+            id: 163,
+            ten: "Đèn pin, thiết bị chiếu sáng chữa cháy, cứu nạn, cứu hộ cá nhân (loại cầm tay hoặc gắn trên trang phục)",
+            maso: "A0712",
+            children: [],
+          },
+          {
+            id: 164,
+            ten: "Khẩu trang chữa cháy",
+            maso: "A0713",
+            children: [],
+          },
+          {
+            id: 165,
+            ten: "Quần áo cách nhiệt (bao gồm: quần, áo, mũ, giày, ủng, găng tay cách nhiệt)",
+            maso: "A0714",
+            children: [],
+          },
+          {
+            id: 166,
+            ten: "Ủng cách điện",
+            maso: "A0715",
+            children: [],
+          },
+          {
+            id: 167,
+            ten: "Găng tay cách điện",
+            maso: "A0716",
+            children: [],
+          },
+          {
+            id: 168,
+            ten: "Mặt nạ lọc đọc (gồm quả lọc)",
+            maso: "A0717",
+            children: [],
+          },
+          {
+            id: 169,
+            ten: "Mặt nạ phòng độc cách ly",
+            maso: "A0718",
+            children: [],
+          },
+          {
+            id: 170,
+            ten: "Mặt nạ phòng độc cách ly tuần hoàn khí thở",
+            maso: "A0719",
+            children: [],
+          },
+          {
+            id: 171,
+            ten: "Thiết bị định vị cầm tay",
+            maso: "A0720",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 172,
+        ten: "Phương tiện cứu người",
+        maso: "A08",
+        children: [
+          {
+            id: 173,
+            ten: "Dây cứu nạn, cứu hộ",
+            maso: "A0801",
+            children: [],
+          },
+          {
+            id: 174,
+            ten: "Đai cứu nạn, cứu hộ",
+            maso: "A0802",
+            children: [],
+          },
+          {
+            id: 175,
+            ten: "Đệm cứu người",
+            maso: "A0803",
+            children: [],
+          },
+          {
+            id: 176,
+            ten: "Ống tụt cứu người",
+            maso: "A0804",
+            children: [],
+          },
+          {
+            id: 177,
+            ten: "Thiết bị dò tìm người",
+            maso: "A0805",
+            children: [
+              {
+                id: 178,
+                ten: "Thiết bị cảm biến âm thanh, hình ảnh, địa chấn tìm kiếm người bị nạn",
+                maso: "A080501",
+                children: [
+                  {
+                    id: 179,
+                    ten: "Thiết bị cảm biến âm thanh, hình ảnh, địa chấn tìm kiếm người bị nạn (trên cạn)",
+                    maso: "A08050101",
+                    children: [],
+                  },
+                  {
+                    id: 180,
+                    ten: "Thiết bị tìm kiếm người bị nạn dưới nước (gồm camera và cuộn dây thông tin và màn hình hiển thị)",
+                    maso: "A08050102",
+                    children: [],
+                  },
+                ],
+              },
+              {
+                id: 181,
+                ten: "Thiết bị cảm biến sử dụng sóng Radio, radar tìm kiếm người bị nạn",
+                maso: "A080502",
+                children: [],
+              },
+              {
+                id: 182,
+                ten: "Thiết bị cảm biến sử dụng sóng sonar tìm kiếm người bị nạn",
+                maso: "A080503",
+                children: [],
+              },
+              {
+                id: 183,
+                ten: "Camera nhiệt dò tìm người bị nạn (phục vụ chữa cháy và cứu nạn, cứu hộ)",
+                maso: "A080504",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 184,
+        ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ",
+        maso: "A09",
+        children: [
+          {
+            id: 185,
+            ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ trên cao",
+            maso: "A0901",
+            children: [],
+          },
+          {
+            id: 186,
+            ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ dưới nước",
+            maso: "A0902",
+            children: [
+              {
+                id: 187,
+                ten: "Bộ đồ lặn kèm thiết bị lặn",
+                maso: "A090201",
+                children: [],
+              },
+              {
+                id: 188,
+                ten: "Thiết bị kéo, đẩy thợ lặn sử dụng động cơ điện",
+                maso: "A090202",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 189,
+            ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ trong không gian hạn chế",
+            maso: "A0903",
+            children: [],
+          },
+          {
+            id: 190,
+            ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ sự cố hoá chất",
+            maso: "A0904",
+            children: [
+              {
+                id: 191,
+                ten: "Bộ quần áo chống hoá chất",
+                maso: "A090401",
+                children: [],
+              },
+              {
+                id: 192,
+                ten: "Máy phân tích nồng độ hoá chất",
+                maso: "A090402",
+                children: [],
+              },
+              {
+                id: 193,
+                ten: "Thiết bị tẩy rửa, khử nhiễm, chống độc",
+                maso: "A090403",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 194,
+            ten: "Phương tiện, thiết bị phục vụ cứu nạn, cứu hộ sự cố phóng xạ",
+            maso: "A0905",
+            children: [
+              {
+                id: 195,
+                ten: "Bộ quần áo chống phóng xạ",
+                maso: "A090501",
+                children: [],
+              },
+              {
+                id: 196,
+                ten: "Máy đo cường độ phóng xạ",
+                maso: "A090502",
+                children: [],
+              },
+              {
+                id: 197,
+                ten: "Thiết bị khử nhiễm phóng xạ",
+                maso: "A090503",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 198,
+            ten: "Thiết bị phục vụ sơ cứu người bị nạn (túi cứu thương)",
+            maso: "A0906",
+            children: [],
+          },
+          {
+            id: 199,
+            ten: "Hệ thống đèn chiếu sáng di động (có máy phát điện hoặc sử dụng bình ắc quy)",
+            maso: "A0907",
+            children: [],
+          },
+          {
+            id: 200,
+            ten: "Đèn pin (chuyên dụng phục vụ cứu nạn, cứu hộ dưới nước)",
+            maso: "A0908",
+            children: [],
+          },
+          {
+            id: 201,
+            ten: "Đèn pin cầm tay (không tính đèn pin theo trang phục, thiết bị bảo hộ cá nhân)",
+            maso: "A0909",
+            children: [],
+          },
+          {
+            id: 202,
+            ten: "Tấm lưới phục vụ cứu người (vật liệu sợi, kích thước 5x5m)",
+            maso: "A0910",
+            children: [],
+          },
+          {
+            id: 203,
+            ten: "Bộ ròng rọc điện (bộ ròng rọc sử dụng pin và trang bị cùng cuộn dây CNCH, phục vụ CBCS cứu nạn, cứu hộ trên cao dưới sâu)",
+            maso: "A0911",
+            children: [],
+          },
+          {
+            id: 204,
+            ten: "Thiết bị camera hành trình cá nhân phục vụ trinh sát tại hiện trường",
+            maso: "A0912",
+            children: [],
+          },
+          {
+            id: 205,
+            ten: "Thiết bị phóng dây, phao cứu sinh tự bơm + bình khí",
+            maso: "A0913",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 206,
+        ten: "Phương tiện phá dỡ thô sơ",
+        maso: "A10",
+        children: [
+          {
+            id: 207,
+            ten: "Kìm",
+            maso: "A1001",
+            children: [],
+          },
+          {
+            id: 208,
+            ten: "Cưa",
+            maso: "A1002",
+            children: [],
+          },
+          {
+            id: 209,
+            ten: "Búa",
+            maso: "A1003",
+            children: [],
+          },
+          {
+            id: 210,
+            ten: "Rìu",
+            maso: "A1004",
+            children: [],
+          },
+          {
+            id: 211,
+            ten: "Cuốc",
+            maso: "A1005",
+            children: [],
+          },
+          {
+            id: 212,
+            ten: "Xẻng",
+            maso: "A1006",
+            children: [],
+          },
+          {
+            id: 213,
+            ten: "Xà beng",
+            maso: "A1007",
+            children: [],
+          },
+          {
+            id: 214,
+            ten: "Dụng cụ phá dỡ đa năng",
+            maso: "A1008",
+            children: [
+              {
+                id: 215,
+                ten: "Bộ thiết bị phá dỡ đa năng cầm tay (paratech, shilla,...)",
+                maso: "A100801",
+                children: [],
+              },
+              {
+                id: 216,
+                ten: "Bộ thiết bị phá dỡ hooligan cầm tay",
+                maso: "A100802",
+                children: [],
+              },
+              {
+                id: 217,
+                ten: "Súng phá dỡ sử dụng khí nén (paratech,…)",
+                maso: "A100803",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 218,
+        ten: "Phương tiện, thiết bị thông tin liên lạc phục vụ chữa cháy, cứu nạn, cứu hộ",
+        maso: "A11",
+        children: [
+          {
+            id: 219,
+            ten: "Bộ đàm, hệ thống thông tin vô tuyến",
+            maso: "A1101",
+            children: [
+              {
+                id: 220,
+                ten: "Bộ đàm cầm tay VHF/UHF",
+                maso: "A110101",
+                children: [],
+              },
+              {
+                id: 221,
+                ten: "Bộ đàm công suất lớn di động VHF/UHF",
+                maso: "A110102",
+                children: [],
+              },
+              {
+                id: 222,
+                ten: "Bộ đàm công suất lớn cố định VHF/UHF",
+                maso: "A110103",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 223,
+            ten: "Hệ thống thông tin hữu tuyến",
+            maso: "A1102",
+            children: [],
+          },
+          {
+            id: 224,
+            ten: "Hệ thống thông tin chỉ huy điều hành công tác PCCC và cứu nạn cứu hộ (bao gồm hệ thống máy chủ, máy trạm; thiết bị phục vụ ghi âm, tiếp nhận thông tin báo cháy; hệ thống bản đồ số chuyên ngành PCCC; hệ thống cảnh báo cháy; thiết bị kết nối mạng; hệ thống đường truyền dữ liệu; thiết bị bảo mật; thiết bị định vị GPS; các phần mềm chuyên dụng và các thiết bị khác có liên quan).",
+            maso: "A1103",
+            children: [],
+          },
+          {
+            id: 225,
+            ten: "Thiết bị liên lạc, chỉ huy",
+            maso: "A1104",
+            children: [
+              {
+                id: 226,
+                ten: "Loa pin",
+                maso: "A110401",
+                children: [],
+              },
+              {
+                id: 227,
+                ten: "Bàn chỉ huy",
+                maso: "A110402",
+                children: [],
+              },
+              {
+                id: 228,
+                ten: "Cờ chỉ huy",
+                maso: "A110403",
+                children: [],
+              },
+              {
+                id: 229,
+                ten: "Băng chỉ huy",
+                maso: "A110404",
+                children: [],
+              },
+              {
+                id: 230,
+                ten: "Lều bạt chỉ huy chữa cháy, cứu nạn, cứu hộ",
+                maso: "A110405",
+                children: [],
+              },
+              {
+                id: 231,
+                ten: "Lều bạt cho chiến sĩ chữa cháy, cứu nạn, cứu hộ",
+                maso: "A110406",
+                children: [],
+              },
+            ],
+          },
+          {
+            id: 232,
+            ten: "Thiết bị giám sát phục vụ chữa cháy",
+            maso: "A1105",
+            children: [
+              {
+                id: 233,
+                ten: "Thiết bị ghi hình cài áo hoặc mũ thu thập chứng cứ",
+                maso: "A110501",
+                children: [],
+              },
+              {
+                id: 234,
+                ten: "Hệ thống quan sát, quay, chụp, ghi hình ảnh từ trên cao ứng dụng phần mềm tác chiến phục vụ công tác chữa cháy, cứu nạn, cứu hộ",
+                maso: "A110502",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 235,
+        ten: "Thiết bị, dụng cụ huấn luyện chữa cháy, cứu nạn, cứu hộ",
+        maso: "A12",
+        children: [
+          {
+            id: 236,
+            ten: "Bộ thiết bị tập thể lực (tạ, xà đơn, xà kép, máy chạy bộ, thang trượt, máy đạp xe, thiết bị tập cơ bụng,…)",
+            maso: "A1201",
+            children: [],
+          },
+          {
+            id: 237,
+            ten: "Dụng cụ phục vụ huấn luyện thể thao nghiệp vụ chữa cháy, cứu nạn, cứu hộ",
+            maso: "A1202",
+            children: [],
+          },
+          {
+            id: 238,
+            ten: "Mô hình học tập kỹ, chiến thuật chữa cháy, cứu nạn, cứu hộ (chữa cháy gas; chữa cháy trong điều kiện có khói, khí độc; cứu hộ dưới nước; chữa cháy, cứu hộ trên cao; mô hình cứu hộ trong không gian hạn chế,…).",
+            maso: "A1203",
+            children: [],
+          },
+          {
+            id: 239,
+            ten: "Mô hình thực tế ảo phục vụ huấn luyện, đào tạo kỹ, chiến thuật chữa cháy, cứu nạn, cứu hộ",
+            maso: "A1204",
+            children: [],
+          },
+          {
+            id: 240,
+            ten: "Thiết bị phục vụ học tập Phương án chữa cháy (máy chiếu, máy tính xách tay, loa pin sử dụng micro không dây)",
+            maso: "A1205",
+            children: [],
+          },
+          {
+            id: 241,
+            ten: "Hình nộm đóng người bị tai nạn dưới nước (toàn thân)",
+            maso: "A1206",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 242,
+        ten: "Thiết bị kỹ thuật nghiệp vụ khác phục vụ công tác chữa cháy, cứu nạn, cứu hộ",
+        maso: "A13",
+        children: [
+          {
+            id: 243,
+            ten: "Thiết bị ghi hình quan sát đám cháy",
+            maso: "A1301",
+            children: [],
+          },
+          {
+            id: 244,
+            ten: "Máy buộc vòi",
+            maso: "A1302",
+            children: [],
+          },
+          {
+            id: 245,
+            ten: "Máy giặt vòi, giá phơi vòi",
+            maso: "A1303",
+            children: [],
+          },
+          {
+            id: 246,
+            ten: "Thiết bị kiểm tra mặt nạ",
+            maso: "A1304",
+            children: [],
+          },
+          {
+            id: 247,
+            ten: "Bể chứa nước chữa cháy di động",
+            maso: "A1305",
+            children: [],
+          },
+          {
+            id: 248,
+            ten: "Trang thiết bị khoanh vùng khu vực cháy, cứu nạn, cứu hộ",
+            maso: "A1306",
+            children: [],
+          },
+          {
+            id: 249,
+            ten: "Thiết bị đánh dấu hoá chất",
+            maso: "A1307",
+            children: [],
+          },
+          {
+            id: 250,
+            ten: "Bộ dây nổi",
+            maso: "A1308",
+            children: [],
+          },
+          {
+            id: 251,
+            ten: "Phao quây dầu tràn",
+            maso: "A1309",
+            children: [],
+          },
+          {
+            id: 252,
+            ten: "Phao cứu sinh phục vụ cứu nạn, cứu hộ",
+            maso: "A1310",
+            children: [],
+          },
+          {
+            id: 253,
+            ten: "Áo phao dùng cho Cảnh sát PCCC&CNCH",
+            maso: "A1311",
+            children: [],
+          },
+          {
+            id: 254,
+            ten: "Bộ thả neo đánh dấu",
+            maso: "A1312",
+            children: [],
+          },
+          {
+            id: 255,
+            ten: "Thiết bị báo hiệu vùng cấm (trên mặt nước)",
+            maso: "A1313",
+            children: [],
+          },
+          {
+            id: 256,
+            ten: "Thiết bị chữa cháy siêu cao áp phục vụ chữa cháy, cứu nạn, cứu hộ (sử dụng tia nước áp lực cao có khả năng xuyên tường hoặc các vật liệu kim loại, bê tông cốt thép,…)",
+            maso: "A1314",
+            children: [],
+          },
+          {
+            id: 257,
+            ten: "Máy nạp điện ắc quy",
+            maso: "A1315",
+            children: [],
+          },
+          {
+            id: 258,
+            ten: "Thiết bị bơm lốp xe",
+            maso: "A1316",
+            children: [],
+          },
+          {
+            id: 259,
+            ten: "Thiết bị phục vụ bảo dưỡng, sửa chữa phương tiện PCCC và CNCH (kích nâng, cầu nâng, bơm dầu, mỡ, máy ra vào lốp tự động, bộ dụng cụ đồ nghề chuyên dùng cho sửa chữa động cơ, máy bơm nước rửa phương tiện,...)",
+            maso: "A1317",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 260,
+        ten: "Phương tiện, thiết bị phục vụ công tác phòng cháy",
+        maso: "A14",
+        children: [
+          {
+            id: 261,
+            ten: "Valy khám nghiệm hiện trường",
+            maso: "A1401",
+            children: [],
+          },
+          {
+            id: 262,
+            ten: "Am pe kìm đo điện",
+            maso: "A1402",
+            children: [],
+          },
+          {
+            id: 263,
+            ten: "Đồng hồ đo điện vạn năng",
+            maso: "A1403",
+            children: [],
+          },
+          {
+            id: 264,
+            ten: "Thiết bị đo khoảng cách",
+            maso: "A1404",
+            children: [],
+          },
+          {
+            id: 265,
+            ten: "Máy đo độ phóng xạ",
+            maso: "A1405",
+            children: [],
+          },
+          {
+            id: 266,
+            ten: "Thiết bị đo áp suất (chất lỏng, chất khí)",
+            maso: "A1406",
+            children: [],
+          },
+          {
+            id: 267,
+            ten: "Thiết bị đo điện trở cách điện (đồng hồ MΩ)",
+            maso: "A1407",
+            children: [],
+          },
+          {
+            id: 268,
+            ten: "Thiết bị đo điện trở hệ thống chống sét",
+            maso: "A1408",
+            children: [],
+          },
+          {
+            id: 269,
+            ten: "Thiết bị dò nguồn điện hở",
+            maso: "A1409",
+            children: [],
+          },
+          {
+            id: 270,
+            ten: "Thiết bị đo độ ẩm, áp suất không khí, vận tốc gió",
+            maso: "A1410",
+            children: [],
+          },
+          {
+            id: 271,
+            ten: "Thiết bị đo nồng độ khí nguy hiểm cháy, nổ; nồng độ khí độc",
+            maso: "A1411",
+            children: [],
+          },
+          {
+            id: 272,
+            ten: "Thiết bị siêu âm đo lượng chất lỏng, chất khí trong bình",
+            maso: "A1412",
+            children: [],
+          },
+          {
+            id: 273,
+            ten: "Thiết bị đo nhiệt độ",
+            maso: "A1413",
+            children: [],
+          },
+          {
+            id: 274,
+            ten: "Thiết bị đo hàm lượng bụi trong không khí",
+            maso: "A1414",
+            children: [],
+          },
+          {
+            id: 275,
+            ten: "Thiết bị đo độ dày lớp sơn phủ",
+            maso: "A1415",
+            children: [],
+          },
+          {
+            id: 276,
+            ten: "Thiết bị đo lưu lượng chất lỏng (đo xác định thông số vận tốc, áp lực dòng chảy)",
+            maso: "A1416",
+            children: [],
+          },
+          {
+            id: 277,
+            ten: "Thiết bị đo tốc độ vòng quay động cơ",
+            maso: "A1417",
+            children: [],
+          },
+          {
+            id: 278,
+            ten: "Máy tạo khói, dung dịch chất tạo khói",
+            maso: "A1418",
+            children: [],
+          },
+          {
+            id: 279,
+            ten: "Thiết bị đo cường độ ánh sáng, cường độ âm thanh",
+            maso: "A1419",
+            children: [],
+          },
+          {
+            id: 280,
+            ten: "Thiết bị đo nồng độ chất tạo bọt",
+            maso: "A1420",
+            children: [],
+          },
+          {
+            id: 281,
+            ten: "Thiết bị đo độ dày vật liệu (Kim loại, kính, PVC)",
+            maso: "A1421",
+            children: [],
+          },
+          {
+            id: 282,
+            ten: "Thiết bị kiểm tra bình khí nén",
+            maso: "A1422",
+            children: [],
+          },
+          {
+            id: 283,
+            ten: "Thiết bị thử, kiểm tra đầu báo cháy",
+            maso: "A1423",
+            children: [],
+          },
+          {
+            id: 284,
+            ten: "Thiết bị quan sát hoặc quay, chụp tầm xa ngày hoặc đêm",
+            maso: "A1424",
+            children: [],
+          },
+          {
+            id: 285,
+            ten: "La bàn",
+            maso: "A1425",
+            children: [],
+          },
+          {
+            id: 286,
+            ten: "Thiết bị ghi hình có âm thanh",
+            maso: "A1426",
+            children: [],
+          },
+          {
+            id: 287,
+            ten: "Máy ảnh nghiệp vụ",
+            maso: "A1427",
+            children: [],
+          },
+          {
+            id: 288,
+            ten: "Thiết bị ghi âm",
+            maso: "A1428",
+            children: [],
+          },
+          {
+            id: 289,
+            ten: "Hệ thống camera giám sát và kiểm soát an ninh",
+            maso: "A1429",
+            children: [],
+          },
+          {
+            id: 290,
+            ten: "Thiết bị phát hiện kim loại",
+            maso: "A1430",
+            children: [],
+          },
+          {
+            id: 291,
+            ten: "Loa pin",
+            maso: "A1431",
+            children: [],
+          },
+          {
+            id: 292,
+            ten: "Thiết bị siêu âm đo khối (đo độ sâu, thể tích bể nước chữa cháy)",
+            maso: "A1432",
+            children: [],
+          },
+          {
+            id: 293,
+            ten: "Hệ thống quét và dựng hiện trường",
+            maso: "A1433",
+            children: [],
+          },
+          {
+            id: 294,
+            ten: "Cân trọng lượng hiển thị chỉ số",
+            maso: "A1434",
+            children: [],
+          },
+          {
+            id: 295,
+            ten: "Thiết bị chiếu sáng công suất lớn",
+            maso: "A1435",
+            children: [],
+          },
+          {
+            id: 296,
+            ten: "Thiết bị ghi hình nhiệt, hồng ngoại",
+            maso: "A1436",
+            children: [],
+          },
+          {
+            id: 297,
+            ten: "Thiết bị kiểm tra tài liệu",
+            maso: "A1437",
+            children: [],
+          },
+          {
+            id: 298,
+            ten: "Thiết bị sao chép và lưu trữ dữ liệu số điện tử",
+            maso: "A1438",
+            children: [],
+          },
+          {
+            id: 299,
+            ten: "USB an toàn",
+            maso: "A1439",
+            children: [],
+          },
+          {
+            id: 300,
+            ten: "Tủ bảo quản các thiết bị điện tử, quang học",
+            maso: "A1440",
+            children: [],
+          },
+          {
+            id: 301,
+            ten: "Hệ thống lưu trữ cơ sở dữ liệu hồ sơ",
+            maso: "A1441",
+            children: [],
+          },
+          {
+            id: 302,
+            ten: "Giá sắt lưu trữ vật chứng hoặc hồ sơ",
+            maso: "A1442",
+            children: [],
+          },
+          {
+            id: 303,
+            ten: "Tủ lưu trữ vật chứng hoặc hồ sơ nghiệp vụ",
+            maso: "A1443",
+            children: [],
+          },
+          {
+            id: 304,
+            ten: "Máy tính xách tay cấu hình cao phục vụ biên tập phim, ảnh",
+            maso: "A1444",
+            children: [],
+          },
+          {
+            id: 305,
+            ten: "Máy tính cấu hình cao phục vụ công tác thẩm duyệt nghiệm thu PCCC",
+            maso: "A1445",
+            children: [],
+          },
+          {
+            id: 306,
+            ten: "Thiết bị đo độ dốc",
+            maso: "A1446",
+            children: [],
+          },
+          {
+            id: 307,
+            ten: "Thiết bị điểm danh tự động phục vụ công tác quản lý cán bộ, học viên bằng khuôn mặt",
+            maso: "A1447",
+            children: [],
+          },
+          {
+            id: 308,
+            ten: "Bộ thiết bị kết nối với Trung tâm dữ liệu, thông tin Bộ Công an",
+            maso: "A1448",
+            children: [],
+          },
+        ],
+      },
+      {
+        id: 309,
+        ten: "Phương tiện khác",
+        maso: "A15",
+        children: [],
+      },
+    ],
+  },
+];
