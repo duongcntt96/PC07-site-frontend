@@ -24,6 +24,17 @@ const treeOptionsConvert = (tree, level = 0) => {
   return options;
 };
 
+const treeToList = (tree) => {
+  const list = [];
+  (tree || []).forEach(e => {
+    list.push(e);
+    if (e.children?.length) {
+      list.push(...treeToList(e.children));
+    }
+  });
+  return list;
+};
+
 const swapItems = (arr, index1, index2) => {
   const newArr = [...arr];
   newArr[index1] = newArr.splice(index2, 1, newArr[index1])[0];
@@ -32,6 +43,7 @@ const swapItems = (arr, index1, index2) => {
 
 export {
   treeOptionsConvert,
+  treeToList,
   VNDFormat,
   LocalDateFormat,
   swapItems
