@@ -20,7 +20,7 @@ const User = () => {
       const { access } = JSON.parse(token);
       if (access) {
         const accessInfo = JSON.parse(decode(access.split(".")[1]));
-        console.log("get username success: ", accessInfo);
+        // console.log("get username success: ", accessInfo);
         setAccessInfo(accessInfo);
       }
     }

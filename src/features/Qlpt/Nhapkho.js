@@ -1,7 +1,5 @@
 import qlptApi from "api/qlptApi";
-import { closeSubMenu } from "components/SubMenu/subMenuSlice";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { VNDFormat, LocalDateFormat, treeOptionsConvert } from "../../utils/DWUtils";
 import { BiAddToQueue } from "react-icons/bi";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -20,7 +18,6 @@ export const Nhapkho = () => {
   const { pushURL } = usePushURL();
   
   const paramsURL = new URLSearchParams(window.location.search);
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   
   const [kho, setKho] = useState([]);
@@ -50,6 +47,7 @@ export const Nhapkho = () => {
   const filters = watch()
 
   const fetchConst = async () => {
+    console.log("Get const");
     setKho(treeOptionsConvert(await (await qlptApi.getListKho()).data));
     setNguoncap(await (await qlptApi.getListNguoncap()).data);
   };

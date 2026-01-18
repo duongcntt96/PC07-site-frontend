@@ -86,7 +86,7 @@ const qlptApi = {
     return normalizeList(resp);
   },
   getListNguoncap: async (params) => {
-    const url = "/qlpt/nguoncap";
+    const url = "/qlpt/nguoncap/";
     const resp = await axiosClient.get(url);
     return normalizeList(resp);
   },

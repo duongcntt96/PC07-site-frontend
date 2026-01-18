@@ -34,7 +34,7 @@ axiosClient.interceptors.request.use(async (config) => {
         } else {
           // get new access token
           const rp = await axios.post(
-            process.env.REACT_APP_API_URL + "/user/refresh_token  ",
+            process.env.REACT_APP_API_URL + "/user/refresh_token",
             { refresh }
           );
           if (rp && rp.data && rp.data.access) {
@@ -54,7 +54,7 @@ axiosClient.interceptors.request.use(async (config) => {
         }
       } else {
         // access token valid
-        console.log(access);
+        // console.log(access);
         config.headers.Authorization = `Bearer ${access}`;
       }
     }
@@ -64,38 +64,38 @@ axiosClient.interceptors.request.use(async (config) => {
 
 axiosClient.interceptors.response.use(
   (response) => {
-    return response;
+    return response?.data || response;
   },
   (error) => {
     if (error.response && error.response.status) {
-      // console.error("API Error: ", error.response.status, error.response.data);
+      console.error("API Error: ", error.response.status, error.response.data);
       // Centralized error handling based on status codes can go here
       // For example, redirect to login for 401, show a generic error for 500, etc.
-      // alert(error.response.status + ": " + error.response.data.detail);
+      alert(error.response.status + ": " + error.response.data.detail);
     }
     return Promise.reject(error);
   }
 );
 
-axiosClient.interceptors.response.use(
-  (response) => {
-    if (response && response.data) {
-      // console.log(response);
-      return response.data;
-    }
-    return response;
-  },
-  (error) => {
-    if (error.response) {
-      // console.log(error.response.data);
-      // console.log(error.response.status);
-      // console.log(error.response.headers);
-      if (error.response.status === 401)
-        window.location.replace("/user/login?url=" + window.location.pathname);
-    }
-    return error.response;
-    // throw error;
-  }
-);
+// axiosClient.interceptors.response.use(
+//   (response) => {
+//     if (response && response.data) {
+//       // console.log(response);
+//       return response.data;
+//     }
+//     return response;
+//   },
+//   (error) => {
+//     if (error.response) {
+//       // console.log(error.response.data);
+//       // console.log(error.response.status);
+//       // console.log(error.response.headers);
+//       if (error.response.status === 401)
+//         window.location.replace("/user/login?url=" + window.location.pathname);
+//     }
+//     return error.response;
+//     // throw error;
+//   }
+// );
 
 export default axiosClient;

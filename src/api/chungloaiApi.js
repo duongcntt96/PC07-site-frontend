@@ -3,7 +3,7 @@ import { normalizeList } from "./responseHelper";
 
 const chungloaiApi = {
   getAll: async (params) => {
-    const url = "/qlpt/chungloai";
+    const url = "/qlpt/chungloai/";
     const resp = await axiosClient.get(url, { params });
     return normalizeList(resp);
   },
