@@ -231,6 +231,8 @@ export const FormNhapkho = () => {
         chung_loai: yup.number().required("Bắt buộc"),
         ten: yup.string().required("Bắt buộc"),
         so_luong: yup.number().positive().typeError("Số lượng > 0"),
+        nam_cap: yup.number().positive().typeError("Điền năm sử dụng"),
+        nguyen_gia: yup.number().positive().typeError("Điền nguyên giá"),
         kemtheo: yup.array(
           yup.object().shape({
             ten: yup.string().required("Không để trống"),
