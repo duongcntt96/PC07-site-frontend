@@ -6,7 +6,7 @@ export default function useTTS() {
 
   const supportsSpeech = typeof window !== "undefined" && "speechSynthesis" in window;
 
-  useEffect(() => {
+  useEffect((supportsSpeech) => {
     // cleanup on unmount
     return () => {
       try {
@@ -15,7 +15,7 @@ export default function useTTS() {
         // ignore
       }
     };
-  }, []);
+  }, [supportsSpeech]);
 
   const speakBrowser = async (textToSpeak) => {
     setError(null);
