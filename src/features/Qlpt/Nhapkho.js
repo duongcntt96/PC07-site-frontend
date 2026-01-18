@@ -226,7 +226,7 @@ export const Nhapkho = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {e.phuong_tiens.map((e, i) => (
+                  {e.phuong_tiens.map((e, i) => (<>
                     <TableRow>
                     <TableCell align="center">{i + 1}</TableCell>
                     <TableCell sx={{color: filters.search == e.ten && "red",}}>{e.ten}</TableCell>
@@ -236,6 +236,14 @@ export const Nhapkho = () => {
                     <TableCell align="right">{VNDFormat(e.nguyen_gia)}</TableCell>
                     <TableCell align="right">{VNDFormat(e.nguyen_gia * e.so_luong)}</TableCell>
                     </TableRow>
+                    {e.kemtheo && e.kemtheo.map((kemtheo, i) => (
+                      <TableRow>
+                        <TableCell align="center">-</TableCell>
+                        <TableCell>{kemtheo.ten}</TableCell>
+                        <TableCell align="center">{kemtheo.so_luong}</TableCell>
+                      </TableRow>
+                    ))}
+                    </>
                   ))}
                   <TableRow>
                     <TableCell colSpan={6}></TableCell>
