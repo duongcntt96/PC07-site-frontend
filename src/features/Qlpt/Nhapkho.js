@@ -216,8 +216,8 @@ export const Nhapkho = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">TT</TableCell>
-                    <TableCell align="center">Tên phương tiện</TableCell>
+                    <TableCell align="center" width={30}>TT</TableCell>
+                    <TableCell align="center" width={330}>Tên phương tiện</TableCell>
                     <TableCell align="center">Số lượng</TableCell>
                     <TableCell align="center">Nguồn cấp</TableCell>
                     <TableCell align="center">Năm sử dụng</TableCell>
