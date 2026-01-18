@@ -181,6 +181,8 @@ export const ListKho = () => {
                     fontSize: option.level === 0 ? "0.9rem" : "0.85rem",
                     fontWeight: option.level === 0 ? "bold" : "normal",
                   }}
+                  title={option.id}
+                  key={option.id}
                 >
                   {option.level > 0 && "-"} {option.ten}
                 </li>

@@ -117,14 +117,30 @@ const RenderKemTheo = ({
                       }}
                     />
                   )}
-                            renderOption={(props,option)=>(
-                              <li {...props} style={{ padding:'0 10px', margin: 1, marginLeft: `${option.level * 20}px`, backgroundColor:'lightblue', borderRadius:'0 10px 10px 10px'}}>{option.ten}</li>
-                            )}
-                            getOptionDisabled={(option)=> {
-                              if(option.children.length) return true
-                              return false
-                            }}
-componentsProps={{popper:{style: {width:'fit-content', maxWidth:'70%'}, placement:'bottom-start'}}}
+                  renderOption={(props, option) => (
+                    <li
+                      {...props}
+                      style={{
+                        padding: "0 10px",
+                        margin: 1,
+                        marginLeft: `${option.level * 20}px`,
+                        backgroundColor: "lightblue",
+                        borderRadius: "0 10px 10px 10px",
+                      }}
+                    >
+                      {option.ten}
+                    </li>
+                  )}
+                  getOptionDisabled={(option) => {
+                    if (option.children.length) return true;
+                    return false;
+                  }}
+                  componentsProps={{
+                    popper: {
+                      style: { width: "fit-content", maxWidth: "70%" },
+                      placement: "bottom-start",
+                    },
+                  }}
                 />
               )}
             />
@@ -186,7 +202,7 @@ componentsProps={{popper:{style: {width:'fit-content', maxWidth:'70%'}, placemen
               }}
               onClick={() => append({ ten: "", so_luong: 1, chung_loai: null })}
             >
-              + Thêm 
+              + Thêm
             </Button>
           )}
         </TableCell>
@@ -371,163 +387,314 @@ export const FormNhapkho = () => {
       </Stack>
 
       <TableContainer>
-              <Table size='small' padding='none'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center" width={50}>TT</TableCell>
-                    <TableCell align="center" width={280}>Chủng loại</TableCell>
-                    <TableCell align="center" width={400}>Tên phương tiện</TableCell>
-                    <TableCell align="center" width={80}>Số lượng</TableCell>
-                    <TableCell align="center" width={150}>Nguồn cấp</TableCell>
-                    <TableCell align="center" width={70}>Năm sử dụng</TableCell>
-                    <TableCell align="center" width={120}>Nguyên giá</TableCell>
-                    <TableCell align="center" width={130}>Thành tiền</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {fields.map((item,index) => (
-                    <>
-                  <TableRow>
-                    <TableCell padding='none' align='center'>
-                      {index+1}
-                      </TableCell>
-                    <TableCell padding='none'>
-                      <Controller
-                        name={`phuong_tiens.${index}.chung_loai`}
-                        control={control}
-                        defaultValue={null}
-                        render={({field})=> (
-                          <Autocomplete {...field}
-                            options={chungloai}
-                            getOptionLabel={(option)=> option?.ten || chungloai.find(e=>e.id==option)?.ten || "null" }
-                            isOptionEqualToValue={(option,value)=>option.id==value}
-                            onChange={(event,value,reason,details)=> setValue(`phuong_tiens.${index}.chung_loai`,value?parseInt(value.id):null)}
-                            renderInput={(params)=>(
-                              <TextField {...params}
-                                size='small'
-                                maxRows={2}
-                                inputProps={{ ...params.inputProps, style: {fontSize:'13px'}}}
-                                error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].chung_loai)}
-                                disabled={isSubmitting}
-                              />
-                            )}
-                            renderOption={(props,option)=>(
-                              <li {...props} style={{ padding:'0 10px', margin: 1, marginLeft: `${option.level * 20}px`, backgroundColor:'lightblue', borderRadius:'0 10px 10px 10px'}}>{option.ten}</li>
-                            )}
-                            getOptionDisabled={(option)=> {
-                              if(option.children.length) return true
-                              return false
-                            }}
-                            componentsProps={{popper:{style: {width:'fit-content', maxWidth:'70%'}, placement:'bottom-start'}}}
-                          />)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        size='small'
-                        sx={{width:'100%'}}
-                        inputProps={{style:{fontSize:'13px'}}}
-                        {...register(`phuong_tiens.${index}.ten`)}
-                        error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].ten)}
-                        disabled={isSubmitting}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TextField
-                        type="number"
-                        size='small'
-                        inputProps={{min:1, style:{fontSize:'13px', textAlign:'center'}}}
-                        {...register(`phuong_tiens.${index}.so_luong`)}
-                        error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong)}
-                        // helperText={errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong?.message}
-                        disabled={isSubmitting}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Controller
-                        name={`phuong_tiens.${index}.nguon_cap`}
-                        control={control}
-                        defaultValue={null}
-                        render={({field})=> (
-                          <Autocomplete {...field}
-                            disableClearable
-                            options={nguoncap}
-                            getOptionLabel={(option)=> {
-                              return option?.ten || nguoncap.find(e=>e.id==option)?.ten || "null"
-                            }}
-                            isOptionEqualToValue={(option,value)=>option.id==value}
-                            onDoubleClick={() => {
-                              setValue(`phuong_tiens.${index}.nguon_cap`,getValues(`phuong_tiens.${index-1}.nguon_cap`))
-                              setValue(`phuong_tiens.${index}.nam_cap`,getValues(`phuong_tiens.${index-1}.nam_cap`))
-                              setValue(`phuong_tiens.${index}.nguyen_gia`,getValues(`phuong_tiens.${index-1}.nguyen_gia`))
-                              return
-                            }
+        <Table size="small" padding="none">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" width={50}>
+                TT
+              </TableCell>
+              <TableCell align="center" width={280}>
+                Chủng loại
+              </TableCell>
+              <TableCell align="center" width={400}>
+                Tên phương tiện
+              </TableCell>
+              <TableCell align="center" width={80}>
+                Số lượng
+              </TableCell>
+              <TableCell align="center" width={150}>
+                Nguồn cấp
+              </TableCell>
+              <TableCell align="center" width={70}>
+                Năm sử dụng
+              </TableCell>
+              <TableCell align="center" width={120}>
+                Nguyên giá
+              </TableCell>
+              <TableCell align="center" width={130}>
+                Thành tiền
+              </TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {fields.map((item, index) => (
+              <>
+                <TableRow>
+                  <TableCell padding="none" align="center">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell padding="none">
+                    <Controller
+                      name={`phuong_tiens.${index}.chung_loai`}
+                      control={control}
+                      defaultValue={null}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          options={chungloai}
+                          getOptionLabel={(option) =>
+                            option?.ten ||
+                            chungloai.find((e) => e.id == option)?.ten ||
+                            "null"
                           }
-                            onChange={(event,value,reason,details)=> setValue(`phuong_tiens.${index}.nguon_cap`,value?parseInt(value.id):null)}
-                            renderInput={(params)=> (
-                              <TextField {...params}
-                                size='small'
-                                inputProps={{ ...params.inputProps, style: {fontSize:'13px'}}}
-                                error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].nguon_cap)}
-                                disabled={isSubmitting}
-                              />
-                              )}
-                            renderOption={(props,option)=>(<li {...props} style={{ padding:0, marginLeft: `${option.level * 20}px` }}>{option.ten}</li>)}
-                          />)}
-                      />
-                    </TableCell>
-                    <TableCell>
+                          isOptionEqualToValue={(option, value) =>
+                            option.id == value
+                          }
+                          onChange={(event, value, reason, details) =>
+                            setValue(
+                              `phuong_tiens.${index}.chung_loai`,
+                              value ? parseInt(value.id) : null
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              size="small"
+                              maxRows={2}
+                              inputProps={{
+                                ...params.inputProps,
+                                style: { fontSize: "13px" },
+                              }}
+                              error={
+                                !!(
+                                  errors.phuong_tiens &&
+                                  errors.phuong_tiens[index] &&
+                                  errors.phuong_tiens[index].chung_loai
+                                )
+                              }
+                              disabled={isSubmitting}
+                            />
+                          )}
+                          renderOption={(props, option) => (
+                            <li
+                              {...props}
+                              style={{
+                                padding: "0 10px",
+                                margin: 1,
+                                marginLeft: `${option.level * 20}px`,
+                                backgroundColor: "lightblue",
+                                borderRadius: "0 10px 10px 10px",
+                              }}
+                              title={option.id}
+                              key={option.id}
+                            >
+                              {option.ten}
+                            </li>
+                          )}
+                          getOptionDisabled={(option) => {
+                            if (option.children.length) return true;
+                            return false;
+                          }}
+                          componentsProps={{
+                            popper: {
+                              style: { width: "fit-content", maxWidth: "70%" },
+                              placement: "bottom-start",
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      sx={{ width: "100%" }}
+                      inputProps={{ style: { fontSize: "13px" } }}
+                      {...register(`phuong_tiens.${index}.ten`)}
+                      error={
+                        !!(
+                          errors.phuong_tiens &&
+                          errors.phuong_tiens[index] &&
+                          errors.phuong_tiens[index].ten
+                        )
+                      }
+                      disabled={isSubmitting}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      type="number"
+                      size="small"
+                      inputProps={{
+                        min: 1,
+                        style: { fontSize: "13px", textAlign: "center" },
+                      }}
+                      {...register(`phuong_tiens.${index}.so_luong`)}
+                      error={
+                        !!(
+                          errors.phuong_tiens &&
+                          errors.phuong_tiens[index] &&
+                          errors.phuong_tiens[index].so_luong
+                        )
+                      }
+                      // helperText={errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong?.message}
+                      disabled={isSubmitting}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Controller
+                      name={`phuong_tiens.${index}.nguon_cap`}
+                      control={control}
+                      defaultValue={null}
+                      render={({ field }) => (
+                        <Autocomplete
+                          {...field}
+                          disableClearable
+                          options={nguoncap}
+                          getOptionLabel={(option) => {
+                            return (
+                              option?.ten ||
+                              nguoncap.find((e) => e.id == option)?.ten ||
+                              "null"
+                            );
+                          }}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id == value
+                          }
+                          onDoubleClick={() => {
+                            setValue(
+                              `phuong_tiens.${index}.nguon_cap`,
+                              getValues(`phuong_tiens.${index - 1}.nguon_cap`)
+                            );
+                            setValue(
+                              `phuong_tiens.${index}.nam_cap`,
+                              getValues(`phuong_tiens.${index - 1}.nam_cap`)
+                            );
+                            setValue(
+                              `phuong_tiens.${index}.nguyen_gia`,
+                              getValues(`phuong_tiens.${index - 1}.nguyen_gia`)
+                            );
+                            return;
+                          }}
+                          onChange={(event, value, reason, details) =>
+                            setValue(
+                              `phuong_tiens.${index}.nguon_cap`,
+                              value ? parseInt(value.id) : null
+                            )
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              size="small"
+                              inputProps={{
+                                ...params.inputProps,
+                                style: { fontSize: "13px" },
+                              }}
+                              error={
+                                !!(
+                                  errors.phuong_tiens &&
+                                  errors.phuong_tiens[index] &&
+                                  errors.phuong_tiens[index].nguon_cap
+                                )
+                              }
+                              disabled={isSubmitting}
+                            />
+                          )}
+                          renderOption={(props, option) => (
+                            <li
+                              {...props}
+                              style={{
+                                padding: 0,
+                                marginLeft: `${option.level * 20}px`,
+                              }}
+                            >
+                              {option.ten}
+                            </li>
+                          )}
+                        />
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell>
                     <TextField
                       type="text"
-                      size='small'
-                      inputProps={{style:{fontSize:'13px', textAlign:'center'}}}
+                      size="small"
+                      inputProps={{
+                        style: { fontSize: "13px", textAlign: "center" },
+                      }}
                       {...register(`phuong_tiens.${index}.nam_cap`)}
-                      onDoubleClick={()=>setValue(`phuong_tiens.${index}.nam_cap`,getValues(`phuong_tiens.${index-1}.nam_cap`))}
-                      error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].so_luong)}
+                      onDoubleClick={() =>
+                        setValue(
+                          `phuong_tiens.${index}.nam_cap`,
+                          getValues(`phuong_tiens.${index - 1}.nam_cap`)
+                        )
+                      }
+                      error={
+                        !!(
+                          errors.phuong_tiens &&
+                          errors.phuong_tiens[index] &&
+                          errors.phuong_tiens[index].so_luong
+                        )
+                      }
                       disabled={isSubmitting}
-                      />
-                    </TableCell>
-                    <TableCell>
-                    <TextField 
-                      size='small'
-                      inputProps={{style:{fontSize:'13px', textAlign:'right'}}}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      size="small"
+                      inputProps={{
+                        style: { fontSize: "13px", textAlign: "right" },
+                      }}
                       {...register(`phuong_tiens.${index}.nguyen_gia`)}
                       // value={VNDFormat(getValues(`phuong_tiens.${index}.nguyen_gia`))}
-                      onDoubleClick={()=>setValue(`phuong_tiens.${index}.nguyen_gia`,getValues(`phuong_tiens.${index-1}.nguyen_gia`))}
-                      onChange={(e)=>setValue(`phuong_tiens.${index}.nguyen_gia`,parseInt(e.target.value.replaceAll(/[,.]/g,'')))}
-                      error={!!(errors.phuong_tiens&&errors.phuong_tiens[index]&&errors.phuong_tiens[index].nguyen_gia)}
+                      onDoubleClick={() =>
+                        setValue(
+                          `phuong_tiens.${index}.nguyen_gia`,
+                          getValues(`phuong_tiens.${index - 1}.nguyen_gia`)
+                        )
+                      }
+                      onChange={(e) =>
+                        setValue(
+                          `phuong_tiens.${index}.nguyen_gia`,
+                          parseInt(e.target.value.replaceAll(/[,.]/g, ""))
+                        )
+                      }
+                      error={
+                        !!(
+                          errors.phuong_tiens &&
+                          errors.phuong_tiens[index] &&
+                          errors.phuong_tiens[index].nguyen_gia
+                        )
+                      }
                       disabled={isSubmitting}
-                      />
-                    </TableCell>
-                    <TableCell>
+                    />
+                  </TableCell>
+                  <TableCell>
                     <TextField
-                      size='small'
-                      inputProps={{style:{fontSize:'13px', textAlign:'right'}}}
+                      size="small"
+                      inputProps={{
+                        style: { fontSize: "13px", textAlign: "right" },
+                      }}
                       {...register(`phuong_tiens.${index}.thanh_tien`)}
                       disabled={isSubmitting}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      {/* <Button
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {/* <Button
                         startIcon={<TiDelete/>}
                         size='small' variant='text' color='error'
                         onClick={()=>remove(index)}
                         disabled={isSubmitting}
                         ></Button> */}
-                      <Stack direction='row' spacing={1} sx={{m:1}}>
-                        {index<fields.length?<MdKeyboardArrowDown
-                            onClick={()=>swap(index,index+1)}
-                            onDoubleClick={()=>{
-                              let _temp = fields[index]
-                              remove(index)
-                              append(_temp)
-                            }}
-                            color='darkblue'/>:<></>}
-                        <TiDelete onClick={()=>remove(index)} color='red'/>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
+                    <Stack direction="row" spacing={1} sx={{ m: 1 }}>
+                      {index < fields.length ? (
+                        <MdKeyboardArrowDown
+                          onClick={() => swap(index, index + 1)}
+                          onDoubleClick={() => {
+                            let _temp = fields[index];
+                            remove(index);
+                            append(_temp);
+                          }}
+                          color="darkblue"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                      <TiDelete onClick={() => remove(index)} color="red" />
+                    </Stack>
+                  </TableCell>
+                </TableRow>
                 {/* Phương tiện, thiết bị kèm theo */}
 
                 <RenderKemTheo
