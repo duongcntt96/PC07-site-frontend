@@ -81,14 +81,14 @@ export const links = [
     ],
   },
   {
-    id: 6,
+    id: 3,
     active: true,
     url: "/gis",
     text: "BẢN ĐỒ SỐ",
     children: [],
   },
   {
-    id: 3,
+    id: 4,
     active: true,
     url: "/nhattrinh",
     text: "NHẬT TRÌNH",
@@ -108,7 +108,7 @@ export const links = [
     ],
   },
   {
-    id: 3,
+    id: 5,
     active: true,
     url: "/tspl",
     text: "THƯ VIỆN",

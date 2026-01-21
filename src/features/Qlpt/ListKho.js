@@ -17,6 +17,7 @@ import {
   MenuItem,
   MenuList,
   Skeleton,
+  Box,
 } from "@mui/material";
 import {
   TableContainer,
@@ -98,7 +99,6 @@ export const ListKho = () => {
         direction="row"
         justifyContent="flex-end"
         spacing={1}
-        sx={{ mt: 3 }}
       >
         <Controller
           name="kho_nhap"
@@ -110,11 +110,20 @@ export const ListKho = () => {
               disableClearable
               sx={{ width: 300 }}
               options={memoizedKhoOptions}
+              loading={memoizedKhoOptions.length === 0}
+              loadingText={
+              <Box width={300}>                
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                </Box>
+              }
               getOptionLabel={(option) => {
                 return (
                   option?.ten ||
                   memoizedKhoOptions.find((e) => e.id == option)?.ten ||
-                  "null"
+                  ""
                 );
               }}
               isOptionEqualToValue={(option, value) => option.id == value}
@@ -130,7 +139,7 @@ export const ListKho = () => {
                   style={{
                     padding: "6px 16px",
                     marginLeft: `${option.level * 20}px`,
-                    borderLeft: option.level > 0 ? "1px dashed #ccc" : "none", // Thêm đường kẻ phụ
+                    borderLeft: option.level > 0 ? "1px dashed #ccc" : "none",
                     fontSize: option.level === 0 ? "0.9rem" : "0.85rem",
                     fontWeight: option.level === 0 ? "bold" : "normal",
                   }}
@@ -199,10 +208,32 @@ export const ListKho = () => {
       </Stack>
 
       {loading ? (
-        <Stack spacing={1} sx={{ mt: 1 }}>
-          <Skeleton variant="rectangular" width="100%" height={40} />
-          <Skeleton variant="rectangular" width="100%" height={500} />
-        </Stack>
+        <TableContainer component={Paper} sx={{ mt: 2 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center"><Skeleton variant="text" width="100%" /></TableCell>
+                <TableCell align="center"><Skeleton variant="text" width="100%" /></TableCell>
+                <TableCell align="center" sx={{ width: "10%" }}><Skeleton variant="text" width="100%" /></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.from({ length: 16 }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  <TableCell>
+                    <Skeleton variant="text" width="80%" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="text" width="60%" />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Skeleton variant="text" width="40%" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       ) : thucluc?.count * thucluc?.sum ? (
         <Stack sx={{ mt: 1 }}>
           <Alert severity="success">

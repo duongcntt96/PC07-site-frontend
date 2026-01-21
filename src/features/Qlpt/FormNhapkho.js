@@ -25,6 +25,7 @@ import { treeOptionsConvert } from "utils/DWUtils";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
 import { chungloai as chungloai_ } from "data";
+import { log } from "three";
 
 // --- COMPONENT XỬ LÝ PT KÈM THEO (CẤP 2) ---
 const RenderKemTheo = ({
@@ -36,10 +37,37 @@ const RenderKemTheo = ({
   setValue,
   chungloai,
 }) => {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: `phuong_tiens.${nestIndex}.kemtheo`,
   });
+
+  const handlePaste = (e, index) => {
+    
+    const text = e.clipboardData.getData("text/plain");
+    if (!text) return;
+    const rows = text
+      .trim()
+      .split("\n")
+      .map((row) => row.split("\t"));
+    if (rows.length === 1 && rows[0].length === 1) return;
+    e.preventDefault();
+    const newItems = rows.map((cols) => ({
+      chung_loai: null,
+      ten: cols[0] || "",
+      so_luong: Number(cols[1]) || "",
+    }));
+    if (index === fields.length - 1) {
+      remove(index);
+      append(newItems);
+    } else if (index < fields.length - 1) {
+      const updatedItems = [...fields];
+      updatedItems.splice(index, newItems.length, ...newItems);
+      replace(updatedItems);
+    } else {
+      replace(newItems);
+    }
+  };
 
   return (
     <>
@@ -66,7 +94,9 @@ const RenderKemTheo = ({
                 p: 0,
                 textTransform: "none",
               }}
-              onClick={() => append({ ten: "", so_luong: 1, chung_loai: null })}
+              onClick={() =>
+                append({ ten: "", so_luong: "", chung_loai: null })
+              }
             >
               + Thêm phương tiện, thiết bị kèm theo
             </Button>
@@ -98,7 +128,7 @@ const RenderKemTheo = ({
                   onChange={(_, value) =>
                     setValue(
                       `phuong_tiens.${nestIndex}.kemtheo.${kIndex}.chung_loai`,
-                      value ? parseInt(value.id) : null
+                      value ? parseInt(value.id) : null,
                     )
                   }
                   renderInput={(params) => (
@@ -157,12 +187,14 @@ const RenderKemTheo = ({
               error={
                 !!errors?.phuong_tiens?.[nestIndex]?.kemtheo?.[kIndex]?.ten
               }
+              onPaste={(e) => handlePaste(e, kIndex)}
+              title="Bạn có thể dán (Ctrl+V) nhiều dòng cùng lúc"
             />
           </TableCell>
           <TableCell align="center">
             <TextField
               {...register(
-                `phuong_tiens.${nestIndex}.kemtheo.${kIndex}.so_luong`
+                `phuong_tiens.${nestIndex}.kemtheo.${kIndex}.so_luong`,
               )}
               type="number"
               size="small"
@@ -200,7 +232,9 @@ const RenderKemTheo = ({
                 p: 0,
                 textTransform: "none",
               }}
-              onClick={() => append({ ten: "", so_luong: 1, chung_loai: null })}
+              onClick={() =>
+                append({ ten: "", so_luong: "", chung_loai: null })
+              }
             >
               + Thêm
             </Button>
@@ -235,22 +269,25 @@ export const FormNhapkho = () => {
         nguyen_gia: yup.number().positive().typeError("Điền nguyên giá"),
         kemtheo: yup.array(
           yup.object().shape({
+            chung_loai: yup.number().required("Bắt buộc"),
             ten: yup.string().required("Không để trống"),
             so_luong: yup.number().positive(),
-          })
+          }),
         ),
-      })
+      }),
     ),
   });
 
   const { control, register, formState, handleSubmit, setValue, getValues } =
     useForm({
       defaultValues: {
-        kho_nhap: 1,
+        kho_nhap: null,
         thoi_gian: new Date().toISOString().split("T")[0],
         note: "",
         quyetdinh: "",
-        phuong_tiens: [{ chung_loai: null, ten: "", so_luong: 1, kemtheo: [] }],
+        phuong_tiens: [
+          { chung_loai: null, ten: "", so_luong: null, kemtheo: [] },
+        ],
       },
       resolver: yupResolver(schema),
     });
@@ -316,6 +353,38 @@ export const FormNhapkho = () => {
   };
 
   if (loading) return <Loading />;
+
+  const handlePaste = (e, index) => {
+    e.preventDefault();
+
+    const text = e.clipboardData.getData("text/plain");
+    if (!text) return;
+
+    const rows = text
+      .trim()
+      .split("\n")
+      .map((row) => row.split("\t"));
+
+    console.log(e);
+    const newItems = rows.map((cols) => ({
+      chung_loai: null, // có thể map theo tên nếu muốn
+      ten: cols[0] || "",
+      so_luong: Number(cols[1]) || "",
+      nam_cap: Number(cols[2]) || "",
+      nguyen_gia: Number(cols[3]) || "",
+    }));
+
+    if (index === fields.length - 1) {
+      remove(index);
+      append(newItems);
+    } else if (index < fields.length - 1) {
+      const updatedItems = [...fields];
+      updatedItems.splice(index, newItems.length, ...newItems);
+      replace(updatedItems);
+    } else {
+      replace(newItems);
+    }
+  };
 
   return (
     <Stack
@@ -446,7 +515,7 @@ export const FormNhapkho = () => {
                           onChange={(event, value, reason, details) =>
                             setValue(
                               `phuong_tiens.${index}.chung_loai`,
-                              value ? parseInt(value.id) : null
+                              value ? parseInt(value.id) : null,
                             )
                           }
                           renderInput={(params) => (
@@ -501,7 +570,7 @@ export const FormNhapkho = () => {
                   <TableCell>
                     <TextField
                       size="small"
-                      sx={{ width: "100%" }}
+                      sx={{ width: "100%", display: "none" }}
                       inputProps={{ style: { fontSize: "13px" } }}
                       {...register(`phuong_tiens.${index}.ten`)}
                       error={
@@ -512,6 +581,27 @@ export const FormNhapkho = () => {
                         )
                       }
                       disabled={isSubmitting}
+                      onPaste={(e) => handlePaste(e)}
+                    />
+
+                    <TextField
+                      {...register(`phuong_tiens.${index}.ten`)}
+                      placeholder="Tên phương tiện, thiết bị"
+                      size="small"
+                      fullWidth
+                      inputProps={{
+                        style: { fontSize: "13px" },
+                      }}
+                      disabled={isSubmitting}
+                      error={
+                        !!(
+                          errors.phuong_tiens &&
+                          errors.phuong_tiens[index] &&
+                          errors.phuong_tiens[index].ten
+                        )
+                      }
+                      onPaste={(e) => handlePaste(e, index)}
+                      title="Bạn có thể dán (Ctrl+V) nhiều dòng cùng lúc"
                     />
                   </TableCell>
                   <TableCell>
@@ -557,22 +647,22 @@ export const FormNhapkho = () => {
                           onDoubleClick={() => {
                             setValue(
                               `phuong_tiens.${index}.nguon_cap`,
-                              getValues(`phuong_tiens.${index - 1}.nguon_cap`)
+                              getValues(`phuong_tiens.${index - 1}.nguon_cap`),
                             );
                             setValue(
                               `phuong_tiens.${index}.nam_cap`,
-                              getValues(`phuong_tiens.${index - 1}.nam_cap`)
+                              getValues(`phuong_tiens.${index - 1}.nam_cap`),
                             );
                             setValue(
                               `phuong_tiens.${index}.nguyen_gia`,
-                              getValues(`phuong_tiens.${index - 1}.nguyen_gia`)
+                              getValues(`phuong_tiens.${index - 1}.nguyen_gia`),
                             );
                             return;
                           }}
                           onChange={(event, value, reason, details) =>
                             setValue(
                               `phuong_tiens.${index}.nguon_cap`,
-                              value ? parseInt(value.id) : null
+                              value ? parseInt(value.id) : null,
                             )
                           }
                           renderInput={(params) => (
@@ -619,7 +709,7 @@ export const FormNhapkho = () => {
                       onDoubleClick={() =>
                         setValue(
                           `phuong_tiens.${index}.nam_cap`,
-                          getValues(`phuong_tiens.${index - 1}.nam_cap`)
+                          getValues(`phuong_tiens.${index - 1}.nam_cap`),
                         )
                       }
                       error={
@@ -643,13 +733,13 @@ export const FormNhapkho = () => {
                       onDoubleClick={() =>
                         setValue(
                           `phuong_tiens.${index}.nguyen_gia`,
-                          getValues(`phuong_tiens.${index - 1}.nguyen_gia`)
+                          getValues(`phuong_tiens.${index - 1}.nguyen_gia`),
                         )
                       }
                       onChange={(e) =>
                         setValue(
                           `phuong_tiens.${index}.nguyen_gia`,
-                          parseInt(e.target.value.replaceAll(/[,.]/g, ""))
+                          parseInt(e.target.value.replaceAll(/[,.]/g, "")),
                         )
                       }
                       error={
@@ -717,7 +807,7 @@ export const FormNhapkho = () => {
       <Button
         variant="outlined"
         size="small"
-        onClick={() => append({ ten: "", so_luong: 1, kemtheo: [] })}
+        onClick={() => append({ ten: "", so_luong: "", kemtheo: [] })}
       >
         + Thêm phương tiện mới
       </Button>

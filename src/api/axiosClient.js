@@ -71,31 +71,10 @@ axiosClient.interceptors.response.use(
       console.error("API Error: ", error.response.status, error.response.data);
       // Centralized error handling based on status codes can go here
       // For example, redirect to login for 401, show a generic error for 500, etc.
-      alert(error.response.status + ": " + error.response.data.detail);
+      console.log(error.response.status + ": " + error.response.data.detail);
     }
     return Promise.reject(error);
   }
 );
-
-// axiosClient.interceptors.response.use(
-//   (response) => {
-//     if (response && response.data) {
-//       // console.log(response);
-//       return response.data;
-//     }
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response) {
-//       // console.log(error.response.data);
-//       // console.log(error.response.status);
-//       // console.log(error.response.headers);
-//       if (error.response.status === 401)
-//         window.location.replace("/user/login?url=" + window.location.pathname);
-//     }
-//     return error.response;
-//     // throw error;
-//   }
-// );
 
 export default axiosClient;

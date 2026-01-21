@@ -188,13 +188,13 @@ const App = () => {
             />
 
             <Route
-              path="/coso"
+              path="/nhattrinh"
               element={
                 <>
                   <Helmet>
                     <title>Thông tin cơ sở</title>
                   </Helmet>
-                  <GisMap />
+                  <Coso />
                 </>
               }
             />
