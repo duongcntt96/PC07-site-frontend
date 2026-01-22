@@ -42,7 +42,7 @@ const Footer = () => {
               Quản lý phương tiện PCCC và CNCH
             </Typography>
             <Typography variant="body2" sx={{ opacity: 0.6, textAlign: 'justify'}}>
-              Website được xây dựng với mục tiêu đẩy mạnh chuyển đổi số nhằm nâng cao hiệu quả công tác quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ của lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh. Chung sức xây dựng lực lượng vững mạnh bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc!
+              Website được xây dựng với mục tiêu đẩy mạnh chuyển đổi số nhằm nâng cao hiệu quả công tác quản lý phương tiện phòng cháy, chữa cháy và cứu nạn cứu hộ; chung sức xây dựng lực lượng Cảnh sát PCCC và CNCH Công an tỉnh Tây Ninh vững mạnh bước vào kỷ nguyên mới – kỷ nguyên vươn mình của dân tộc!
             </Typography>
           </Stack>
 

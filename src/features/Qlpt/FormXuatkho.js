@@ -322,7 +322,9 @@ const FormXuatkho = () => {
                         {chungloai.find((f) => f.id == e.chung_loai)?.ten ||
                           e.chung_loai}
                       </TableCell>
-                      <TableCell>{e.ten}</TableCell>
+                      <TableCell>{e.ten} 
+                        {e.kemtheo?.length>0 && ` (có ${e.kemtheo?.length} danh mục phương tiện trang bị kèm theo)`  }
+                        </TableCell>
                       <TableCell align="center">
                         <TextField
                           {...register(`phuong_tiens.${i}.so_luong`)}
