@@ -21,7 +21,7 @@ import { TiDelete } from "react-icons/ti";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { treeOptionsConvert } from "utils/DWUtils";
+import { treeOptionsConvert, VNDFormat } from "utils/DWUtils";
 import { useParams, useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
 import { chungloai as chungloai_ } from "data";
@@ -729,18 +729,22 @@ export const FormNhapkho = () => {
                         style: { fontSize: "13px", textAlign: "right" },
                       }}
                       {...register(`phuong_tiens.${index}.nguyen_gia`)}
-                      // value={VNDFormat(getValues(`phuong_tiens.${index}.nguyen_gia`))}
                       onDoubleClick={() =>
                         setValue(
                           `phuong_tiens.${index}.nguyen_gia`,
                           getValues(`phuong_tiens.${index - 1}.nguyen_gia`),
                         )
                       }
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setValue(
                           `phuong_tiens.${index}.nguyen_gia`,
                           parseInt(e.target.value.replaceAll(/[,.]/g, "")),
                         )
+                        setValue(
+                          `phuong_tiens.${index}.thanh_tien`,
+                          VNDFormat(getValues(`phuong_tiens.${index}.nguyen_gia`)*getValues(`phuong_tiens.${index}.so_luong`))
+                        )
+                      }
                       }
                       error={
                         !!(
@@ -759,16 +763,10 @@ export const FormNhapkho = () => {
                         style: { fontSize: "13px", textAlign: "right" },
                       }}
                       {...register(`phuong_tiens.${index}.thanh_tien`)}
-                      disabled={isSubmitting}
+                      disabled
                     />
                   </TableCell>
                   <TableCell>
-                    {/* <Button
-                        startIcon={<TiDelete/>}
-                        size='small' variant='text' color='error'
-                        onClick={()=>remove(index)}
-                        disabled={isSubmitting}
-                        ></Button> */}
                     <Stack direction="row" spacing={1} sx={{ m: 1 }}>
                       {index < fields.length ? (
                         <MdKeyboardArrowDown
