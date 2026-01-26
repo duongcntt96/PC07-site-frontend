@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { treeOptionsConvert } from "../../utils/DWUtils";
 import usePushURL from "hooks/usePushURL";
 
-import Loading from "components/Loading";
 import { Link, useLocation } from "react-router-dom";
 
 import { useForm, Controller } from "react-hook-form";
@@ -43,7 +42,7 @@ export const ListKho = () => {
   const memoizedKhoOptions = useMemo(() => treeOptionsConvert(kho), [kho]);
   const memoizedChungloaiOptions = useMemo(
     () => treeOptionsConvert(chungloai),
-    [chungloai]
+    [chungloai],
   );
 
   const { control, register, watch, setValue, getValues } = useForm({
@@ -95,11 +94,7 @@ export const ListKho = () => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        spacing={1}
-      >
+      <Stack direction="row" justifyContent="flex-end" spacing={1}>
         <Controller
           name="kho_nhap"
           control={control}
@@ -112,11 +107,11 @@ export const ListKho = () => {
               options={memoizedKhoOptions}
               loading={memoizedKhoOptions.length === 0}
               loadingText={
-              <Box width={300}>                
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
+                <Box width={300}>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
                 </Box>
               }
               getOptionLabel={(option) => {
@@ -208,13 +203,19 @@ export const ListKho = () => {
       </Stack>
 
       {loading ? (
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
+        <TableContainer component={Paper} sx={{ mt: 2, bgcolor: 'grey.300' }}>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center"><Skeleton variant="text" width="100%" /></TableCell>
-                <TableCell align="center"><Skeleton variant="text" width="100%" /></TableCell>
-                <TableCell align="center" sx={{ width: "10%" }}><Skeleton variant="text" width="100%" /></TableCell>
+                <TableCell align="center">
+                  <Skeleton variant="text" width="100%" />
+                </TableCell>
+                <TableCell align="center">
+                  <Skeleton variant="text" width="100%" />
+                </TableCell>
+                <TableCell align="center" sx={{ width: "10%" }}>
+                  <Skeleton variant="text" width="100%" />
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -262,14 +263,14 @@ export const ListKho = () => {
                     (e) =>
                       e.maso.includes(
                         memoizedChungloaiOptions.find(
-                          (e) => e.id == getValues("chung_loai")
-                        )?.maso
-                      ) || !getValues("chung_loai")
+                          (e) => e.id == getValues("chung_loai"),
+                        )?.maso,
+                      ) || !getValues("chung_loai"),
                   )
                   .map(({ id, level, ten, maso }) => {
                     if (
                       thucluc.data.filter((e) =>
-                        e.chung_loai__maso.includes(maso)
+                        e.chung_loai__maso.includes(maso),
                       ).length
                     ) {
                       const subtotals = thucluc.data
