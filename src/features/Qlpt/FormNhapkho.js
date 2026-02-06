@@ -278,19 +278,26 @@ export const FormNhapkho = () => {
     ),
   });
 
-  const { control, register, formState, handleSubmit, setValue, getValues } =
-    useForm({
-      defaultValues: {
-        kho_nhap: null,
-        thoi_gian: new Date().toISOString().split("T")[0],
-        note: "",
-        quyetdinh: "",
-        phuong_tiens: [
-          { chung_loai: null, ten: "", so_luong: null, kemtheo: [] },
-        ],
-      },
-      resolver: yupResolver(schema),
-    });
+  const {
+    control,
+    register,
+    formState,
+    handleSubmit,
+    setError,
+    setValue,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      kho_nhap: null,
+      thoi_gian: new Date().toISOString().split("T")[0],
+      note: "",
+      quyetdinh: "",
+      phuong_tiens: [
+        { chung_loai: null, ten: "", so_luong: null, kemtheo: [] },
+      ],
+    },
+    resolver: yupResolver(schema),
+  });
 
   const { fields, append, remove, replace, swap } = useFieldArray({
     name: "phuong_tiens",
@@ -346,14 +353,37 @@ export const FormNhapkho = () => {
     try {
       if (id) {
         const result = await qlptApi.updatePhieunhap({ ...value, id });
-        replace(result.phuong_tiens);
+        console.log(result);
+        // replace(result.phuong_tiens);
+        if (result.id) {
+          console.log("Cập nhật thành công");
+        }
       } else {
         const result = await qlptApi.addPhieunhap(value);
         setID(result.id);
         navigate(`/qlpt/xuatnhap/${result.id}`);
       }
-    } catch (error) {
-      console.error("Submit error", error);
+    } catch (err) {
+      console.error("Submit error", err);
+
+      const phuongTienErrors = err.response?.data?.phuong_tiens;
+
+      if (Array.isArray(phuongTienErrors)) {
+        phuongTienErrors.forEach((itemErrors, index) => {
+          // itemErrors will be {} for valid items, or { ten: [...], nam_cap: [...] } for invalid ones
+          Object.entries(itemErrors).forEach(([fieldName, messages]) => {
+            // Construct the name as 'phuong_tiens.1.ten' so React Hook Form knows where it goes
+            const formFieldName = `phuong_tiens.${index}.${fieldName}`;
+
+            setError(formFieldName, {
+              type: "manual",
+              message: messages[0],
+            });
+          });
+        });
+      } else {
+        alert("Có lỗi xảy ra khi lưu dữ liệu. Vui lòng thử lại.");
+      }
     }
   };
 
@@ -734,7 +764,7 @@ export const FormNhapkho = () => {
                           !!(
                             errors.phuong_tiens &&
                             errors.phuong_tiens[index] &&
-                            errors.phuong_tiens[index].so_luong
+                            errors.phuong_tiens[index].nam_cap
                           )
                         }
                         disabled={isSubmitting}
@@ -779,11 +809,11 @@ export const FormNhapkho = () => {
                         customInput={TextField}
                         size="small"
                         // disabled
-                        readOnly={true} 
+                        readOnly={true}
                         inputProps={{
                           style: { fontSize: "13px", textAlign: "right" },
                         }}
-                        />
+                      />
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1} sx={{ m: 1 }}>
